@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Budget Quest</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --bg-soft: #111821;
+      --panel: rgba(18, 25, 35, 0.94);
+      --panel-2: rgba(26, 35, 49, 0.92);
+      --line: rgba(255,255,255,0.08);
+      --line-strong: rgba(255,255,255,0.14);
+      --text: #edf3fb;
+      --muted: #9fb0c5;
+      --gold: #f2c14e;
+      --good: #57d98c;
+      --warn: #ffb84d;
+      --bad: #ff7373;
+      --accent: #78a6ff;
+      --shadow: 0 20px 40px rgba(0,0,0,0.35);
+      --radius: 22px;
+      --radius-sm: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top, rgba(120,166,255,0.11), transparent 28%),
+        linear-gradient(180deg, #091018 0%, #0b0f14 100%);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      padding: 24px;
+    }
+
+    .app {
+      max-width: 1220px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.25fr 0.9fr;
+      gap: 18px;
+      padding: 24px;
+      align-items: stretch;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold);
+      font-size: 0.88rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(2.3rem, 6vw, 4.4rem);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+    }
+
+    .subtitle {
+      margin: 14px 0 0;
+      max-width: 64ch;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1.02rem;
+    }
+
+    .heroCard {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      min-height: 100%;
+    }
+
+    .heroCardTitle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .crest {
+      font-size: 2rem;
+      filter: drop-shadow(0 8px 18px rgba(242,193,78,0.18));
+    }
+
+    .gridStats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin-bottom: 8px;
+    }
+
+    .value {
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .gold { color: var(--gold); }
+    .good { color: var(--good); }
+    .warn { color: var(--warn); }
+    .bad { color: var(--bad); }
+
+    .main {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+    }
+
+    .section {
+      padding: 20px;
+    }
+
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .inputs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    .field label {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    input, select {
+      width: 100%;
+      background: #0e1520;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font: inherit;
+      outline: none;
+      transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: rgba(120,166,255,0.65);
+      box-shadow: 0 0 0 4px rgba(120,166,255,0.12);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.16s ease, opacity 0.16s ease, border-color 0.16s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+
+    .btnPrimary {
+      background: linear-gradient(180deg, #f1c55d, #d7a63c);
+      color: #17120a;
+    }
+
+    .btnSecondary {
+      background: #131b26;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .resultBox {
+      margin-top: 16px;
+      background: #0e1621;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      line-height: 1.65;
+      min-height: 100px;
+      white-space: pre-line;
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+
+    .villageHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .rankPill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(242,193,78,0.08);
+      border: 1px solid rgba(242,193,78,0.22);
+      color: var(--gold);
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .villageList {
+      display: grid;
+      gap: 10px;
+    }
+
+    .unlock {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: #0e1620;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .unlock.locked {
+      opacity: 0.5;
+      filter: grayscale(0.3);
+    }
+
+    .unlockTitle {
+      font-weight: 800;
+      margin-bottom: 3px;
+    }
+
+    .unlockDesc {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .unlockCost {
+      color: var(--gold);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .twoCol {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .historyList {
+      display: grid;
+      gap: 10px;
+      max-height: 420px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .historyItem {
+      background: #0e1621;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .historyTop {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-weight: 800;
+    }
+
+    .historyMeta, .historyNote {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .empty {
+      color: var(--muted);
+      background: #0e1621;
+      border: 1px dashed var(--line-strong);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .footerNote {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero, .main, .twoCol, .inputs {
+        grid-template-columns: 1fr;
+      }
+
+      body { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="panel hero">
+      <div>
+        <div class="eyebrow">⚔ Budget Discipline Simulator</div>
+        <h1 class="title">Budget Quest</h1>
+        <p class="subtitle">
+          Build your kingdom by spending below your own limit. Set your daily budget, report what you actually spent,
+          choose your currency, stack gold, unlock villagers and structures, and climb from peon to emperor.
+          Overspend if you want — your kingdom will judge you accordingly.
+        </p>
+      </div>
+
+      <div class="heroCard">
+        <div class="heroCardTitle">
+          <span>Ruler Overview</span>
+          <span class="crest">👑</span>
+        </div>
+        <div class="gridStats">
+          <div class="stat">
+            <div class="label">Ruler</div>
+            <div class="value" id="displayName">Unnamed</div>
+          </div>
+          <div class="stat">
+            <div class="label">Rank</div>
+            <div class="value gold" id="displayRank">Peon</div>
+          </div>
+          <div class="stat">
+            <div class="label">Total Gold</div>
+            <div class="value gold" id="displayGold">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">Current Streak</div>
+            <div class="value good" id="displayStreak">0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="main">
+      <div class="panel section">
+        <h2>Log Your Day</h2>
+        <div class="inputs">
+          <div class="field full">
+            <label for="playerName">Ruler Name</label>
+            <input id="playerName" type="text" maxlength="28" placeholder="King Francois / Lord Goldfang / whatever you want" />
+          </div>
+
+          <div class="field">
+            <label for="currency">Currency</label>
+            <select id="currency">
+              <option value="CAD">Canadian Dollar (CAD)</option>
+              <option value="USD">US Dollar (USD)</option>
+              <option value="MXN">Mexican Peso (MXN)</option>
+              <option value="EUR">Euro (EUR)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="date">Date</label>
+            <input id="date" type="date" />
+          </div>
+
+          <div class="field">
+            <label for="budget">Daily Budget Limit</label>
+            <input id="budget" type="number" min="0" step="0.01" placeholder="100" />
+          </div>
+
+          <div class="field">
+            <label for="spent">Actual Spent Today</label>
+            <input id="spent" type="number" min="0" step="0.01" placeholder="26" />
+          </div>
+
+          <div class="field full">
+            <label for="note">Field Report</label>
+            <input id="note" type="text" maxlength="120" placeholder="Cooked at home. Stayed disciplined. Didn’t donate my wallet to random nonsense." />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btnPrimary" id="saveDayBtn">End Day</button>
+          <button class="btnSecondary" id="demoBtn">Load Demo</button>
+          <button class="btnSecondary" id="resetBtn">Reset Kingdom</button>
+        </div>
+
+        <div class="resultBox" id="resultBox">Set your ruler, commit to a budget, and close the day.
+Every unit of money you save becomes gold for the kingdom.</div>
+
+        <div class="footerNote">
+          Gold is the reward currency no matter which real-world currency you track in.
+        </div>
+      </div>
+
+      <div class="panel section">
+        <div class="villageHeader">
+          <h2 style="margin:0;">Kingdom Progress</h2>
+          <div class="rankPill" id="rankPill">Peon</div>
+        </div>
+
+        <div class="gridStats" style="margin-bottom: 14px;">
+          <div class="stat">
+            <div class="label">Best Save Day</div>
+            <div class="value gold" id="displayBestDay">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">Best Streak</div>
+            <div class="value good" id="displayBestStreak">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">Days Logged</div>
+            <div class="value" id="displayDays">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">Victory Rate</div>
+            <div class="value" id="displayWinRate">0%</div>
+          </div>
+        </div>
+
+        <div class="villageList" id="unlockList"></div>
+      </div>
+    </section>
+
+    <section class="twoCol">
+      <div class="panel section">
+        <h2>Campaign Log</h2>
+        <div class="historyList" id="historyList"></div>
+      </div>
+
+      <div class="panel section">
+        <h2>Rules of the Realm</h2>
+        <div class="subtle">
+          Spend under budget and the difference becomes <span class="gold">gold</span>.<br/><br/>
+          Hit the budget exactly and you survive the day. No glory, no shame, no parade.<br/><br/>
+          Overspend and your streak breaks. Your kingdom will continue existing, but with disappointment.<br/><br/>
+          As your gold grows, your rank rises and your village unlocks peasants, farms, mills, barracks, walls, knights, and eventually an empire.<br/><br/>
+          In other words: discipline builds civilization.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'budgetQuest_v1';
+
+    const ranks = [
+      { min: 0, title: 'Peon' },
+      { min: 50, title: 'Villager' },
+      { min: 120, title: 'Steward' },
+      { min: 220, title: 'Lord' },
+      { min: 400, title: 'Baron' },
+      { min: 650, title: 'Warden' },
+      { min: 950, title: 'King' },
+      { min: 1400, title: 'High King' },
+      { min: 2000, title: 'Emperor' }
+    ];
+
+    const unlocks = [
+      { gold: 15, icon: '🧑‍🌾', title: 'Peasant', desc: 'Someone has agreed to live in your muddy little village.' },
+      { gold: 40, icon: '🏠', title: 'Cottage', desc: 'A basic roof. Civilization begins with not sleeping in the dirt.' },
+      { gold: 80, icon: '🌾', title: 'Farm', desc: 'Food production unlocked. Tremendous innovation.' },
+      { gold: 140, icon: '🪵', title: 'Lumber Mill', desc: 'Timber means growth. Also means fewer excuses.' },
+      { gold: 230, icon: '⚒️', title: 'Workshop', desc: 'Your people now produce things besides disappointment.' },
+      { gold: 360, icon: '🛡️', title: 'Barracks', desc: 'Discipline becomes doctrine.' },
+      { gold: 520, icon: '🏰', title: 'Stone Walls', desc: 'Your settlement is no longer a rumor.' },
+      { gold: 760, icon: '🐎', title: 'Knight Order', desc: 'Mounted authority. Very convincing.' },
+      { gold: 1100, icon: '⛪', title: 'Grand Hall', desc: 'Your kingdom has an actual center of power.' },
+      { gold: 1600, icon: '👑', title: 'Imperial Capital', desc: 'At this point overspending is treason.' }
+    ];
+
+    const els = {
+      playerName: document.getElementById('playerName'),
+      currency: document.getElementById('currency'),
+      date: document.getElementById('date'),
+      budget: document.getElementById('budget'),
+      spent: document.getElementById('spent'),
+      note: document.getElementById('note'),
+      saveDayBtn: document.getElementById('saveDayBtn'),
+      demoBtn: document.getElementById('demoBtn'),
+      resetBtn: document.getElementById('resetBtn'),
+      resultBox: document.getElementById('resultBox'),
+      displayName: document.getElementById('displayName'),
+      displayRank: document.getElementById('displayRank'),
+      displayGold: document.getElementById('displayGold'),
+      displayStreak: document.getElementById('displayStreak'),
+      displayBestDay: document.getElementById('displayBestDay'),
+      displayBestStreak: document.getElementById('displayBestStreak'),
+      displayDays: document.getElementById('displayDays'),
+      displayWinRate: document.getElementById('displayWinRate'),
+      rankPill: document.getElementById('rankPill'),
+      unlockList: document.getElementById('unlockList'),
+      historyList: document.getElementById('historyList')
+    };
+
+    const defaultData = {
+      playerName: '',
+      currency: 'CAD',
+      totalGold: 0,
+      streak: 0,
+      bestStreak: 0,
+      bestDayGold: 0,
+      totalWins: 0,
+      history: []
+    };
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(defaultData);
+        return { ...structuredClone(defaultData), ...JSON.parse(raw) };
+      } catch {
+        return structuredClone(defaultData);
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    let state = loadData();
+
+    function structuredClone(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+
+    function fmtMoney(value, currency) {
+      try {
+        return new Intl.NumberFormat(undefined, {
+          style: 'currency',
+          currency,
+          maximumFractionDigits: 2
+        }).format(value);
+      } catch {
+        return `${currency} ${Number(value).toFixed(2)}`;
+      }
+    }
+
+    function fmtGold(value) {
+      return Math.round(value).toLocaleString();
+    }
+
+    function todayString() {
+      const d = new Date();
+      const offset = d.getTimezoneOffset();
+      const local = new Date(d.getTime() - offset * 60000);
+      return local.toISOString().slice(0, 10);
+    }
+
+    function getRank(totalGold) {
+      let current = ranks[0];
+      for (const rank of ranks) {
+        if (totalGold >= rank.min) current = rank;
+      }
+      return current.title;
+    }
+
+    function victoryRate() {
+      if (!state.history.length) return 0;
+      return Math.round((state.totalWins / state.history.length) * 100);
+    }
+
+    function renderHeader() {
+      const rank = getRank(state.totalGold);
+      els.displayName.textContent = state.playerName || 'Unnamed';
+      els.displayRank.textContent = rank;
+      els.rankPill.textContent = rank;
+      els.displayGold.textContent = fmtGold(state.totalGold);
+      els.displayStreak.textContent = String(state.streak);
+      els.displayBestDay.textContent = fmtGold(state.bestDayGold);
+      els.displayBestStreak.textContent = String(state.bestStreak);
+      els.displayDays.textContent = String(state.history.length);
+      els.displayWinRate.textContent = `${victoryRate()}%`;
+    }
+
+    function renderUnlocks() {
+      els.unlockList.innerHTML = '';
+      unlocks.forEach(item => {
+        const unlocked = state.totalGold >= item.gold;
+        const div = document.createElement('div');
+        div.className = `unlock ${unlocked ? '' : 'locked'}`.trim();
+        div.innerHTML = `
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <div style="font-size:1.45rem; line-height:1;">${item.icon}</div>
+            <div>
+              <div class="unlockTitle">${item.title}</div>
+              <div class="unlockDesc">${item.desc}</div>
+            </div>
+          </div>
+          <div class="unlockCost">${unlocked ? 'Unlocked' : `${item.gold} gold`}</div>
+        `;
+        els.unlockList.appendChild(div);
+      });
+    }
+
+    function renderHistory() {
+      els.historyList.innerHTML = '';
+      if (!state.history.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.textContent = 'No campaign log yet. End your first day and start building the kingdom.';
+        els.historyList.appendChild(empty);
+        return;
+      }
+
+      [...state.history].reverse().forEach(entry => {
+        const diff = Number((entry.budget - entry.spent).toFixed(2));
+        const resultClass = diff > 0 ? 'good' : diff < 0 ? 'bad' : 'warn';
+        const resultText = diff > 0
+          ? `+${fmtGold(entry.gold)} gold`
+          : diff < 0
+            ? `Overspent ${fmtMoney(Math.abs(diff), entry.currency)}`
+            : 'Exact budget';
+
+        const div = document.createElement('div');
+        div.className = 'historyItem';
+        div.innerHTML = `
+          <div class="historyTop">
+            <span>${entry.date}</span>
+            <span class="${resultClass}">${resultText}</span>
+          </div>
+          <div class="historyMeta">Budget: ${fmtMoney(entry.budget, entry.currency)} • Spent: ${fmtMoney(entry.spent, entry.currency)}</div>
+          ${entry.note ? `<div class="historyNote">${escapeHtml(entry.note)}</div>` : ''}
+        `;
+        els.historyList.appendChild(div);
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function renderAll() {
+      els.playerName.value = state.playerName;
+      els.currency.value = state.currency;
+      if (!els.date.value) els.date.value = todayString();
+      renderHeader();
+      renderUnlocks();
+      renderHistory();
+    }
+
+    function setResult(message, tone = 'neutral') {
+      let color = 'var(--text)';
+      if (tone === 'good') color = 'var(--good)';
+      if (tone === 'warn') color = 'var(--warn)';
+      if (tone === 'bad') color = 'var(--bad)';
+      if (tone === 'gold') color = 'var(--gold)';
+      els.resultBox.style.color = color;
+      els.resultBox.textContent = message;
+    }
+
+    function buildResultMessage({ diff, goldEarned, budget, spent, currency, streak, rankBefore, rankAfter }) {
+      if (diff > 0) {
+        const lines = [];
+        lines.push(`Victory. You stayed under budget and earned ${goldEarned} gold.`);
+        lines.push(`Saved: ${fmtMoney(diff, currency)} from a ${fmtMoney(budget, currency)} limit.`);
+        if (streak > 1) lines.push(`Current streak: ${streak}. Discipline is becoming policy.`);
+        if (rankAfter !== rankBefore) lines.push(`Rank up: ${rankBefore} → ${rankAfter}. Try not to embarrass the crown.`);
+        if (diff >= budget * 0.5) lines.push('Brutal efficiency. That was a raid-level save.');
+        else if (diff >= budget * 0.2) lines.push('Solid work. The treasury approves. Barely emotional, but approving.');
+        else lines.push('Clean save. Not legendary, but respectable.');
+        return { text: lines.join('\n'), tone: 'gold' };
+      }
+
+      if (diff === 0) {
+        return {
+          text: `Exact budget hit. No gold earned, no shame suffered.\nSpent exactly ${fmtMoney(spent, currency)}.\nA strangely surgical performance.` ,
+          tone: 'warn'
+        };
+      }
+
+      const over = Math.abs(diff);
+      return {
+        text: `Overspend. The streak is broken.\nYou went over by ${fmtMoney(over, currency)} on a ${fmtMoney(budget, currency)} budget.\nThe kingdom remains operational, but morale has questions.`,
+        tone: 'bad'
+      };
+    }
+
+    function endDay() {
+      const playerName = els.playerName.value.trim();
+      const currency = els.currency.value;
+      const date = els.date.value || todayString();
+      const budget = Number(els.budget.value);
+      const spent = Number(els.spent.value);
+      const note = els.note.value.trim();
+
+      if (!playerName) {
+        setResult('Name your ruler first. Even a budget kingdom deserves leadership.', 'warn');
+        return;
+      }
+      if (!Number.isFinite(budget) || budget < 0) {
+        setResult('Enter a valid daily budget.', 'warn');
+        return;
+      }
+      if (!Number.isFinite(spent) || spent < 0) {
+        setResult('Enter a valid spent amount.', 'warn');
+        return;
+      }
+
+      const existingIndex = state.history.findIndex(entry => entry.date === date);
+      const rankBefore = getRank(state.totalGold);
+
+      if (existingIndex !== -1) {
+        setResult('That date already exists in your campaign log. Delete/reset later or use another date for now.', 'warn');
+        return;
+      }
+
+      state.playerName = playerName;
+      state.currency = currency;
+
+      const diff = Number((budget - spent).toFixed(2));
+      const goldEarned = diff > 0 ? Math.round(diff) : 0;
+
+      if (diff > 0) {
+        state.totalGold += goldEarned;
+        state.streak += 1;
+        state.totalWins += 1;
+        if (goldEarned > state.bestDayGold) state.bestDayGold = goldEarned;
+        if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+      } else if (diff === 0) {
+        state.streak += 1;
+        if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+      } else {
+        state.streak = 0;
+      }
+
+      state.history.push({
+        date,
+        budget,
+        spent,
+        currency,
+        gold: goldEarned,
+        note
+      });
+
+      saveData();
+      const rankAfter = getRank(state.totalGold);
+      const result = buildResultMessage({ diff, goldEarned, budget, spent, currency, streak: state.streak, rankBefore, rankAfter });
+      setResult(result.text, result.tone);
+      renderAll();
+
+      els.spent.value = '';
+      els.note.value = '';
+      els.date.value = todayString();
+    }
+
+    function loadDemo() {
+      state = {
+        playerName: 'King Coinward',
+        currency: 'MXN',
+        totalGold: 281,
+        streak: 4,
+        bestStreak: 4,
+        bestDayGold: 74,
+        totalWins: 5,
+        history: [
+          { date: '2026-03-12', budget: 100, spent: 82, currency: 'MXN', gold: 18, note: 'Small save. Acceptable.' },
+          { date: '2026-03-13', budget: 100, spent: 55, currency: 'MXN', gold: 45, note: 'Cooked at home. Treasury smiled.' },
+          { date: '2026-03-14', budget: 100, spent: 26, currency: 'MXN', gold: 74, note: 'Legendary restraint.' },
+          { date: '2026-03-15', budget: 100, spent: 91, currency: 'MXN', gold: 9, note: 'Not glorious, but still a win.' },
+          { date: '2026-03-16', budget: 100, spent: 0, currency: 'MXN', gold: 100, note: 'The villagers are suspiciously impressed.' },
+          { date: '2026-03-17', budget: 100, spent: 65, currency: 'MXN', gold: 35, note: 'Clean close. Good control.' }
+        ]
+      };
+      saveData();
+      setResult('Demo kingdom loaded. Observe what financial discipline can do when left unsupervised.', 'gold');
+      renderAll();
+    }
+
+    function resetKingdom() {
+      const ok = window.confirm('Reset the entire kingdom? This deletes your ruler, gold, history, and progress.');
+      if (!ok) return;
+      state = structuredClone(defaultData);
+      localStorage.removeItem(STORAGE_KEY);
+      els.budget.value = '';
+      els.spent.value = '';
+      els.note.value = '';
+      els.date.value = todayString();
+      setResult('Kingdom reset. Back to peasantry. Character-building, really.', 'warn');
+      renderAll();
+    }
+
+    els.saveDayBtn.addEventListener('click', endDay);
+    els.demoBtn.addEventListener('click', loadDemo);
+    els.resetBtn.addEventListener('click', resetKingdom);
+
+    els.playerName.addEventListener('change', () => {
+      state.playerName = els.playerName.value.trim();
+      saveData();
+      renderHeader();
+    });
+
+    els.currency.addEventListener('change', () => {
+      state.currency = els.currency.value;
+      saveData();
+      renderAll();
+    });
+
+    if (!els.date.value) els.date.value = todayString();
+    renderAll();
+  </script>
+</body>
+</html>
