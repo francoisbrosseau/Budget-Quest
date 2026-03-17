@@ -35,120 +35,58 @@
       overflow-x:hidden;
     }
 
-    .coins{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      overflow:hidden;
-      z-index:0;
-    }
+    .coins{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
     .coin{
-      position:absolute;
-      width:14px;
-      height:14px;
-      border-radius:50%;
+      position:absolute;width:14px;height:14px;border-radius:50%;
       background:radial-gradient(circle at 30% 30%, #fff7bf, var(--gold));
-      box-shadow:0 0 14px rgba(247,200,74,.35);
-      opacity:.18;
-      animation:floatCoin linear infinite;
+      box-shadow:0 0 14px rgba(247,200,74,.35);opacity:.18;animation:floatCoin linear infinite;
     }
-    @keyframes floatCoin{
-      from{transform:translateY(110vh) rotate(0deg)}
-      to{transform:translateY(-15vh) rotate(360deg)}
-    }
+    @keyframes floatCoin{from{transform:translateY(110vh) rotate(0deg)}to{transform:translateY(-15vh) rotate(360deg)}}
 
-    .wrap{
-      position:relative;
-      z-index:1;
-      width:min(1240px, calc(100% - 28px));
-      margin:22px auto 42px;
-    }
+    .wrap{position:relative;z-index:1;width:min(1300px, calc(100% - 28px));margin:22px auto 42px}
+    .hero{display:grid;grid-template-columns:1.08fr .92fr;gap:20px;align-items:stretch;margin-bottom:20px}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter: blur(10px)}
 
-    .hero{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:20px;
-      align-items:stretch;
-      margin-bottom:20px;
-    }
-
-    .panel{
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      backdrop-filter: blur(10px);
-    }
-
-    .banner{
-      padding:26px 28px;
-      position:relative;
-      overflow:hidden;
-      min-height:270px;
-    }
+    .banner{padding:26px 28px;position:relative;overflow:hidden;min-height:280px}
     .banner::before{
-      content:"";
-      position:absolute;
-      inset:auto -120px -90px auto;
-      width:260px;
-      height:260px;
-      background:radial-gradient(circle, rgba(247,200,74,.22), transparent 70%);
-      filter:blur(10px);
+      content:"";position:absolute;inset:auto -120px -90px auto;width:260px;height:260px;
+      background:radial-gradient(circle, rgba(247,200,74,.22), transparent 70%);filter:blur(10px)
     }
-    .titleRow{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      flex-wrap:wrap;
-    }
+    .titleRow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
     .crest{
-      width:68px;
-      height:68px;
-      border-radius:18px;
-      display:grid;
-      place-items:center;
-      font-size:34px;
-      background:linear-gradient(180deg, #4d2d7e, #27173f);
-      border:1px solid #ffffff24;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
-      animation:wiggle 4.5s ease-in-out infinite;
+      width:68px;height:68px;border-radius:18px;display:grid;place-items:center;font-size:34px;
+      background:linear-gradient(180deg, #4d2d7e, #27173f);border:1px solid #ffffff24;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.16);animation:wiggle 4.5s ease-in-out infinite;
     }
     @keyframes wiggle{0%,100%{transform:rotate(0deg)}50%{transform:rotate(2deg)}}
     h1{margin:0;font-size:clamp(2rem, 4vw, 3.5rem);line-height:.95;letter-spacing:-.04em}
-    .subtitle{margin:10px 0 0;color:var(--muted);font-size:1.02rem;max-width:760px;line-height:1.6}
+    .subtitle{margin:10px 0 0;color:var(--muted);font-size:1.02rem;max-width:780px;line-height:1.6}
 
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(4, minmax(0,1fr));
-      gap:12px;
-      margin-top:18px;
-    }
+    .stats{display:grid;grid-template-columns:repeat(4, minmax(0,1fr));gap:12px;margin-top:18px}
     .stat{padding:14px 14px 12px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
     .stat .label{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-    .stat .value{font-size:1.45rem;font-weight:800;margin-top:6px}
+    .stat .value{font-size:1.35rem;font-weight:800;margin-top:6px}
 
-    .rulerPanel{padding:18px;display:grid;grid-template-rows:auto 1fr auto;gap:12px;overflow:hidden;min-height:270px}
+    .rulerPanel{padding:18px;display:grid;grid-template-rows:auto 1fr auto auto;gap:12px;overflow:hidden;min-height:330px}
     .rulerTop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
     .tag{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--muted);font-size:.92rem;font-weight:700}
     .rankGlow{color:var(--gold-2)}
-
     .rulerStage{
-      position:relative;
-      border-radius:22px;
-      min-height:280px;
-      background:
-        radial-gradient(circle at 50% 24%, rgba(255,255,255,.09), transparent 30%),
-        linear-gradient(180deg, rgba(126,200,255,.08), rgba(165,140,255,.1));
-      border:1px solid rgba(255,255,255,.09);
-      overflow:hidden;
+      position:relative;border-radius:22px;min-height:320px;
+      background:radial-gradient(circle at 50% 24%, rgba(255,255,255,.09), transparent 30%),linear-gradient(180deg, rgba(126,200,255,.08), rgba(165,140,255,.1));
+      border:1px solid rgba(255,255,255,.09);overflow:hidden;
     }
     .rulerStage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:74px;background:linear-gradient(180deg, transparent, rgba(0,0,0,.23))}
     .stageGround{position:absolute;left:0;right:0;bottom:0;height:78px;background:linear-gradient(180deg, #254c2a, #1b2f1f);border-top:1px solid rgba(255,255,255,.06)}
-
     .rulerNameBox{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:.98rem;color:var(--muted)}
     .rulerNameStrong{color:var(--text);font-weight:800}
 
-    .mainGrid{display:grid;grid-template-columns:1.12fr .88fr;gap:20px}
+    .xpWrap{display:grid;gap:7px}
+    .xpMeta{display:flex;justify-content:space-between;gap:10px;align-items:center;color:var(--muted);font-size:.9rem;font-weight:700}
+    .xpBar{height:16px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+    .xpFill{height:100%;width:0%;background:linear-gradient(90deg, #8dd7ff, #f7c84a);border-radius:999px;transition:width .35s ease}
+
+    .mainGrid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
     .leftColumn,.rightColumn{display:grid;gap:20px}
     .section{padding:20px}
     .section h2{margin:0 0 14px;font-size:1.15rem;letter-spacing:-.02em}
@@ -158,10 +96,7 @@
     .field.full{grid-column:1/-1}
     label{font-size:.9rem;color:var(--muted);font-weight:700}
     input, select, button{font:inherit}
-    input, select{
-      width:100%;padding:13px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.1);
-      background:rgba(10,12,25,.8);color:var(--text);outline:none;
-    }
+    input, select{width:100%;padding:13px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:rgba(10,12,25,.8);color:var(--text);outline:none}
     input:focus, select:focus{border-color:rgba(247,200,74,.55); box-shadow:0 0 0 3px rgba(247,200,74,.12)}
 
     .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
@@ -171,57 +106,52 @@
     .secondary{color:var(--text);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
 
     .logBox{margin-top:16px;padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);min-height:90px;color:var(--muted);line-height:1.55;white-space:pre-line}
-    .good{color:var(--green);font-weight:800} .bad{color:var(--red);font-weight:800} .goldText{color:var(--gold);font-weight:800}
+    .good{color:var(--green);font-weight:800}.bad{color:var(--red);font-weight:800}.goldText{color:var(--gold);font-weight:800}
 
-    .buildingGrid{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:12px}
-    .building{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:8px}
-    .buildingTop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-    .buildingName{font-weight:800}.buildingMeta{font-size:.9rem;color:var(--muted)}.cost{font-size:.88rem;color:var(--gold-2);font-weight:700}
+    .subGrid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .buildingGrid,.cosmeticGrid{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:12px}
+    .building,.cosmeticCard{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:8px}
+    .buildingTop,.cosmeticTop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .buildingName,.cosmeticName{font-weight:800}.buildingMeta,.cosmeticMeta{font-size:.9rem;color:var(--muted)}.cost{font-size:.88rem;color:var(--gold-2);font-weight:700}
     .buyBtn{padding:10px 12px;border-radius:14px;font-size:.95rem}.buyBtn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .ownedBadge{display:inline-flex;align-items:center;justify-content:center;padding:4px 8px;border-radius:999px;background:rgba(128,224,155,.14);color:var(--green);font-size:.78rem;font-weight:800;border:1px solid rgba(128,224,155,.2)}
 
-    .village{
-      margin-top:14px;min-height:330px;border-radius:22px;
-      background:
-        linear-gradient(180deg, rgba(126,200,255,.12), rgba(255,255,255,.03)),
-        linear-gradient(180deg, #417fd0 0%, #7edcff 42%, #93d673 42%, #5ea25a 100%);
-      border:1px solid rgba(255,255,255,.09);position:relative;overflow:hidden;padding:12px;
-    }
+    .village{margin-top:14px;min-height:350px;border-radius:22px;background:linear-gradient(180deg, rgba(126,200,255,.12), rgba(255,255,255,.03)),linear-gradient(180deg, #417fd0 0%, #7edcff 42%, #93d673 42%, #5ea25a 100%);border:1px solid rgba(255,255,255,.09);position:relative;overflow:hidden;padding:12px}
     .cloud{position:absolute;width:84px;height:34px;border-radius:999px;background:rgba(255,255,255,.8);filter:blur(1px);opacity:.65;animation:cloudDrift linear infinite}
     .cloud::before,.cloud::after{content:"";position:absolute;background:inherit;border-radius:50%}
-    .cloud::before{width:36px;height:36px;left:10px;top:-12px}
-    .cloud::after{width:44px;height:44px;right:10px;top:-18px}
+    .cloud::before{width:36px;height:36px;left:10px;top:-12px}.cloud::after{width:44px;height:44px;right:10px;top:-18px}
     @keyframes cloudDrift{from{transform:translateX(-130px)}to{transform:translateX(calc(100vw + 200px))}}
-
     .terrain{position:absolute;left:0;right:0;bottom:0;height:64px;background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.14))}
-    .villageStage{position:absolute;left:18px;right:18px;bottom:24px;height:215px}
+    .villageStage{position:absolute;left:18px;right:18px;bottom:24px;height:235px}
     .villageItem{position:absolute;display:flex;align-items:flex-end;justify-content:center;filter:drop-shadow(0 8px 8px rgba(0,0,0,.2));animation:bob 3.2s ease-in-out infinite}
     .villageItem:nth-child(2n){animation-duration:3.7s}.villageItem:nth-child(3n){animation-duration:4.2s}
     @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
-    .historyList{display:grid;gap:10px;max-height:560px;overflow:auto;padding-right:2px}
-    .historyItem{background:#0e1621;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:5px}
-    .historyTop{display:flex;justify-content:space-between;gap:10px;font-weight:800}
-    .historyMeta,.historyNote{color:var(--muted);font-size:.92rem}
+    .historyList{display:grid;gap:10px;max-height:380px;overflow:auto;padding-right:2px}
+    .historyItem,.rankCard{background:#0e1621;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:5px}
+    .historyTop,.rankTop{display:flex;justify-content:space-between;gap:10px;font-weight:800}
+    .historyMeta,.historyNote,.rankMeta{color:var(--muted);font-size:.92rem}
     .empty{color:var(--muted);background:#0e1621;border:1px dashed rgba(255,255,255,.16);border-radius:14px;padding:16px}
+    .rankList{display:grid;gap:10px;max-height:530px;overflow:auto;padding-right:2px}
+    .activeRank{border-color:rgba(247,200,74,.35);box-shadow:0 0 0 1px rgba(247,200,74,.18) inset}
 
     .pillRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
     .pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:.88rem;color:var(--muted)}
     .tiny{font-size:.84rem;color:var(--muted)}
 
-    @media (max-width: 1080px){
-      .hero,.mainGrid{grid-template-columns:1fr}
+    @media (max-width: 1120px){
+      .hero,.mainGrid,.subGrid{grid-template-columns:1fr}
       .stats{grid-template-columns:repeat(2, minmax(0,1fr))}
     }
-    @media (max-width: 640px){
-      .wrap{width:min(100% - 16px, 1240px); margin:12px auto 28px}
+    @media (max-width: 700px){
+      .wrap{width:min(100% - 16px, 1300px);margin:12px auto 28px}
       .banner,.section,.rulerPanel{padding:16px}
-      .formGrid,.buildingGrid{grid-template-columns:1fr}
+      .formGrid,.buildingGrid,.cosmeticGrid{grid-template-columns:1fr}
       .stats{grid-template-columns:1fr 1fr}
       .titleRow{align-items:flex-start}
       .crest{width:58px;height:58px;font-size:28px}
-      .stat .value{font-size:1.2rem}
-      .village{min-height:280px}
-      .villageStage{height:175px}
+      .stat .value{font-size:1.15rem}
+      .village{min-height:300px}.villageStage{height:185px}
     }
   </style>
 </head>
@@ -235,34 +165,22 @@
           <div class="crest">🏰</div>
           <div>
             <h1>Budget Quest</h1>
-            <p class="subtitle">Turn saving money into a kingdom-building adventure. Every <strong>10</strong> saved gives <strong>1 gold</strong>. You can now choose a <strong>male or female ruler</strong>, climb through <strong>10 full ranks</strong>, and grow a bigger living settlement over time.</p>
+            <p class="subtitle">Turn saving money into a kingdom-building RPG. Every <strong>10</strong> saved gives <strong>1 gold</strong>. Your ruler now has <strong>cosmetics</strong>, each rank gives more <strong>population capacity</strong>, and rank progression now grants <strong>daily passive income</strong> too.</p>
           </div>
         </div>
 
         <div class="stats">
-          <div class="stat">
-            <div class="label">Treasury</div>
-            <div class="value"><span id="goldDisplay">0</span> Gold</div>
-          </div>
-          <div class="stat">
-            <div class="label">Daily Streak</div>
-            <div class="value"><span id="streakDisplay">0</span> Days</div>
-          </div>
-          <div class="stat">
-            <div class="label">Royal Rank</div>
-            <div class="value" id="rankDisplay">Peasant</div>
-          </div>
-          <div class="stat">
-            <div class="label">Passive Income</div>
-            <div class="value"><span id="incomeDisplay">0</span> / day</div>
-          </div>
+          <div class="stat"><div class="label">Treasury</div><div class="value"><span id="goldDisplay">0</span> Gold</div></div>
+          <div class="stat"><div class="label">Daily Streak</div><div class="value"><span id="streakDisplay">0</span> Days</div></div>
+          <div class="stat"><div class="label">Royal Rank</div><div class="value" id="rankDisplay">Peasant</div></div>
+          <div class="stat"><div class="label">Passive Income</div><div class="value"><span id="incomeDisplay">0</span> / day</div></div>
         </div>
 
         <div class="pillRow">
-          <div class="pill">⚥ Choose male or female ruler</div>
-          <div class="pill">👑 10 evolving ranks</div>
-          <div class="pill">🏘 Bigger village expansion</div>
-          <div class="pill">💰 Higher building costs</div>
+          <div class="pill">⚥ Male or female ruler</div>
+          <div class="pill">🎖 10 ranks + XP bar</div>
+          <div class="pill">🗡 Expensive cosmetics</div>
+          <div class="pill">👥 Rank-based population caps</div>
         </div>
       </section>
 
@@ -281,6 +199,14 @@
           <div>Your ruler: <span class="rulerNameStrong" id="rulerNameDisplay">No name yet</span></div>
           <div class="tiny" id="rulerFlavor">A broke but stubborn soul with a dream of ruling through self-control.</div>
         </div>
+
+        <div class="xpWrap">
+          <div class="xpMeta">
+            <span id="xpLeftLabel">Rank progress</span>
+            <span id="xpRightLabel">0 / 18 gold</span>
+          </div>
+          <div class="xpBar"><div class="xpFill" id="xpFill"></div></div>
+        </div>
       </aside>
     </div>
 
@@ -288,7 +214,14 @@
       <div class="leftColumn">
         <section class="panel section">
           <h2>Kingdom Expansion</h2>
-          <div class="buildingGrid" id="buildingGrid"></div>
+          <div class="subGrid">
+            <div>
+              <div class="buildingGrid" id="buildingGrid"></div>
+            </div>
+            <div>
+              <div class="cosmeticGrid" id="cosmeticGrid"></div>
+            </div>
+          </div>
           <div class="village" id="village">
             <div class="cloud" style="top:18px; left:-100px; animation-duration:32s;"></div>
             <div class="cloud" style="top:56px; left:-180px; animation-duration:42s; opacity:.55; transform:scale(.85)"></div>
@@ -296,7 +229,7 @@
             <div class="villageStage" id="villageStage"></div>
             <div class="terrain"></div>
           </div>
-          <div class="tiny" style="margin-top:12px;">Your land now starts with a tiny outpost feel and slowly grows into a real settlement.</div>
+          <div class="tiny" style="margin-top:12px;">Population capacity rises with rank. Build your economy, then pour gold into cosmetics and prestige.</div>
         </section>
       </div>
 
@@ -345,6 +278,11 @@
         </section>
 
         <section class="panel section">
+          <h2>Rank Guide</h2>
+          <div class="rankList" id="rankList"></div>
+        </section>
+
+        <section class="panel section">
           <h2>Campaign Log</h2>
           <div class="historyList" id="historyList"></div>
         </section>
@@ -353,32 +291,41 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'budgetQuest_v3';
+    const STORAGE_KEY = 'budgetQuest_v4';
 
     const buildingDefs = [
-      { id: 'camp', name: 'Campfire Outpost', emoji: '🔥', baseCost: 18, income: 1 },
-      { id: 'hut', name: 'Wood Hut', emoji: '🛖', baseCost: 34, income: 2 },
-      { id: 'tavern', name: 'Tiny Tavern', emoji: '🍺', baseCost: 68, income: 4 },
-      { id: 'farm', name: 'Farm Plot', emoji: '🌾', baseCost: 110, income: 6 },
-      { id: 'mill', name: 'Wind Mill', emoji: '🌬️', baseCost: 165, income: 9 },
-      { id: 'forge', name: 'Forge', emoji: '⚒️', baseCost: 235, income: 13 },
-      { id: 'barracks', name: 'Barracks', emoji: '🛡️', baseCost: 330, income: 18 },
-      { id: 'tower', name: 'Watch Tower', emoji: '🗼', baseCost: 455, income: 25 },
-      { id: 'keep', name: 'Stone Keep', emoji: '🏯', baseCost: 620, income: 33 },
-      { id: 'castle', name: 'Royal Castle', emoji: '🏰', baseCost: 850, income: 45 }
+      { id: 'peasant_hut', name: 'Peasant Hut', emoji: '🛖', type: 'peasant', baseCost: 34, income: 2 },
+      { id: 'farm', name: 'Farm Plot', emoji: '🌾', type: 'farmer', baseCost: 110, income: 6 },
+      { id: 'tavern', name: 'Tiny Tavern', emoji: '🍺', type: 'special', baseCost: 78, income: 4 },
+      { id: 'mill', name: 'Wind Mill', emoji: '🌬️', type: 'special', baseCost: 165, income: 9 },
+      { id: 'forge', name: 'Forge', emoji: '⚒️', type: 'special', baseCost: 235, income: 13 },
+      { id: 'barracks', name: 'Barracks', emoji: '🛡️', type: 'special', baseCost: 330, income: 18 },
+      { id: 'tower', name: 'Watch Tower', emoji: '🗼', type: 'special', baseCost: 455, income: 25 },
+      { id: 'keep', name: 'Stone Keep', emoji: '🏯', type: 'special', baseCost: 620, income: 33 },
+      { id: 'castle', name: 'Royal Castle', emoji: '🏰', type: 'special', baseCost: 850, income: 45 }
+    ];
+
+    const cosmetics = [
+      { id:'dagger', name:'Jeweled Dagger', emoji:'🗡️', cost:160, slot:'weapon', ranks:['Villager','Squire','Knight','Baron','Count','Duke','Archduke','King','Supreme Emperor'] },
+      { id:'axe', name:'War Axe', emoji:'🪓', cost:250, slot:'weapon', ranks:['Squire','Knight','Baron','Count','Duke','Archduke','King','Supreme Emperor'] },
+      { id:'sword', name:'Royal Sword', emoji:'⚔️', cost:420, slot:'weapon', ranks:['Knight','Baron','Count','Duke','Archduke','King','Supreme Emperor'] },
+      { id:'staff', name:'Arcane Staff', emoji:'🪄', cost:520, slot:'weapon', ranks:['Count','Duke','Archduke','King','Supreme Emperor'] },
+      { id:'big_crown', name:'Grand Crown', emoji:'👑', cost:700, slot:'head', ranks:['Duke','Archduke','King','Supreme Emperor'] },
+      { id:'throne', name:'Golden Throne', emoji:'🪑', cost:980, slot:'back', ranks:['King','Supreme Emperor'] },
+      { id:'royal_orb', name:'Imperial Orb', emoji:'🔮', cost:760, slot:'offhand', ranks:['Archduke','King','Supreme Emperor'] }
     ];
 
     const ranks = [
-      { name:'Peasant', minGold:0, flavor:'A broke but stubborn soul with a dream of ruling through self-control.' },
-      { name:'Villager', minGold:18, flavor:'You look less lost and more like a person with a plan.' },
-      { name:'Squire', minGold:50, flavor:'You have discipline, clean boots, and a tiny sense of destiny.' },
-      { name:'Knight', minGold:100, flavor:'You now save with steel in your spine and purpose in your walk.' },
-      { name:'Baron', minGold:180, flavor:'A little authority enters the room before you do.' },
-      { name:'Count', minGold:290, flavor:'Your treasury starts to feel serious and so does your wardrobe.' },
-      { name:'Duke', minGold:430, flavor:'Your kingdom has substance now. Even your mistakes sound expensive.' },
-      { name:'Archduke', minGold:620, flavor:'You radiate planning, status, and terrifying budget calm.' },
-      { name:'King', minGold:880, flavor:'You no longer merely save. You command a realm.' },
-      { name:'Supreme Emperor', minGold:1200, flavor:'Your rule is absolute. Wasteful spending bows before you.' }
+      { name:'Peasant', minGold:0, next:18, popCap:5, rankIncome:0, flavor:'A broke but stubborn soul with a dream of ruling through self-control.' },
+      { name:'Villager', minGold:18, next:50, popCap:7, rankIncome:2, flavor:'You look less lost and more like a person with a plan.' },
+      { name:'Squire', minGold:50, next:100, popCap:9, rankIncome:4, flavor:'You have discipline, clean boots, and a tiny sense of destiny.' },
+      { name:'Knight', minGold:100, next:180, popCap:11, rankIncome:6, flavor:'You now save with steel in your spine and purpose in your walk.' },
+      { name:'Baron', minGold:180, next:290, popCap:13, rankIncome:8, flavor:'A little authority enters the room before you do.' },
+      { name:'Count', minGold:290, next:430, popCap:15, rankIncome:11, flavor:'Your treasury starts to feel serious and so does your wardrobe.' },
+      { name:'Duke', minGold:430, next:620, popCap:17, rankIncome:14, flavor:'Your kingdom has substance now. Even your mistakes sound expensive.' },
+      { name:'Archduke', minGold:620, next:880, popCap:20, rankIncome:18, flavor:'You radiate planning, status, and terrifying budget calm.' },
+      { name:'King', minGold:880, next:1200, popCap:24, rankIncome:23, flavor:'You no longer merely save. You command a realm.' },
+      { name:'Supreme Emperor', minGold:1200, next:null, popCap:30, rankIncome:30, flavor:'Your rule is absolute. Wasteful spending bows before you.' }
     ];
 
     const state = loadState();
@@ -392,6 +339,9 @@
       rulerNameDisplay: document.getElementById('rulerNameDisplay'),
       rulerFlavor: document.getElementById('rulerFlavor'),
       rulerSvgHolder: document.getElementById('rulerSvgHolder'),
+      xpFill: document.getElementById('xpFill'),
+      xpLeftLabel: document.getElementById('xpLeftLabel'),
+      xpRightLabel: document.getElementById('xpRightLabel'),
       currency: document.getElementById('currency'),
       budget: document.getElementById('budget'),
       spent: document.getElementById('spent'),
@@ -399,8 +349,10 @@
       gender: document.getElementById('gender'),
       logBox: document.getElementById('logBox'),
       buildingGrid: document.getElementById('buildingGrid'),
+      cosmeticGrid: document.getElementById('cosmeticGrid'),
       villageStage: document.getElementById('villageStage'),
       historyList: document.getElementById('historyList'),
+      rankList: document.getElementById('rankList'),
       logDayBtn: document.getElementById('logDayBtn'),
       saveProfileBtn: document.getElementById('saveProfileBtn'),
       collectIncomeBtn: document.getElementById('collectIncomeBtn'),
@@ -418,21 +370,9 @@
       els.saveProfileBtn.addEventListener('click', saveProfile);
       els.collectIncomeBtn.addEventListener('click', collectIncome);
       els.resetBtn.addEventListener('click', resetGame);
-      els.rulerName.addEventListener('input', () => {
-        state.rulerName = els.rulerName.value.trim();
-        renderRuler();
-        persist();
-      });
-      els.gender.addEventListener('change', () => {
-        state.gender = els.gender.value;
-        renderRuler();
-        persist();
-      });
-      els.currency.addEventListener('change', () => {
-        state.currency = els.currency.value;
-        persist();
-        renderAll();
-      });
+      els.rulerName.addEventListener('input', () => { state.rulerName = els.rulerName.value.trim(); renderRuler(); persist(); });
+      els.gender.addEventListener('change', () => { state.gender = els.gender.value; renderRuler(); persist(); });
+      els.currency.addEventListener('change', () => { state.currency = els.currency.value; persist(); renderAll(); });
     }
 
     function defaultState(){
@@ -445,6 +385,8 @@
         lastLogDate: '',
         lastIncomeDate: '',
         history: [],
+        ownedCosmetics: [],
+        equippedCosmetics: {},
         buildings: Object.fromEntries(buildingDefs.map(b => [b.id, 0]))
       };
     }
@@ -458,16 +400,16 @@
           ...defaultState(),
           ...parsed,
           buildings: { ...defaultState().buildings, ...(parsed.buildings || {}) },
-          history: Array.isArray(parsed.history) ? parsed.history : []
+          history: Array.isArray(parsed.history) ? parsed.history : [],
+          ownedCosmetics: Array.isArray(parsed.ownedCosmetics) ? parsed.ownedCosmetics : [],
+          equippedCosmetics: parsed.equippedCosmetics && typeof parsed.equippedCosmetics === 'object' ? parsed.equippedCosmetics : {}
         };
       }catch{
         return defaultState();
       }
     }
 
-    function persist(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
+    function persist(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
     function syncInputs(){
       els.currency.value = state.currency;
@@ -475,16 +417,37 @@
       els.rulerName.value = state.rulerName || '';
     }
 
-    function getPassiveIncome(){
-      return buildingDefs.reduce((sum, b) => sum + ((state.buildings[b.id] || 0) * b.income), 0);
-    }
-
     function getRank(){
       let current = ranks[0];
-      for(const rank of ranks){
-        if(state.gold >= rank.minGold) current = rank;
-      }
+      for(const rank of ranks){ if(state.gold >= rank.minGold) current = rank; }
       return current;
+    }
+
+    function getNextRank(){
+      const current = getRank();
+      return ranks.find(r => r.minGold > current.minGold) || null;
+    }
+
+    function getRankIncome(){ return getRank().rankIncome; }
+
+    function getPassiveIncome(){
+      const buildingIncome = buildingDefs.reduce((sum, b) => sum + ((state.buildings[b.id] || 0) * b.income), 0);
+      return buildingIncome + getRankIncome();
+    }
+
+    function getTypeCount(type){
+      return buildingDefs.filter(b => b.type === type).reduce((sum, b) => sum + (state.buildings[b.id] || 0), 0);
+    }
+
+    function getPopCap(){ return getRank().popCap; }
+
+    function canBuyBuilding(building){
+      const cap = getPopCap();
+      if(building.type === 'peasant' && getTypeCount('peasant') >= cap) return { ok:false, reason:`Peasant cap reached for ${getRank().name} (${cap}).` };
+      if(building.type === 'farmer' && getTypeCount('farmer') >= cap) return { ok:false, reason:`Farmer cap reached for ${getRank().name} (${cap}).` };
+      const cost = getBuildingCost(building);
+      if(state.gold < cost) return { ok:false, reason:`Need ${cost} gold.` };
+      return { ok:true, reason:'' };
     }
 
     function getBuildingCost(building){
@@ -492,29 +455,26 @@
       return Math.round(building.baseCost * Math.pow(1.5, owned));
     }
 
+    function isCosmeticUnlocked(cosmetic){ return cosmetic.ranks.includes(getRank().name); }
+    function isCosmeticOwned(id){ return state.ownedCosmetics.includes(id); }
+    function isCosmeticEquipped(id){ return Object.values(state.equippedCosmetics).includes(id); }
+
     function saveProfile(){
       state.rulerName = els.rulerName.value.trim();
       state.currency = els.currency.value;
       state.gender = els.gender.value;
       persist();
       renderAll();
-      flashLog(`Profile saved. ${escapeHtml(state.rulerName || 'Unnamed Ruler')} now rules as a ${state.gender}.`);
+      flashLog(`Profile saved. ${state.rulerName || 'Unnamed Ruler'} now rules as a ${state.gender}.`);
     }
 
     function logDay(){
       const budget = Number(els.budget.value);
       const spent = Number(els.spent.value);
-
-      if(!Number.isFinite(budget) || !Number.isFinite(spent) || budget < 0 || spent < 0){
-        flashLog('Enter a valid budget and spending amount first.');
-        return;
-      }
+      if(!Number.isFinite(budget) || !Number.isFinite(spent) || budget < 0 || spent < 0){ flashLog('Enter a valid budget and spending amount first.'); return; }
 
       const today = new Date().toISOString().slice(0,10);
-      if(state.lastLogDate === today){
-        flashLog('You already logged today. Come back tomorrow for the next battle.');
-        return;
-      }
+      if(state.lastLogDate === today){ flashLog('You already logged today. Come back tomorrow for the next battle.'); return; }
 
       const saved = Math.max(0, budget - spent);
       const overspent = Math.max(0, spent - budget);
@@ -531,16 +491,7 @@
       const totalEarned = earnedGold + streakBonus;
       state.gold += totalEarned;
       state.lastLogDate = today;
-      state.history.push({
-        date: today,
-        budget,
-        spent,
-        saved,
-        overspent,
-        earnedGold: totalEarned,
-        passiveGold: 0,
-        currency: state.currency
-      });
+      state.history.push({ date: today, budget, spent, saved, overspent, earnedGold: totalEarned, passiveGold: 0, currency: state.currency });
       persist();
       renderAll();
 
@@ -557,58 +508,57 @@
 
     function collectIncome(){
       const income = getPassiveIncome();
-      if(income <= 0){
-        flashLog('You need buildings first before collecting passive income.');
-        return;
-      }
-
+      if(income <= 0){ flashLog('You need rank income or buildings before collecting passive income.'); return; }
       const today = new Date().toISOString().slice(0,10);
-      if(state.lastIncomeDate === today){
-        flashLog('Passive income already collected today.');
-        return;
-      }
+      if(state.lastIncomeDate === today){ flashLog('Passive income already collected today.'); return; }
 
       state.gold += income;
       state.lastIncomeDate = today;
-      state.history.push({
-        date: today + ' · income',
-        budget: 0,
-        spent: 0,
-        saved: 0,
-        overspent: 0,
-        earnedGold: income,
-        passiveGold: income,
-        currency: state.currency
-      });
+      state.history.push({ date: today + ' · income', budget: 0, spent: 0, saved: 0, overspent: 0, earnedGold: income, passiveGold: income, currency: state.currency });
       persist();
       renderAll();
-      flashLog(`Your kingdom produced ${income} gold in passive income today.`);
+      flashLog(`Your kingdom produced ${income} gold today (${getRankIncome()} from rank, ${income - getRankIncome()} from buildings).`);
     }
 
     function buyBuilding(id){
       const building = buildingDefs.find(b => b.id === id);
       if(!building) return;
-
+      const check = canBuyBuilding(building);
+      if(!check.ok){ flashLog(`${building.name}: ${check.reason}`); return; }
       const cost = getBuildingCost(building);
-      if(state.gold < cost){
-        flashLog(`Not enough gold for ${building.name}. You need ${cost} gold.`);
-        return;
-      }
-
       state.gold -= cost;
       state.buildings[id] = (state.buildings[id] || 0) + 1;
-      persist();
-      renderAll();
+      persist(); renderAll();
       flashLog(`You bought ${building.name} for ${cost} gold. The settlement expands.`);
     }
 
+    function buyOrEquipCosmetic(id){
+      const cosmetic = cosmetics.find(c => c.id === id);
+      if(!cosmetic) return;
+      if(!isCosmeticUnlocked(cosmetic)){ flashLog(`${cosmetic.name} unlocks later. Reach ${cosmetic.ranks[0]}.`); return; }
+
+      if(!isCosmeticOwned(id)){
+        if(state.gold < cosmetic.cost){ flashLog(`Not enough gold for ${cosmetic.name}. You need ${cosmetic.cost} gold.`); return; }
+        state.gold -= cosmetic.cost;
+        state.ownedCosmetics.push(id);
+      }
+
+      if(state.equippedCosmetics[cosmetic.slot] === id){
+        delete state.equippedCosmetics[cosmetic.slot];
+        flashLog(`${cosmetic.name} unequipped.`);
+      } else {
+        state.equippedCosmetics[cosmetic.slot] = id;
+        flashLog(`${cosmetic.name} equipped.`);
+      }
+
+      persist(); renderAll();
+    }
+
     function resetGame(){
-      const yes = confirm('Reset the entire kingdom? This clears your gold, streak, buildings, and ruler progress.');
+      const yes = confirm('Reset the entire kingdom? This clears your gold, streak, buildings, cosmetics, and ruler progress.');
       if(!yes) return;
       Object.assign(state, defaultState());
-      syncInputs();
-      persist();
-      renderAll();
+      syncInputs(); persist(); renderAll();
       flashLog('Kingdom reset. A new adventure begins.');
     }
 
@@ -620,16 +570,36 @@
       els.incomeDisplay.textContent = getPassiveIncome();
       els.rankGlow.textContent = `✦ ${rank.name}`;
       renderRuler();
+      renderXP();
       renderBuildings();
+      renderCosmetics();
       renderVillage();
       renderHistory();
+      renderRankGuide();
+    }
+
+    function renderXP(){
+      const current = getRank();
+      const next = getNextRank();
+      if(!next){
+        els.xpFill.style.width = '100%';
+        els.xpLeftLabel.textContent = 'Maximum rank reached';
+        els.xpRightLabel.textContent = `${Math.floor(state.gold)} gold total`;
+        return;
+      }
+      const currentMin = current.minGold;
+      const nextMin = next.minGold;
+      const progress = Math.max(0, Math.min(1, (state.gold - currentMin) / (nextMin - currentMin)));
+      els.xpFill.style.width = `${progress * 100}%`;
+      els.xpLeftLabel.textContent = `${current.name} → ${next.name}`;
+      els.xpRightLabel.textContent = `${Math.floor(state.gold - currentMin)} / ${nextMin - currentMin} gold`;
     }
 
     function renderRuler(){
       const rank = getRank();
       els.rulerNameDisplay.textContent = state.rulerName || 'No name yet';
       els.rulerFlavor.textContent = rank.flavor;
-      els.rulerSvgHolder.innerHTML = createRulerSVG(rank.name, state.gender || 'male');
+      els.rulerSvgHolder.innerHTML = createRulerSVG(rank.name, state.gender || 'male', state.equippedCosmetics);
     }
 
     function renderBuildings(){
@@ -637,8 +607,13 @@
       for(const building of buildingDefs){
         const owned = state.buildings[building.id] || 0;
         const cost = getBuildingCost(building);
+        const check = canBuyBuilding(building);
         const card = document.createElement('div');
         card.className = 'building';
+        let extra = '';
+        if(building.type === 'peasant') extra = `Peasant cap: ${getTypeCount('peasant')} / ${getPopCap()}`;
+        if(building.type === 'farmer') extra = `Farmer cap: ${getTypeCount('farmer')} / ${getPopCap()}`;
+        if(building.type === 'special') extra = 'No rank cap';
         card.innerHTML = `
           <div class="buildingTop">
             <div>
@@ -647,68 +622,101 @@
             </div>
             <div class="cost">Cost: ${cost}</div>
           </div>
-          <button class="primary buyBtn" ${state.gold < cost ? 'disabled' : ''}>Buy</button>
+          <div class="buildingMeta">${extra}</div>
+          <button class="primary buyBtn" ${!check.ok ? 'disabled' : ''}>Buy</button>
         `;
         card.querySelector('button').addEventListener('click', () => buyBuilding(building.id));
         els.buildingGrid.appendChild(card);
       }
     }
 
+    function renderCosmetics(){
+      els.cosmeticGrid.innerHTML = '';
+      for(const cosmetic of cosmetics){
+        const owned = isCosmeticOwned(cosmetic.id);
+        const unlocked = isCosmeticUnlocked(cosmetic);
+        const equipped = isCosmeticEquipped(cosmetic.id);
+        const nextRankName = cosmetic.ranks[0];
+        const card = document.createElement('div');
+        card.className = 'cosmeticCard';
+        card.innerHTML = `
+          <div class="cosmeticTop">
+            <div>
+              <div class="cosmeticName">${cosmetic.emoji} ${cosmetic.name}</div>
+              <div class="cosmeticMeta">${owned ? 'Owned prestige cosmetic' : `Cost: ${cosmetic.cost} gold`}</div>
+            </div>
+            ${owned ? `<div class="ownedBadge">${equipped ? 'Equipped' : 'Owned'}</div>` : `<div class="cost">${cosmetic.cost}</div>`}
+          </div>
+          <div class="cosmeticMeta">${unlocked ? `Available for ${getRank().name}` : `Unlocks at ${nextRankName}`}</div>
+          <button class="secondary buyBtn" ${!unlocked && !owned ? 'disabled' : ''}>${owned ? (equipped ? 'Unequip' : 'Equip') : 'Buy'}</button>
+        `;
+        card.querySelector('button').addEventListener('click', () => buyOrEquipCosmetic(cosmetic.id));
+        els.cosmeticGrid.appendChild(card);
+      }
+    }
+
     function renderVillage(){
       const pieces = [];
       const placements = [
-        {x:2,y:144,s:40},{x:54,y:136,s:52},{x:118,y:132,s:56},{x:188,y:128,s:64},{x:262,y:124,s:68},
-        {x:338,y:128,s:60},{x:410,y:134,s:52},{x:468,y:142,s:44},{x:86,y:84,s:46},{x:160,y:72,s:54},
-        {x:238,y:68,s:58},{x:320,y:78,s:52},{x:394,y:88,s:48},{x:452,y:98,s:42}
+        {x:6,y:146,s:46},{x:64,y:140,s:54},{x:130,y:132,s:58},{x:204,y:126,s:68},{x:288,y:124,s:74},{x:370,y:130,s:64},{x:450,y:142,s:54},{x:524,y:148,s:46},
+        {x:94,y:88,s:52},{x:178,y:74,s:60},{x:266,y:70,s:64},{x:356,y:78,s:58},{x:444,y:92,s:48}
       ];
       let idx = 0;
       for(const b of buildingDefs){
         const count = state.buildings[b.id] || 0;
-        for(let i=0; i<count; i++){
+        for(let i = 0; i < count; i++){
           const p = placements[idx % placements.length];
           pieces.push(`<div class="villageItem" title="${b.name}" style="left:${p.x}px; bottom:${p.y}px; font-size:${p.s}px">${b.emoji}</div>`);
           idx++;
         }
       }
       if(idx === 0){
-        pieces.push('<div class="villageItem" style="left:22px; bottom:136px; font-size:42px">🔥</div>');
-        pieces.push('<div class="villageItem" style="left:86px; bottom:126px; font-size:54px">🛖</div>');
-        pieces.push('<div class="villageItem" style="left:164px; bottom:118px; font-size:44px">🌲</div>');
-        pieces.push('<div class="villageItem" style="left:234px; bottom:120px; font-size:40px">🌲</div>');
+        pieces.push('<div class="villageItem" style="left:24px; bottom:140px; font-size:42px">🔥</div>');
+        pieces.push('<div class="villageItem" style="left:90px; bottom:128px; font-size:58px">🛖</div>');
+        pieces.push('<div class="villageItem" style="left:174px; bottom:120px; font-size:44px">🌲</div>');
+        pieces.push('<div class="villageItem" style="left:248px; bottom:122px; font-size:40px">🌲</div>');
       }
       els.villageStage.innerHTML = pieces.join('');
     }
 
     function renderHistory(){
       els.historyList.innerHTML = '';
-      if(!state.history.length){
-        els.historyList.innerHTML = '<div class="empty">No campaign log yet. Log your first day and start the rise.</div>';
-        return;
-      }
+      if(!state.history.length){ els.historyList.innerHTML = '<div class="empty">No campaign log yet. Log your first day and start the rise.</div>'; return; }
       [...state.history].reverse().forEach(entry => {
         const diff = (entry.saved || 0) - (entry.overspent || 0);
-        const resultClass = diff > 0 || entry.passiveGold ? 'good' : diff < 0 ? 'bad' : 'goldText';
+        const resultClass = entry.passiveGold ? 'goldText' : diff > 0 ? 'good' : diff < 0 ? 'bad' : 'goldText';
         const resultText = entry.passiveGold ? `+${entry.passiveGold} passive gold` : diff > 0 ? `+${entry.earnedGold} gold` : diff < 0 ? `Overspent ${entry.currency}${entry.overspent.toFixed(2)}` : 'Exact budget';
         const div = document.createElement('div');
         div.className = 'historyItem';
         div.innerHTML = `
-          <div class="historyTop">
-            <span>${entry.date}</span>
-            <span class="${resultClass}">${resultText}</span>
-          </div>
+          <div class="historyTop"><span>${entry.date}</span><span class="${resultClass}">${resultText}</span></div>
           <div class="historyMeta">Budget: ${entry.currency}${Number(entry.budget).toFixed(2)} • Spent: ${entry.currency}${Number(entry.spent).toFixed(2)}</div>
-          <div class="historyNote">${entry.saved > 0 ? `Saved ${entry.currency}${entry.saved.toFixed(2)}` : entry.overspent > 0 ? `Went over by ${entry.currency}${entry.overspent.toFixed(2)}` : 'Held the exact line.'}</div>
+          <div class="historyNote">${entry.saved > 0 ? `Saved ${entry.currency}${entry.saved.toFixed(2)}` : entry.overspent > 0 ? `Went over by ${entry.currency}${entry.overspent.toFixed(2)}` : entry.passiveGold ? 'Income collected from status and settlement.' : 'Held the exact line.'}</div>
         `;
         els.historyList.appendChild(div);
       });
     }
 
+    function renderRankGuide(){
+      const currentName = getRank().name;
+      els.rankList.innerHTML = '';
+      ranks.forEach(rank => {
+        const div = document.createElement('div');
+        div.className = `rankCard ${rank.name === currentName ? 'activeRank' : ''}`;
+        div.innerHTML = `
+          <div class="rankTop"><span>${rank.name}</span><span>${rank.minGold}+ gold</span></div>
+          <div class="rankMeta">Population cap: ${rank.popCap} peasants / ${rank.popCap} farmers</div>
+          <div class="rankMeta">Rank passive income: ${rank.rankIncome} gold/day</div>
+          <div class="rankMeta">${rank.next ? `Next promotion at ${rank.next} gold` : 'Final rank reached here'}</div>
+        `;
+        els.rankList.appendChild(div);
+      });
+    }
+
     function seedCoins(){
-      const holder = document.getElementById('coins');
-      holder.innerHTML = '';
-      for(let i=0; i<26; i++){
-        const c = document.createElement('div');
-        c.className = 'coin';
+      const holder = document.getElementById('coins'); holder.innerHTML = '';
+      for(let i=0;i<26;i++){
+        const c = document.createElement('div'); c.className = 'coin';
         c.style.left = Math.random() * 100 + 'vw';
         c.style.animationDuration = 14 + Math.random() * 24 + 's';
         c.style.animationDelay = -(Math.random() * 20) + 's';
@@ -717,56 +725,43 @@
       }
     }
 
-    function flashLog(text){
-      els.logBox.textContent = text;
-    }
+    function flashLog(text){ els.logBox.textContent = text; }
 
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
-    }
-
-    function createRulerSVG(rankName, gender){
+    function createRulerSVG(rankName, gender, equipped){
       const cfg = getRulerConfig(rankName, gender);
+      const weapon = equipped.weapon ? cosmetics.find(c => c.id === equipped.weapon) : null;
+      const head = equipped.head ? cosmetics.find(c => c.id === equipped.head) : null;
+      const back = equipped.back ? cosmetics.find(c => c.id === equipped.back) : null;
+      const offhand = equipped.offhand ? cosmetics.find(c => c.id === equipped.offhand) : null;
+
       const hairBack = gender === 'female'
         ? `<path d="M132 98 Q136 154 145 210 Q161 230 180 232 Q199 230 215 210 Q224 154 228 98 Q218 60 180 58 Q142 60 132 98Z" fill="${cfg.hair}" opacity=".95"/>`
         : `<path d="M138 92 Q144 70 180 68 Q216 70 222 92 Q220 118 214 138 Q197 152 180 152 Q163 152 146 138 Q140 118 138 92Z" fill="${cfg.hair}" opacity=".9"/>`;
-      const headShape = gender === 'female'
-        ? `<ellipse cx="180" cy="104" rx="38" ry="42" fill="${cfg.skin}"/>`
-        : `<circle cx="180" cy="102" r="40" fill="${cfg.skin}"/>`;
-      const outfit = gender === 'female'
-        ? `<path d="M145 146 Q180 126 215 146 L232 242 Q209 270 180 270 Q151 270 128 242 Z" fill="url(#shirtGrad)"/>`
-        : `<rect x="138" y="140" width="84" height="96" rx="24" fill="url(#shirtGrad)"/>`;
-      const shoulders = gender === 'female'
-        ? `<circle cx="142" cy="158" r="13" fill="${cfg.shoulder}"/><circle cx="218" cy="158" r="13" fill="${cfg.shoulder}"/>`
-        : `<circle cx="140" cy="158" r="14" fill="${cfg.shoulder}"/><circle cx="220" cy="158" r="14" fill="${cfg.shoulder}"/>`;
+      const headShape = gender === 'female' ? `<ellipse cx="180" cy="104" rx="38" ry="42" fill="${cfg.skin}"/>` : `<circle cx="180" cy="102" r="40" fill="${cfg.skin}"/>`;
+      const outfit = gender === 'female' ? `<path d="M145 146 Q180 126 215 146 L232 242 Q209 270 180 270 Q151 270 128 242 Z" fill="url(#shirtGrad)"/>` : `<rect x="138" y="140" width="84" height="96" rx="24" fill="url(#shirtGrad)"/>`;
+      const shoulders = gender === 'female' ? `<circle cx="142" cy="158" r="13" fill="${cfg.shoulder}"/><circle cx="218" cy="158" r="13" fill="${cfg.shoulder}"/>` : `<circle cx="140" cy="158" r="14" fill="${cfg.shoulder}"/><circle cx="220" cy="158" r="14" fill="${cfg.shoulder}"/>`;
       const hairFront = gender === 'female'
         ? `<path d="M142 88 Q150 52 180 50 Q210 52 218 88 Q214 78 204 74 Q201 100 194 122 Q186 132 180 132 Q174 132 166 122 Q159 100 156 74 Q146 78 142 88Z" fill="${cfg.hair}"/><path d="M152 112 Q142 136 146 162" stroke="${cfg.hair}" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M208 112 Q218 136 214 162" stroke="${cfg.hair}" stroke-width="10" stroke-linecap="round" fill="none"/>`
         : `<path d="M136 94 Q146 50 180 48 Q214 50 224 94 Q210 76 180 74 Q150 76 136 94Z" fill="${cfg.hair}"/><path d="M145 82 Q128 92 134 114" stroke="${cfg.hair}" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M215 82 Q232 92 226 114" stroke="${cfg.hair}" stroke-width="12" stroke-linecap="round" fill="none"/>`;
-      const crown = cfg.crown ? `<g transform="translate(0 -2)"><path d="M148 58 L162 36 L180 56 L198 34 L212 58 Z" fill="${cfg.crown}" stroke="#7f5d17" stroke-width="3"/><circle cx="180" cy="48" r="5" fill="#7ec8ff"/></g>` : '';
-      const staff = cfg.staff ? `<g transform="translate(236 132)"><rect x="0" y="0" width="8" height="112" rx="4" fill="#8b5f35"/><circle cx="4" cy="-6" r="13" fill="#ffd86f" stroke="#7f5d17" stroke-width="3"/></g>` : '';
+
+      const baseCrown = cfg.crown ? `<g transform="translate(0 -2)"><path d="M148 58 L162 36 L180 56 L198 34 L212 58 Z" fill="${cfg.crown}" stroke="#7f5d17" stroke-width="3"/><circle cx="180" cy="48" r="5" fill="#7ec8ff"/></g>` : '';
+      const bigCrown = head && head.id === 'big_crown' ? `<g transform="translate(0 -10)"><path d="M142 62 L156 28 L180 52 L204 24 L218 62 Z" fill="#ffd95a" stroke="#7f5d17" stroke-width="4"/><circle cx="180" cy="44" r="6" fill="#7ec8ff"/><circle cx="157" cy="53" r="4" fill="#ff808f"/><circle cx="203" cy="51" r="4" fill="#80e09b"/></g>` : '';
+      const throne = back && back.id === 'throne' ? `<g opacity=".95"><rect x="112" y="168" width="136" height="96" rx="14" fill="#7f5d17"/><rect x="132" y="132" width="96" height="66" rx="14" fill="#b7862f"/><rect x="121" y="140" width="10" height="52" rx="5" fill="#ffd86f"/><rect x="229" y="140" width="10" height="52" rx="5" fill="#ffd86f"/></g>` : '';
+      const baseStaff = cfg.staff ? `<g transform="translate(236 132)"><rect x="0" y="0" width="8" height="112" rx="4" fill="#8b5f35"/><circle cx="4" cy="-6" r="13" fill="#ffd86f" stroke="#7f5d17" stroke-width="3"/></g>` : '';
+      const weaponSvg = getWeaponSVG(weapon?.id);
+      const offhandSvg = offhand && offhand.id === 'royal_orb' ? `<g transform="translate(116 182)"><circle cx="0" cy="0" r="14" fill="#8dd7ff" opacity=".35"/><circle cx="0" cy="0" r="9" fill="#7ec8ff" stroke="#dff6ff" stroke-width="2"/></g>` : '';
       const medal = cfg.medal ? `<circle cx="180" cy="178" r="10" fill="#ffd86f" stroke="#7f5d17" stroke-width="3"/>` : '';
+
       return `
       <svg viewBox="0 0 360 320" width="100%" height="100%" aria-label="Cartoon ruler">
         <defs>
-          <linearGradient id="capeGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="${cfg.cape}"/>
-            <stop offset="100%" stop-color="${cfg.capeDark}"/>
-          </linearGradient>
-          <linearGradient id="shirtGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="${cfg.shirt}"/>
-            <stop offset="100%" stop-color="${cfg.shirtDark}"/>
-          </linearGradient>
-          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="160%">
-            <feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="rgba(0,0,0,.28)"/>
-          </filter>
+          <linearGradient id="capeGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${cfg.cape}"/><stop offset="100%" stop-color="${cfg.capeDark}"/></linearGradient>
+          <linearGradient id="shirtGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${cfg.shirt}"/><stop offset="100%" stop-color="${cfg.shirtDark}"/></linearGradient>
+          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="rgba(0,0,0,.28)"/></filter>
         </defs>
         <g filter="url(#softShadow)" transform="translate(0 4)">
           <ellipse cx="180" cy="278" rx="78" ry="18" fill="rgba(0,0,0,.18)"/>
+          ${throne}
           ${cfg.capeVisible ? `<path d="M106 246 Q128 152 180 140 Q232 152 254 246 Q224 274 180 274 Q136 274 106 246Z" fill="url(#capeGrad)"/>` : ''}
           ${hairBack}
           ${outfit}
@@ -784,11 +779,29 @@
           <path d="M165 122 Q180 132 195 122" stroke="#7a3d35" stroke-width="5" stroke-linecap="round" fill="none"/>
           <ellipse cx="180" cy="118" rx="8" ry="5" fill="rgba(255,120,140,.25)"/>
           ${hairFront}
-          ${crown}
-          ${staff}
+          ${baseCrown}
+          ${bigCrown}
+          ${baseStaff}
+          ${weaponSvg}
+          ${offhandSvg}
           ${medal}
         </g>
       </svg>`;
+    }
+
+    function getWeaponSVG(id){
+      switch(id){
+        case 'dagger':
+          return `<g transform="translate(234 182) rotate(-8)"><rect x="0" y="0" width="7" height="56" rx="3" fill="#8b5f35"/><path d="M3.5 -18 L12 4 L-5 4 Z" fill="#d9e6f2"/><rect x="-7" y="8" width="20" height="5" rx="2" fill="#ffd86f"/></g>`;
+        case 'axe':
+          return `<g transform="translate(236 156)"><rect x="0" y="0" width="8" height="88" rx="4" fill="#8b5f35"/><path d="M8 10 Q34 14 28 40 Q18 46 8 34 Z" fill="#d9e6f2"/></g>`;
+        case 'sword':
+          return `<g transform="translate(236 146)"><rect x="0" y="0" width="8" height="98" rx="4" fill="#8b5f35"/><rect x="1" y="-34" width="6" height="42" rx="3" fill="#e7f2ff"/><rect x="-9" y="6" width="26" height="6" rx="3" fill="#ffd86f"/></g>`;
+        case 'staff':
+          return `<g transform="translate(236 130)"><rect x="0" y="0" width="8" height="114" rx="4" fill="#8b5f35"/><circle cx="4" cy="-8" r="14" fill="#8dd7ff" stroke="#dff6ff" stroke-width="2"/></g>`;
+        default:
+          return '';
+      }
     }
 
     function getRulerConfig(rank, gender){
