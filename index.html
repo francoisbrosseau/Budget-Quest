@@ -5,1398 +5,874 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Budget Quest</title>
   <style>
-    :root {
-      --bg: #0b1015;
-      --bg-soft: #121921;
-      --panel: rgba(15, 22, 31, 0.94);
-      --panel-2: rgba(24, 34, 47, 0.95);
-      --line: rgba(255,255,255,0.08);
-      --line-strong: rgba(255,255,255,0.14);
-      --text: #eef4fb;
-      --muted: #9fb0bf;
-      --gold: #efc15c;
-      --good: #62d79b;
-      --warn: #ffbe5c;
-      --bad: #ff7a7a;
-      --accent: #74a8ff;
-      --shadow: 0 18px 45px rgba(0,0,0,0.35);
-      --radius: 22px;
-      --radius-sm: 16px;
+    :root{
+      --bg1:#201433;
+      --bg2:#0f1020;
+      --panel:#171b31cc;
+      --line:#ffffff18;
+      --text:#f6f0dc;
+      --muted:#c8bfd9;
+      --gold:#f7c84a;
+      --gold-2:#ffea8b;
+      --green:#80e09b;
+      --red:#ff808f;
+      --blue:#7ec8ff;
+      --purple:#a58cff;
+      --shadow:0 18px 40px rgba(0,0,0,.35);
+      --radius:24px;
     }
 
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      min-height: 100%;
-      background:
-        radial-gradient(circle at top, rgba(116,168,255,0.10), transparent 28%),
-        linear-gradient(180deg, #091017 0%, #0b1015 100%);
-      color: var(--text);
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    body { padding: 24px; }
-
-    .app {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: grid;
-      gap: 18px;
-    }
-
-    .panel {
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      backdrop-filter: blur(6px);
-    }
-
-    .hero {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 18px;
-      padding: 26px;
-      overflow: hidden;
-      min-height: 360px;
-      isolation: isolate;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
+      color:var(--text);
+      min-height:100vh;
       background:
-        radial-gradient(circle at 20% 10%, rgba(255,255,255,0.08), transparent 26%),
-        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
-      pointer-events: none;
-      z-index: -1;
+        radial-gradient(circle at top, #3b2068 0%, transparent 28%),
+        radial-gradient(circle at 80% 10%, #1b4d74 0%, transparent 18%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
     }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--gold);
-      font-size: 0.88rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
+    .coins{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:0;
+    }
+    .coin{
+      position:absolute;
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 30%, #fff7bf, var(--gold));
+      box-shadow:0 0 14px rgba(247,200,74,.35);
+      opacity:.18;
+      animation:floatCoin linear infinite;
+    }
+    @keyframes floatCoin{
+      from{transform:translateY(110vh) rotate(0deg)}
+      to{transform:translateY(-15vh) rotate(360deg)}
     }
 
-    .title {
-      margin: 0;
-      font-size: clamp(2.6rem, 7vw, 4.8rem);
-      line-height: 0.94;
-      letter-spacing: -0.055em;
+    .wrap{
+      position:relative;
+      z-index:1;
+      width:min(1220px, calc(100% - 28px));
+      margin:22px auto 42px;
     }
 
-    .subtitle {
-      margin: 14px 0 0;
-      max-width: 62ch;
-      color: var(--muted);
-      line-height: 1.72;
-      font-size: 1.02rem;
+    .hero{
+      display:grid;
+      grid-template-columns:1.2fr .9fr;
+      gap:20px;
+      align-items:stretch;
+      margin-bottom:20px;
     }
 
-    .heroVisual {
-      position: relative;
-      min-height: 300px;
-      border-radius: 22px;
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .banner{
+      padding:26px 28px;
+      position:relative;
+      overflow:hidden;
+      min-height:250px;
+    }
+    .banner::before{
+      content:"";
+      position:absolute;
+      inset:auto -120px -90px auto;
+      width:260px;
+      height:260px;
+      background:radial-gradient(circle, rgba(247,200,74,.22), transparent 70%);
+      filter:blur(10px);
+    }
+    .titleRow{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    .crest{
+      width:68px;
+      height:68px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      font-size:34px;
+      background:linear-gradient(180deg, #4d2d7e, #27173f);
+      border:1px solid #ffffff24;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
+      animation:wiggle 4.5s ease-in-out infinite;
+    }
+    @keyframes wiggle{
+      0%,100%{transform:rotate(0deg)}
+      50%{transform:rotate(2deg)}
+    }
+    h1{
+      margin:0;
+      font-size:clamp(2rem, 4vw, 3.5rem);
+      line-height:.95;
+      letter-spacing:-.04em;
+    }
+    .subtitle{
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:1.02rem;
+      max-width:760px;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:12px;
+      margin-top:18px;
+    }
+    .stat{
+      padding:14px 14px 12px;
+      border-radius:18px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .stat .label{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .stat .value{font-size:1.45rem;font-weight:800;margin-top:6px}
+
+    .rulerPanel{
+      padding:18px;
+      display:grid;
+      grid-template-rows:auto 1fr auto;
+      gap:12px;
+      overflow:hidden;
+      min-height:250px;
+    }
+    .rulerTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+      font-size:.92rem;
+      font-weight:700;
+    }
+    .rankGlow{color:var(--gold-2)}
+
+    .rulerStage{
+      position:relative;
+      border-radius:22px;
+      min-height:260px;
       background:
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
-        radial-gradient(circle at 70% 20%, rgba(116,168,255,0.16), transparent 22%),
-        linear-gradient(180deg, #15212c 0%, #111821 100%);
-      border: 1px solid var(--line);
-      overflow: hidden;
+        radial-gradient(circle at 50% 24%, rgba(255,255,255,.09), transparent 30%),
+        linear-gradient(180deg, rgba(126,200,255,.08), rgba(165,140,255,.1));
+      border:1px solid rgba(255,255,255,.09);
+      overflow:hidden;
+    }
+    .rulerStage::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:74px;
+      background:linear-gradient(180deg, transparent, rgba(0,0,0,.23));
+    }
+    .stageGround{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:78px;
+      background:linear-gradient(180deg, #254c2a, #1b2f1f);
+      border-top:1px solid rgba(255,255,255,.06);
     }
 
-    .skyGlow,
-    .cloud,
-    .coin,
-    .banner {
-      position: absolute;
-      pointer-events: none;
+    .rulerNameBox{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      font-size:.98rem;
+      color:var(--muted);
+    }
+    .rulerNameStrong{color:var(--text);font-weight:800}
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+    .section{padding:20px}
+    .section h2{
+      margin:0 0 14px;
+      font-size:1.15rem;
+      letter-spacing:-.02em;
     }
 
-    .skyGlow {
-      inset: 0;
+    .formGrid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+    .field{display:flex;flex-direction:column;gap:7px}
+    label{font-size:.9rem;color:var(--muted);font-weight:700}
+    input, select, button{
+      font:inherit;
+    }
+    input, select{
+      width:100%;
+      padding:13px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(10,12,25,.8);
+      color:var(--text);
+      outline:none;
+    }
+    input:focus, select:focus{border-color:rgba(247,200,74,.55); box-shadow:0 0 0 3px rgba(247,200,74,.12)}
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    button{
+      border:none;
+      cursor:pointer;
+      padding:13px 18px;
+      border-radius:16px;
+      font-weight:800;
+      transition:.18s transform ease, .18s opacity ease, .18s box-shadow ease;
+    }
+    button:hover{transform:translateY(-1px)}
+    button:active{transform:translateY(1px)}
+    .primary{
+      color:#241500;
+      background:linear-gradient(180deg, #ffe488, #f7c84a);
+      box-shadow:0 10px 24px rgba(247,200,74,.22);
+    }
+    .secondary{
+      color:var(--text);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.1);
+    }
+
+    .logBox{
+      margin-top:16px;
+      padding:14px 16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      min-height:72px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+    .good{color:var(--green);font-weight:800}
+    .bad{color:var(--red);font-weight:800}
+    .goldText{color:var(--gold);font-weight:800}
+
+    .buildingGrid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
+    }
+    .building{
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .buildingTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+    }
+    .buildingName{font-weight:800}
+    .buildingMeta{font-size:.9rem;color:var(--muted)}
+    .cost{font-size:.88rem;color:var(--gold-2);font-weight:700}
+    .buyBtn{padding:10px 12px;border-radius:14px;font-size:.95rem}
+    .buyBtn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+    .village{
+      margin-top:14px;
+      min-height:178px;
+      border-radius:22px;
       background:
-        radial-gradient(circle at 70% 16%, rgba(239,193,92,0.18), transparent 15%),
-        radial-gradient(circle at 78% 26%, rgba(255,255,255,0.08), transparent 10%);
-      animation: pulse 4.2s ease-in-out infinite;
-    }
-
-    .cloud {
-      width: 92px;
-      height: 28px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      filter: blur(1px);
-      animation: drift 20s linear infinite;
-    }
-
-    .cloud::before,
-    .cloud::after {
-      content: "";
-      position: absolute;
-      background: inherit;
-      border-radius: inherit;
-    }
-
-    .cloud::before {
-      width: 36px;
-      height: 36px;
-      left: 12px;
-      top: -12px;
-    }
-
-    .cloud::after {
-      width: 28px;
-      height: 28px;
-      right: 18px;
-      top: -8px;
-    }
-
-    .cloud.c1 { top: 42px; left: -20px; animation-duration: 24s; }
-    .cloud.c2 { top: 82px; left: -70px; transform: scale(0.85); animation-duration: 19s; opacity: 0.7; }
-
-    .castle {
-      position: absolute;
-      left: 50%;
-      bottom: 86px;
-      transform: translateX(-50%);
-      width: 220px;
-      height: 150px;
-      animation: floatCastle 4.6s ease-in-out infinite;
-    }
-
-    .castle .base,
-    .castle .tower,
-    .castle .tower::before,
-    .castle .tower::after,
-    .castle .roof,
-    .castle .gate,
-    .castle .window {
-      position: absolute;
-    }
-
-    .castle .base {
-      left: 36px;
-      bottom: 0;
-      width: 148px;
-      height: 92px;
-      background: linear-gradient(180deg, #8f97a3, #697481);
-      border: 3px solid rgba(0,0,0,0.18);
-      border-bottom-width: 5px;
-      border-radius: 10px 10px 14px 14px;
-    }
-
-    .castle .tower {
-      bottom: 32px;
-      width: 42px;
-      height: 84px;
-      background: linear-gradient(180deg, #a0a9b6, #6d7884);
-      border: 3px solid rgba(0,0,0,0.18);
-      border-radius: 10px 10px 12px 12px;
-    }
-
-    .castle .tower.left { left: 18px; }
-    .castle .tower.right { right: 18px; }
-
-    .castle .roof {
-      width: 0;
-      height: 0;
-      border-left: 24px solid transparent;
-      border-right: 24px solid transparent;
-      border-bottom: 28px solid #c15d5d;
-      top: -24px;
-      left: -3px;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.18));
-    }
-
-    .castle .gate {
-      left: 90px;
-      bottom: 0;
-      width: 40px;
-      height: 48px;
-      background: linear-gradient(180deg, #3f2f24, #2d2118);
-      border-radius: 16px 16px 0 0;
-      border: 3px solid rgba(0,0,0,0.18);
-    }
-
-    .castle .window {
-      width: 10px;
-      height: 16px;
-      background: #f7d479;
-      border-radius: 8px 8px 4px 4px;
-      box-shadow: 0 0 10px rgba(247,212,121,0.25);
-    }
-
-    .castle .w1 { left: 60px; bottom: 44px; }
-    .castle .w2 { right: 60px; bottom: 44px; }
-    .castle .w3 { left: 52px; bottom: 96px; }
-    .castle .w4 { right: 52px; bottom: 96px; }
-
-    .ground {
-      position: absolute;
-      left: -10%;
-      right: -10%;
-      bottom: 0;
-      height: 96px;
-      background:
-        radial-gradient(circle at 18% 30%, rgba(255,255,255,0.04), transparent 8%),
-        radial-gradient(circle at 54% 50%, rgba(255,255,255,0.04), transparent 8%),
-        linear-gradient(180deg, #213847 0%, #13232c 100%);
-      border-top: 1px solid rgba(255,255,255,0.05);
-      border-radius: 50% 50% 0 0;
-      transform: translateY(16px);
-    }
-
-    .banner {
-      left: 50%;
-      top: 88px;
-      width: 24px;
-      height: 76px;
-      transform: translateX(74px);
-    }
-
-    .banner::before {
-      content: "";
-      position: absolute;
-      left: 10px;
-      top: 0;
-      width: 3px;
-      height: 76px;
-      background: #d3d8df;
-    }
-
-    .banner::after {
-      content: "";
-      position: absolute;
-      top: 8px;
-      left: 13px;
-      width: 26px;
-      height: 18px;
-      background: linear-gradient(180deg, #e6c66d, #d9a844);
-      clip-path: polygon(0 0, 100% 0, 100% 70%, 72% 70%, 58% 100%, 43% 70%, 0 70%);
-      animation: wave 2.5s ease-in-out infinite;
-      transform-origin: left center;
-    }
-
-    .coin {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #fff3b8, #efc15c 45%, #c7902f 90%);
-      box-shadow: 0 0 12px rgba(239,193,92,0.22);
-      animation: coinBob 3.2s ease-in-out infinite;
-    }
-
-    .coin:nth-child(1) { top: 54px; right: 46px; animation-delay: 0s; }
-    .coin:nth-child(2) { top: 106px; right: 78px; animation-delay: 0.8s; }
-    .coin:nth-child(3) { top: 72px; right: 112px; animation-delay: 1.3s; }
-
-    .heroCard {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 18px;
-      display: grid;
-      gap: 14px;
-      min-height: 100%;
-    }
-
-    .heroCardTitle {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 1rem;
-    }
-
-    .crest {
-      font-size: 2rem;
-      filter: drop-shadow(0 8px 18px rgba(239,193,92,0.18));
-    }
-
-    .gridStats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .stat {
-      background: var(--panel-2);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .label {
-      color: var(--muted);
-      font-size: 0.86rem;
-      margin-bottom: 8px;
-    }
-
-    .value {
-      font-size: 1.55rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-    }
-
-    .gold { color: var(--gold); }
-    .good { color: var(--good); }
-    .warn { color: var(--warn); }
-    .bad { color: var(--bad); }
-
-    .main {
-      display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: 18px;
-    }
-
-    .section { padding: 20px; }
-
-    .section h2 {
-      margin: 0 0 14px;
-      font-size: 1.1rem;
-      letter-spacing: -0.02em;
-    }
-
-    .inputs {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .field { display: grid; gap: 8px; }
-    .field.full { grid-column: 1 / -1; }
-
-    .field label {
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    input, select {
-      width: 100%;
-      background: #0e1520;
-      color: var(--text);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px 14px;
-      font: inherit;
-      outline: none;
-      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
-    }
-
-    input:focus, select:focus {
-      border-color: rgba(116,168,255,0.65);
-      box-shadow: 0 0 0 4px rgba(116,168,255,0.12);
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    button {
-      border: 0;
-      border-radius: 14px;
-      padding: 12px 16px;
-      font: inherit;
-      font-weight: 800;
-      cursor: pointer;
-      transition: transform 0.16s ease, opacity 0.16s ease, border-color 0.16s ease;
-    }
-
-    button:hover { transform: translateY(-1px); }
-    button:active { transform: translateY(0); }
-
-    .btnPrimary {
-      background: linear-gradient(180deg, #f1c55d, #d7a63c);
-      color: #17120a;
-    }
-
-    .btnSecondary {
-      background: #131b26;
-      color: var(--text);
-      border: 1px solid var(--line);
-    }
-
-    .resultBox {
-      margin-top: 16px;
-      background: #0e1621;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 16px;
-      line-height: 1.65;
-      min-height: 110px;
-      white-space: pre-line;
-    }
-
-    .subtle {
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.65;
-    }
-
-    .villageHeader {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .rankPill {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(239,193,92,0.08);
-      border: 1px solid rgba(239,193,92,0.22);
-      color: var(--gold);
-      font-size: 0.85rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .avatarCard {
-      display: grid;
-      grid-template-columns: 126px 1fr;
-      gap: 14px;
-      margin-bottom: 14px;
-      padding: 14px;
-      border-radius: 18px;
-      background: #0e1621;
-      border: 1px solid var(--line);
-    }
-
-    .avatarWrap {
-      display: grid;
-      place-items: center;
-      min-height: 138px;
-      border-radius: 16px;
-      background:
-        radial-gradient(circle at 50% 20%, rgba(255,255,255,0.10), transparent 25%),
-        linear-gradient(180deg, #16212b 0%, #0d141c 100%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .spark {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(239,193,92,0.65);
-      box-shadow: 0 0 10px rgba(239,193,92,0.3);
-      animation: sparkle 3s ease-in-out infinite;
-    }
-
-    .spark.s1 { top: 18px; left: 20px; animation-delay: 0s; }
-    .spark.s2 { top: 30px; right: 24px; animation-delay: 1.1s; }
-    .spark.s3 { bottom: 22px; left: 28px; animation-delay: 2s; }
-
-    .avatar {
-      position: relative;
-      width: 94px;
-      height: 118px;
-      animation: bob 4s ease-in-out infinite;
-    }
-
-    .avatar .head,
-    .avatar .body,
-    .avatar .cape,
-    .avatar .hat,
-    .avatar .crown,
-    .avatar .belt,
-    .avatar .shoulder,
-    .avatar .gem,
-    .avatar .sword,
-    .avatar .staff {
-      position: absolute;
-    }
-
-    .avatar .head {
-      top: 8px;
-      left: 28px;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: linear-gradient(180deg, #f1cfaa, #d5a67d);
-      z-index: 3;
-      box-shadow: inset 0 -4px 0 rgba(0,0,0,0.08);
-    }
-
-    .avatar .body {
-      left: 24px;
-      top: 40px;
-      width: 46px;
-      height: 52px;
-      border-radius: 14px 14px 10px 10px;
-      z-index: 2;
-    }
-
-    .avatar .cape {
-      left: 18px;
-      top: 40px;
-      width: 58px;
-      height: 56px;
-      border-radius: 16px 16px 12px 12px;
-      z-index: 1;
-      opacity: 0.95;
-    }
-
-    .avatar .belt {
-      left: 28px;
-      top: 70px;
-      width: 38px;
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.35);
-      z-index: 4;
-    }
-
-    .avatar .shoulder {
-      top: 44px;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      z-index: 4;
-    }
-
-    .avatar .shoulder.left { left: 18px; }
-    .avatar .shoulder.right { right: 18px; }
-
-    .avatar .hat,
-    .avatar .crown {
-      z-index: 5;
-    }
-
-    .avatar .sword,
-    .avatar .staff {
-      z-index: 0;
-    }
-
-    .avatarMeta {
-      display: grid;
-      gap: 10px;
-      align-content: center;
-    }
-
-    .avatarTitle {
-      font-size: 1.02rem;
-      font-weight: 800;
-    }
-
-    .avatarDesc {
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.62;
-    }
-
-    .bonusRow {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .villageList {
-      display: grid;
-      gap: 10px;
-    }
-
-    .unlock {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 14px;
-      background: #0e1620;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-    }
-
-    .unlock.locked {
-      opacity: 0.5;
-      filter: grayscale(0.3);
-    }
-
-    .unlockTitle {
-      font-weight: 800;
-      margin-bottom: 3px;
-    }
-
-    .unlockDesc {
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .unlockCost {
-      color: var(--gold);
-      font-weight: 800;
-      white-space: nowrap;
-      text-align: right;
-      font-size: 0.92rem;
-    }
-
-    .twoCol {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .historyList {
-      display: grid;
-      gap: 10px;
-      max-height: 420px;
-      overflow: auto;
-      padding-right: 2px;
-    }
-
-    .historyItem {
-      background: #0e1621;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px 14px;
-      display: grid;
-      gap: 5px;
-    }
-
-    .historyTop {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      font-weight: 800;
-    }
-
-    .historyMeta, .historyNote {
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    .empty {
-      color: var(--muted);
-      background: #0e1621;
-      border: 1px dashed var(--line-strong);
-      border-radius: 14px;
-      padding: 16px;
-    }
-
-    .footerNote {
-      color: var(--muted);
-      font-size: 0.85rem;
-      margin-top: 12px;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.88; }
-      50% { opacity: 1; }
-    }
-
-    @keyframes drift {
-      from { transform: translateX(0); }
-      to { transform: translateX(420px); }
-    }
-
-    @keyframes floatCastle {
-      0%, 100% { transform: translateX(-50%) translateY(0px); }
-      50% { transform: translateX(-50%) translateY(-5px); }
-    }
-
-    @keyframes wave {
-      0%, 100% { transform: skewY(0deg) scaleX(1); }
-      50% { transform: skewY(6deg) scaleX(1.04); }
-    }
-
-    @keyframes coinBob {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-7px) scale(1.04); }
-    }
-
-    @keyframes bob {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-4px); }
-    }
-
-    @keyframes sparkle {
-      0%, 100% { opacity: 0.2; transform: scale(0.75); }
-      50% { opacity: 1; transform: scale(1.15); }
-    }
-
-    @media (max-width: 1040px) {
-      .hero, .main, .twoCol, .inputs, .bonusRow, .avatarCard {
-        grid-template-columns: 1fr;
-      }
-
-      .heroVisual { min-height: 260px; }
-      body { padding: 14px; }
+        linear-gradient(180deg, rgba(126,200,255,.12), rgba(255,255,255,.03)),
+        linear-gradient(180deg, #3d7ed1 0%, #7dd8ff 44%, #87cd70 44%, #4f9652 100%);
+      border:1px solid rgba(255,255,255,.09);
+      position:relative;
+      overflow:hidden;
+      padding:12px;
+    }
+    .cloud{
+      position:absolute;
+      width:84px;height:34px;border-radius:999px;
+      background:rgba(255,255,255,.8);
+      filter:blur(1px);
+      opacity:.65;
+      animation:cloudDrift linear infinite;
+    }
+    .cloud::before,.cloud::after{
+      content:"";position:absolute;background:inherit;border-radius:50%;
+    }
+    .cloud::before{width:36px;height:36px;left:10px;top:-12px}
+    .cloud::after{width:44px;height:44px;right:10px;top:-18px}
+    @keyframes cloudDrift{from{transform:translateX(-130px)}to{transform:translateX(calc(100vw + 160px))}}
+
+    .spriteRow{
+      position:absolute;
+      left:14px; right:14px; bottom:12px;
+      display:flex;
+      align-items:flex-end;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .miniBuilding{
+      display:flex; align-items:flex-end; justify-content:center;
+      filter:drop-shadow(0 6px 6px rgba(0,0,0,.18));
+      animation:bob 3.2s ease-in-out infinite;
+    }
+    .miniBuilding:nth-child(2n){animation-duration:3.7s}
+    .miniBuilding:nth-child(3n){animation-duration:4.3s}
+    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+    .footerNote{
+      color:var(--muted);
+      text-align:center;
+      margin-top:18px;
+      font-size:.92rem;
+    }
+
+    .pillRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .pill{
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      font-size:.88rem;
+      color:var(--muted);
+    }
+
+    .tiny{font-size:.84rem;color:var(--muted)}
+
+    @media (max-width: 980px){
+      .hero, .grid{grid-template-columns:1fr}
+      .stats{grid-template-columns:repeat(2, minmax(0,1fr))}
+    }
+    @media (max-width: 640px){
+      .wrap{width:min(100% - 16px, 1220px); margin:12px auto 28px}
+      .banner,.section,.rulerPanel{padding:16px}
+      .formGrid,.buildingGrid{grid-template-columns:1fr}
+      .stats{grid-template-columns:1fr 1fr}
+      .titleRow{align-items:flex-start}
+      .crest{width:58px;height:58px;font-size:28px}
+      .stat .value{font-size:1.2rem}
     }
   </style>
 </head>
 <body>
-  <div class="app">
-    <section class="panel hero">
-      <div>
-        <div class="eyebrow">⚔ Budget Discipline Simulator</div>
-        <h1 class="title">Budget Quest</h1>
-        <p class="subtitle">
-          Build your kingdom by spending below your own limit. Set your daily budget, report what you actually spent,
-          choose your currency, earn controlled gold at a balanced rate, unlock villagers and structures, and climb from peon to emperor.
-          Overspend if you want. The realm will not stop you. It will simply remember.
-        </p>
-      </div>
+  <div class="coins" id="coins"></div>
 
-      <div class="heroVisual">
-        <div class="skyGlow"></div>
-        <div class="cloud c1"></div>
-        <div class="cloud c2"></div>
-        <div class="coin"></div>
-        <div class="coin"></div>
-        <div class="coin"></div>
-        <div class="banner"></div>
-        <div class="castle">
-          <div class="tower left"><div class="roof"></div></div>
-          <div class="tower right"><div class="roof"></div></div>
-          <div class="base"></div>
-          <div class="gate"></div>
-          <div class="window w1"></div>
-          <div class="window w2"></div>
-          <div class="window w3"></div>
-          <div class="window w4"></div>
-        </div>
-        <div class="ground"></div>
-      </div>
-    </section>
-
-    <section class="main">
-      <div class="panel section">
-        <h2>Log Your Day</h2>
-        <div class="inputs">
-          <div class="field full">
-            <label for="playerName">Ruler Name</label>
-            <input id="playerName" type="text" maxlength="28" placeholder="King Francois / Lord Goldfang / whatever you want" />
+  <div class="wrap">
+    <div class="hero">
+      <section class="panel banner">
+        <div class="titleRow">
+          <div class="crest">🏰</div>
+          <div>
+            <h1>Budget Quest</h1>
+            <p class="subtitle">Turn saving money into a kingdom-building adventure. Every <strong>10</strong> saved in your chosen currency now gives <strong>1 gold</strong>, so the run lasts longer and every upgrade actually feels earned.</p>
           </div>
+        </div>
 
+        <div class="stats">
+          <div class="stat">
+            <div class="label">Treasury</div>
+            <div class="value"><span id="goldDisplay">0</span> Gold</div>
+          </div>
+          <div class="stat">
+            <div class="label">Daily Streak</div>
+            <div class="value"><span id="streakDisplay">0</span> Days</div>
+          </div>
+          <div class="stat">
+            <div class="label">Royal Rank</div>
+            <div class="value" id="rankDisplay">Peasant</div>
+          </div>
+          <div class="stat">
+            <div class="label">Passive Income</div>
+            <div class="value"><span id="incomeDisplay">0</span> / day</div>
+          </div>
+        </div>
+
+        <div class="pillRow">
+          <div class="pill">💰 1 gold per 10 saved</div>
+          <div class="pill">📈 Daily streak rewards</div>
+          <div class="pill">🏠 Buy buildings for passive income</div>
+          <div class="pill">🧙 Evolving cartoon ruler</div>
+        </div>
+      </section>
+
+      <aside class="panel rulerPanel">
+        <div class="rulerTop">
+          <div class="tag">Ruler Evolution</div>
+          <div class="tag rankGlow" id="rankGlow">✦ Peasant</div>
+        </div>
+
+        <div class="rulerStage">
+          <div id="rulerSvgHolder" style="position:absolute; inset:0;"></div>
+          <div class="stageGround"></div>
+        </div>
+
+        <div class="rulerNameBox">
+          <div>Your ruler: <span class="rulerNameStrong" id="rulerNameDisplay">No name yet</span></div>
+          <div class="tiny" id="rulerFlavor">A broke but determined little hero with big budget dreams.</div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="grid">
+      <section class="panel section">
+        <h2>Daily Budget Battle</h2>
+        <div class="formGrid">
+          <div class="field">
+            <label for="rulerName">Ruler name</label>
+            <input id="rulerName" type="text" placeholder="Enter your ruler name" />
+          </div>
           <div class="field">
             <label for="currency">Currency</label>
             <select id="currency">
-              <option value="CAD">Canadian Dollar (CAD)</option>
-              <option value="USD">US Dollar (USD)</option>
-              <option value="MXN">Mexican Peso (MXN)</option>
-              <option value="EUR">Euro (EUR)</option>
+              <option value="$">USD ($)</option>
+              <option value="C$">CAD (C$)</option>
+              <option value="MX$">MXN (MX$)</option>
+              <option value="€">EUR (€)</option>
             </select>
           </div>
-
           <div class="field">
-            <label for="date">Date</label>
-            <input id="date" type="date" />
+            <label for="budget">Daily budget</label>
+            <input id="budget" type="number" min="0" step="0.01" placeholder="Example: 40" />
           </div>
-
           <div class="field">
-            <label for="budget">Daily Budget Limit</label>
-            <input id="budget" type="number" min="0" step="0.01" placeholder="100" />
-          </div>
-
-          <div class="field">
-            <label for="spent">Actual Spent Today</label>
-            <input id="spent" type="number" min="0" step="0.01" placeholder="26" />
-          </div>
-
-          <div class="field full">
-            <label for="note">Field Report</label>
-            <input id="note" type="text" maxlength="120" placeholder="Cooked at home. Stayed disciplined. Didn’t donate my wallet to nonsense." />
+            <label for="spent">Amount spent today</label>
+            <input id="spent" type="number" min="0" step="0.01" placeholder="Example: 31.50" />
           </div>
         </div>
 
         <div class="actions">
-          <button class="btnPrimary" id="saveDayBtn">End Day</button>
-          <button class="btnSecondary" id="demoBtn">Load Demo</button>
-          <button class="btnSecondary" id="resetBtn">Reset Kingdom</button>
+          <button class="primary" id="logDayBtn">Log Today</button>
+          <button class="secondary" id="saveProfileBtn">Save Profile</button>
+          <button class="secondary" id="collectIncomeBtn">Collect Passive Income</button>
+          <button class="secondary" id="resetBtn">Reset Kingdom</button>
         </div>
 
-        <div class="resultBox" id="resultBox">Set your ruler, commit to a budget, and close the day.
-Your savings now convert to gold at a reduced balanced rate, with extra passive income from unlocked villagers and buildings.</div>
-
-        <div class="footerNote">
-          Gold is the reward currency no matter which real-world currency you track in.
+        <div class="logBox" id="logBox">
+          Welcome to your kingdom. Set a budget, log your spending, and grow from broke peasant to glorious ruler.
         </div>
-      </div>
+      </section>
 
-      <div class="panel section">
-        <div class="villageHeader">
-          <h2 style="margin:0;">Kingdom Progress</h2>
-          <div class="rankPill" id="rankPill">Peon</div>
+      <section class="panel section">
+        <h2>Kingdom Expansion</h2>
+        <div class="buildingGrid" id="buildingGrid"></div>
+        <div class="village" id="village">
+          <div class="cloud" style="top:18px; left:-100px; animation-duration:32s;"></div>
+          <div class="cloud" style="top:56px; left:-180px; animation-duration:42s; opacity:.55; transform:scale(.85)"></div>
+          <div class="spriteRow" id="spriteRow"></div>
         </div>
-
-        <div class="avatarCard">
-          <div class="avatarWrap">
-            <div class="spark s1"></div>
-            <div class="spark s2"></div>
-            <div class="spark s3"></div>
-            <div class="avatar" id="avatar"></div>
-          </div>
-          <div class="avatarMeta">
-            <div class="avatarTitle" id="displayName">Unnamed</div>
-            <div class="avatarDesc" id="avatarDesc">A broke but determined soul in tavern rags. The journey begins with basic dignity and limited economic intelligence.</div>
-            <div class="bonusRow">
-              <div class="stat">
-                <div class="label">Rank</div>
-                <div class="value gold" id="displayRank">Peon</div>
-              </div>
-              <div class="stat">
-                <div class="label">Passive Gold / Day</div>
-                <div class="value gold" id="displayPassiveGold">0</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="gridStats" style="margin-bottom: 14px;">
-          <div class="stat">
-            <div class="label">Total Gold</div>
-            <div class="value gold" id="displayGold">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">Current Streak</div>
-            <div class="value good" id="displayStreak">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">Best Save Day</div>
-            <div class="value gold" id="displayBestDay">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">Best Streak</div>
-            <div class="value good" id="displayBestStreak">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">Days Logged</div>
-            <div class="value" id="displayDays">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">Victory Rate</div>
-            <div class="value" id="displayWinRate">0%</div>
-          </div>
-        </div>
-
-        <div class="villageList" id="unlockList"></div>
-      </div>
-    </section>
-
-    <section class="twoCol">
-      <div class="panel section">
-        <h2>Campaign Log</h2>
-        <div class="historyList" id="historyList"></div>
-      </div>
-
-      <div class="panel section">
-        <h2>Rules of the Realm</h2>
-        <div class="subtle">
-          Saved money no longer converts 1:1 into gold. That was way too generous and frankly irresponsible.<br/><br/>
-          New formula: roughly 1 gold per 5 units saved, with a minimum of 1 gold when you finish under budget.<br/><br/>
-          Unlocks are now much more expensive, and some of them generate passive gold every successful day.<br/><br/>
-          Exact budget counts as survival, not glory. Overspending breaks the streak and earns nothing.<br/><br/>
-          Rank upgrades improve your visual character from tavern drifter to imperial ruler.
-        </div>
-      </div>
-    </section>
+        <div class="footerNote">Every building you own gives passive gold every day. Growth is slower now on purpose, so the adventure has room to breathe.</div>
+      </section>
+    </div>
   </div>
 
   <script>
     const STORAGE_KEY = 'budgetQuest_v2';
 
-    const ranks = [
-      {
-        min: 0,
-        title: 'Peon',
-        desc: 'A broke but determined soul in tavern rags. The journey begins with basic dignity and limited economic intelligence.',
-        colors: {
-          body: '#6f7b8b', cape: '#42505e', shoulder: '#5a6877', belt: '#43352a', hat: 'none', crown: 'none', weapon: 'none'
-        }
-      },
-      {
-        min: 40,
-        title: 'Villager',
-        desc: 'A functioning citizen with cleaner sleeves and slightly fewer catastrophic spending decisions.',
-        colors: {
-          body: '#7c8f72', cape: '#556a4b', shoulder: '#738667', belt: '#4b3c2f', hat: 'cap', crown: 'none', weapon: 'none'
-        }
-      },
-      {
-        min: 120,
-        title: 'Steward',
-        desc: 'You now look like someone trusted with keys, ledgers, and maybe a room with a door.',
-        colors: {
-          body: '#6f7ca6', cape: '#48537b', shoulder: '#7d89b5', belt: '#43352a', hat: 'hood', crown: 'none', weapon: 'none'
-        }
-      },
-      {
-        min: 260,
-        title: 'Lord',
-        desc: 'The clothes improve, the posture improves, and the kingdom begins pretending you know what you are doing.',
-        colors: {
-          body: '#8a5c88', cape: '#5b385d', shoulder: '#a67ea3', belt: '#4b2f1f', hat: 'hood', crown: 'none', weapon: 'sword'
-        }
-      },
-      {
-        min: 500,
-        title: 'Baron',
-        desc: 'Layered fabrics, better armor, and the first signs of dangerous confidence.',
-        colors: {
-          body: '#7d3f4a', cape: '#512029', shoulder: '#b17b84', belt: '#37261d', hat: 'mantle', crown: 'none', weapon: 'sword'
-        }
-      },
-      {
-        min: 850,
-        title: 'Warden',
-        desc: 'A hardened authority figure. Discipline is no longer a mood. It is infrastructure.',
-        colors: {
-          body: '#395b74', cape: '#1d3341', shoulder: '#62869d', belt: '#2c231c', hat: 'mantle', crown: 'none', weapon: 'staff'
-        }
-      },
-      {
-        min: 1300,
-        title: 'King',
-        desc: 'Royal trim, heavier cloak, visible status. The peasants now discuss your budgeting in low voices.',
-        colors: {
-          body: '#94552c', cape: '#5c3317', shoulder: '#d3a56c', belt: '#38281d', hat: 'none', crown: 'small', weapon: 'staff'
-        }
-      },
-      {
-        min: 1900,
-        title: 'High King',
-        desc: 'Gold details, noble silhouette, and the terrifying calm of someone who has mastered restraint.',
-        colors: {
-          body: '#8357a8', cape: '#4b2d67', shoulder: '#cfb0f0', belt: '#32251c', hat: 'none', crown: 'royal', weapon: 'staff'
-        }
-      },
-      {
-        min: 2800,
-        title: 'Emperor',
-        desc: 'Full imperial authority. At this stage, overspending feels like a crime against history.',
-        colors: {
-          body: '#c09336', cape: '#6a1f2e', shoulder: '#f1d079', belt: '#3f2b17', hat: 'none', crown: 'imperial', weapon: 'staff'
-        }
-      }
+    const buildingDefs = [
+      { id: 'hut', name: 'Humble Hut', emoji: '🏠', baseCost: 12, income: 1, color: '#d5975d' },
+      { id: 'farm', name: 'Sunny Farm', emoji: '🌾', baseCost: 32, income: 3, color: '#d7b44a' },
+      { id: 'mill', name: 'Wind Mill', emoji: '🌬️', baseCost: 70, income: 6, color: '#ced7e8' },
+      { id: 'forge', name: 'Tiny Forge', emoji: '⚒️', baseCost: 120, income: 10, color: '#ff8d62' },
+      { id: 'barracks', name: 'Barracks', emoji: '🛡️', baseCost: 190, income: 16, color: '#88b3ff' },
+      { id: 'tower', name: 'Watch Tower', emoji: '🗼', baseCost: 280, income: 24, color: '#b9a7ff' },
+      { id: 'castle', name: 'Royal Castle', emoji: '🏰', baseCost: 420, income: 36, color: '#f3d36f' }
     ];
 
-    const unlocks = [
-      { gold: 30, icon: '🧑‍🌾', title: 'Peasant', desc: 'A first worker enters the realm.', passive: 1 },
-      { gold: 75, icon: '🧑‍🌾', title: 'Peasant II', desc: 'More hands. Less excuse-making.', passive: 1 },
-      { gold: 140, icon: '🏠', title: 'Cottage', desc: 'Your people no longer sleep in philosophical poverty.', passive: 0 },
-      { gold: 240, icon: '🌾', title: 'Farm', desc: 'Food supply improves. So does morale.', passive: 2 },
-      { gold: 380, icon: '🪵', title: 'Lumber Mill', desc: 'Production begins. Splinters may occur.', passive: 2 },
-      { gold: 560, icon: '🛠️', title: 'Workshop', desc: 'The village starts creating useful things.', passive: 3 },
-      { gold: 800, icon: '🛡️', title: 'Barracks', desc: 'Discipline develops a spine.', passive: 3 },
-      { gold: 1120, icon: '🏰', title: 'Stone Walls', desc: 'The settlement is now real enough to defend.', passive: 4 },
-      { gold: 1480, icon: '🐎', title: 'Knight Order', desc: 'Mounted prestige. Expensive but convincing.', passive: 5 },
-      { gold: 1950, icon: '⛪', title: 'Grand Hall', desc: 'A proper center of command.', passive: 6 },
-      { gold: 2550, icon: '🏛️', title: 'Royal District', desc: 'Urban growth with attitude.', passive: 8 },
-      { gold: 3300, icon: '👑', title: 'Imperial Capital', desc: 'The kingdom becomes an empire.', passive: 10 }
+    const ranks = [
+      { name: 'Peasant', minGold: 0, flavor: 'A broke but determined little hero with big budget dreams.' },
+      { name: 'Squire', minGold: 20, flavor: 'The belt is tighter, the chin is higher, the future is brighter.' },
+      { name: 'Knight', minGold: 60, flavor: 'You now save with discipline and walk like victory already happened.' },
+      { name: 'Lord', minGold: 130, flavor: 'Your little kingdom finally looks like it pays taxes on time.' },
+      { name: 'Duke', minGold: 240, flavor: 'Your presence screams authority, planning, and premium cape energy.' },
+      { name: 'King', minGold: 420, flavor: 'The treasury is real, the style is glorious, and the people believe.' },
+      { name: 'Emperor', minGold: 700, flavor: 'You did not just save money. You forged a legend.' }
     ];
+
+    const state = loadState();
 
     const els = {
-      playerName: document.getElementById('playerName'),
+      goldDisplay: document.getElementById('goldDisplay'),
+      streakDisplay: document.getElementById('streakDisplay'),
+      rankDisplay: document.getElementById('rankDisplay'),
+      incomeDisplay: document.getElementById('incomeDisplay'),
+      rankGlow: document.getElementById('rankGlow'),
+      rulerNameDisplay: document.getElementById('rulerNameDisplay'),
+      rulerFlavor: document.getElementById('rulerFlavor'),
+      rulerSvgHolder: document.getElementById('rulerSvgHolder'),
       currency: document.getElementById('currency'),
-      date: document.getElementById('date'),
       budget: document.getElementById('budget'),
       spent: document.getElementById('spent'),
-      note: document.getElementById('note'),
-      saveDayBtn: document.getElementById('saveDayBtn'),
-      demoBtn: document.getElementById('demoBtn'),
-      resetBtn: document.getElementById('resetBtn'),
-      resultBox: document.getElementById('resultBox'),
-      displayName: document.getElementById('displayName'),
-      displayRank: document.getElementById('displayRank'),
-      displayGold: document.getElementById('displayGold'),
-      displayStreak: document.getElementById('displayStreak'),
-      displayBestDay: document.getElementById('displayBestDay'),
-      displayBestStreak: document.getElementById('displayBestStreak'),
-      displayDays: document.getElementById('displayDays'),
-      displayWinRate: document.getElementById('displayWinRate'),
-      displayPassiveGold: document.getElementById('displayPassiveGold'),
-      rankPill: document.getElementById('rankPill'),
-      unlockList: document.getElementById('unlockList'),
-      historyList: document.getElementById('historyList'),
-      avatar: document.getElementById('avatar'),
-      avatarDesc: document.getElementById('avatarDesc')
+      rulerName: document.getElementById('rulerName'),
+      logBox: document.getElementById('logBox'),
+      buildingGrid: document.getElementById('buildingGrid'),
+      spriteRow: document.getElementById('spriteRow'),
+      logDayBtn: document.getElementById('logDayBtn'),
+      saveProfileBtn: document.getElementById('saveProfileBtn'),
+      collectIncomeBtn: document.getElementById('collectIncomeBtn'),
+      resetBtn: document.getElementById('resetBtn')
     };
 
-    const defaultData = {
-      playerName: '',
-      currency: 'CAD',
-      totalGold: 0,
-      streak: 0,
-      bestStreak: 0,
-      bestDayGold: 0,
-      totalWins: 0,
-      history: []
-    };
+    bootstrap();
 
-    function clone(obj) {
-      return JSON.parse(JSON.stringify(obj));
+    function bootstrap(){
+      seedCoins();
+      syncInputs();
+      renderAll();
+
+      els.logDayBtn.addEventListener('click', logDay);
+      els.saveProfileBtn.addEventListener('click', saveProfile);
+      els.collectIncomeBtn.addEventListener('click', collectIncome);
+      els.resetBtn.addEventListener('click', resetGame);
+      els.rulerName.addEventListener('input', () => {
+        state.rulerName = els.rulerName.value.trim();
+        renderRuler();
+        persist();
+      });
+      els.currency.addEventListener('change', () => {
+        state.currency = els.currency.value;
+        persist();
+        renderAll();
+      });
     }
 
-    function loadData() {
-      try {
+    function defaultState(){
+      return {
+        gold: 0,
+        streak: 0,
+        currency: '$',
+        rulerName: '',
+        lastLogDate: '',
+        lastIncomeDate: '',
+        buildings: Object.fromEntries(buildingDefs.map(b => [b.id, 0]))
+      };
+    }
+
+    function loadState(){
+      try{
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return clone(defaultData);
-        return { ...clone(defaultData), ...JSON.parse(raw) };
-      } catch {
-        return clone(defaultData);
+        if(!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        return {
+          ...defaultState(),
+          ...parsed,
+          buildings: { ...defaultState().buildings, ...(parsed.buildings || {}) }
+        };
+      }catch{
+        return defaultState();
       }
     }
 
-    function saveData() {
+    function persist(){
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
 
-    let state = loadData();
-
-    function fmtMoney(value, currency) {
-      try {
-        return new Intl.NumberFormat(undefined, {
-          style: 'currency',
-          currency,
-          maximumFractionDigits: 2
-        }).format(value);
-      } catch {
-        return `${currency} ${Number(value).toFixed(2)}`;
-      }
+    function syncInputs(){
+      els.currency.value = state.currency;
+      els.rulerName.value = state.rulerName || '';
     }
 
-    function fmtGold(value) {
-      return Math.round(value).toLocaleString();
+    function getPassiveIncome(){
+      return buildingDefs.reduce((sum, b) => sum + ((state.buildings[b.id] || 0) * b.income), 0);
     }
 
-    function todayString() {
-      const d = new Date();
-      const offset = d.getTimezoneOffset();
-      const local = new Date(d.getTime() - offset * 60000);
-      return local.toISOString().slice(0, 10);
-    }
-
-    function getRank(totalGold) {
+    function getRank(){
       let current = ranks[0];
-      for (const rank of ranks) {
-        if (totalGold >= rank.min) current = rank;
+      for(const rank of ranks){
+        if(state.gold >= rank.minGold) current = rank;
       }
       return current;
     }
 
-    function getPassiveGold() {
-      return unlocks.reduce((sum, item) => sum + (state.totalGold >= item.gold ? item.passive : 0), 0);
+    function getBuildingCost(building){
+      const owned = state.buildings[building.id] || 0;
+      return Math.round(building.baseCost * Math.pow(1.45, owned));
     }
 
-    function victoryRate() {
-      if (!state.history.length) return 0;
-      return Math.round((state.totalWins / state.history.length) * 100);
+    function saveProfile(){
+      state.rulerName = els.rulerName.value.trim();
+      state.currency = els.currency.value;
+      persist();
+      renderAll();
+      flashLog(`Profile saved. <span class="goldText">${escapeHtml(state.rulerName || 'Unnamed Ruler')}</span> now rules the land.`);
     }
 
-    function escapeHtml(str) {
+    function logDay(){
+      const budget = Number(els.budget.value);
+      const spent = Number(els.spent.value);
+
+      if(!Number.isFinite(budget) || !Number.isFinite(spent) || budget < 0 || spent < 0){
+        flashLog('Enter a valid budget and spending amount first.');
+        return;
+      }
+
+      const today = new Date().toISOString().slice(0,10);
+      if(state.lastLogDate === today){
+        flashLog('You already logged today. Come back tomorrow for the next battle.');
+        return;
+      }
+
+      const saved = Math.max(0, budget - spent);
+      const overspent = Math.max(0, spent - budget);
+
+      let earnedGold = Math.floor(saved / 10); // requested change: 1 gold per 10 saved
+      let streakBonus = 0;
+
+      if(saved > 0){
+        state.streak += 1;
+        if(state.streak > 0 && state.streak % 7 === 0){
+          streakBonus = 5;
+        }
+      } else {
+        state.streak = 0;
+      }
+
+      state.gold += earnedGold + streakBonus;
+      state.lastLogDate = today;
+      persist();
+      renderAll();
+
+      if(saved > 0){
+        let msg = `Victory. You saved <span class="good">${state.currency}${saved.toFixed(2)}</span> and earned <span class="goldText">${earnedGold} gold</span>.`;
+        if(streakBonus){
+          msg += ` Streak reward: <span class="goldText">+${streakBonus} bonus gold</span>.`;
+        }
+        flashLog(msg);
+      } else if(overspent > 0){
+        flashLog(`You went over budget by <span class="bad">${state.currency}${overspent.toFixed(2)}</span>. No gold today. The kingdom demands discipline.`);
+      } else {
+        flashLog('Perfectly on budget. Clean work. No savings, no gold, but still respectable control.');
+      }
+    }
+
+    function collectIncome(){
+      const income = getPassiveIncome();
+      if(income <= 0){
+        flashLog('You need buildings first before collecting passive income.');
+        return;
+      }
+
+      const today = new Date().toISOString().slice(0,10);
+      if(state.lastIncomeDate === today){
+        flashLog('Passive income already collected today.');
+        return;
+      }
+
+      state.gold += income;
+      state.lastIncomeDate = today;
+      persist();
+      renderAll();
+      flashLog(`Your kingdom produced <span class="goldText">${income} gold</span> in passive income today.`);
+    }
+
+    function buyBuilding(id){
+      const building = buildingDefs.find(b => b.id === id);
+      if(!building) return;
+
+      const cost = getBuildingCost(building);
+      if(state.gold < cost){
+        flashLog(`Not enough gold for ${building.name}. You need <span class="goldText">${cost}</span> gold.`);
+        return;
+      }
+
+      state.gold -= cost;
+      state.buildings[id] = (state.buildings[id] || 0) + 1;
+      persist();
+      renderAll();
+      flashLog(`You bought <span class="goldText">${building.name}</span> for <span class="goldText">${cost} gold</span>. Your kingdom grows.`);
+    }
+
+    function resetGame(){
+      const yes = confirm('Reset the entire kingdom? This clears your gold, streak, buildings, and ruler progress.');
+      if(!yes) return;
+      Object.assign(state, defaultState());
+      syncInputs();
+      persist();
+      renderAll();
+      flashLog('Kingdom reset. A new adventure begins.');
+    }
+
+    function renderAll(){
+      const rank = getRank();
+      els.goldDisplay.textContent = Math.floor(state.gold);
+      els.streakDisplay.textContent = state.streak;
+      els.rankDisplay.textContent = rank.name;
+      els.incomeDisplay.textContent = getPassiveIncome();
+      els.rankGlow.textContent = `✦ ${rank.name}`;
+      renderRuler();
+      renderBuildings();
+      renderVillage();
+    }
+
+    function renderRuler(){
+      const rank = getRank();
+      els.rulerNameDisplay.textContent = state.rulerName || 'No name yet';
+      els.rulerFlavor.textContent = rank.flavor;
+      els.rulerSvgHolder.innerHTML = createRulerSVG(rank.name);
+    }
+
+    function renderBuildings(){
+      els.buildingGrid.innerHTML = '';
+      for(const building of buildingDefs){
+        const owned = state.buildings[building.id] || 0;
+        const cost = getBuildingCost(building);
+        const card = document.createElement('div');
+        card.className = 'building';
+        card.innerHTML = `
+          <div class="buildingTop">
+            <div>
+              <div class="buildingName">${building.emoji} ${building.name}</div>
+              <div class="buildingMeta">Owned: ${owned} · +${building.income} gold/day each</div>
+            </div>
+            <div class="cost">Cost: ${cost}</div>
+          </div>
+          <button class="primary buyBtn" ${state.gold < cost ? 'disabled' : ''}>Buy</button>
+        `;
+        card.querySelector('button').addEventListener('click', () => buyBuilding(building.id));
+        els.buildingGrid.appendChild(card);
+      }
+    }
+
+    function renderVillage(){
+      const parts = [];
+      for(const b of buildingDefs){
+        const count = state.buildings[b.id] || 0;
+        for(let i=0; i<count; i++){
+          parts.push(`<div class="miniBuilding" title="${b.name}" style="font-size:${b.id==='castle' ? '54px' : b.id==='tower' ? '46px' : '38px'}">${b.emoji}</div>`);
+        }
+      }
+      els.spriteRow.innerHTML = parts.join('') || '<div class="tiny" style="background:rgba(255,255,255,.16); padding:10px 12px; border-radius:14px; color:#fff;">Your land is empty. Start saving and build your first hut.</div>';
+    }
+
+    function seedCoins(){
+      const holder = document.getElementById('coins');
+      holder.innerHTML = '';
+      for(let i=0; i<26; i++){
+        const c = document.createElement('div');
+        c.className = 'coin';
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.animationDuration = 14 + Math.random() * 24 + 's';
+        c.style.animationDelay = -(Math.random() * 20) + 's';
+        c.style.transform = `scale(${.75 + Math.random() * 1.15})`;
+        holder.appendChild(c);
+      }
+    }
+
+    function flashLog(html){
+      els.logBox.innerHTML = html;
+    }
+
+    function escapeHtml(str){
       return String(str)
         .replaceAll('&', '&amp;')
         .replaceAll('<', '&lt;')
         .replaceAll('>', '&gt;')
         .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
+        .replaceAll("'", '&#039;');
     }
 
-    function renderAvatar(rank) {
-      const c = rank.colors;
-      const hat = c.hat === 'cap'
-        ? '<div class="hat" style="top:2px;left:25px;width:42px;height:14px;border-radius:12px 12px 4px 4px;background:#4c5a68"></div>'
-        : c.hat === 'hood'
-          ? '<div class="hat" style="top:3px;left:20px;width:54px;height:28px;border-radius:18px 18px 8px 8px;background:' + c.cape + ';"></div>'
-          : c.hat === 'mantle'
-            ? '<div class="hat" style="top:0px;left:18px;width:58px;height:18px;border-radius:12px;background:' + c.shoulder + ';"></div>'
-            : '';
+    function createRulerSVG(rankName){
+      const cfg = getRulerConfig(rankName);
+      return `
+      <svg viewBox="0 0 360 320" width="100%" height="100%" aria-label="Cartoon ruler">
+        <defs>
+          <linearGradient id="capeGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="${cfg.cape}"/>
+            <stop offset="100%" stop-color="${cfg.capeDark}"/>
+          </linearGradient>
+          <linearGradient id="shirtGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="${cfg.shirt}"/>
+            <stop offset="100%" stop-color="${cfg.shirtDark}"/>
+          </linearGradient>
+          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="160%">
+            <feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="rgba(0,0,0,.28)"/>
+          </filter>
+        </defs>
 
-      const crown = c.crown === 'small'
-        ? '<div class="crown" style="top:-2px;left:29px;width:36px;height:16px;background:linear-gradient(180deg,#ffe29c,#e2b44c);clip-path:polygon(0 100%,0 48%,14% 48%,22% 0,38% 48%,50% 15%,62% 48%,78% 0,86% 48%,100% 48%,100% 100%);"></div>'
-        : c.crown === 'royal'
-          ? '<div class="crown" style="top:-4px;left:24px;width:46px;height:22px;background:linear-gradient(180deg,#ffe9b6,#e0b04c);clip-path:polygon(0 100%,0 44%,12% 44%,20% 0,34% 44%,50% 10%,66% 44%,80% 0,88% 44%,100% 44%,100% 100%);"></div><div class="gem" style="top:6px;left:43px;width:8px;height:8px;border-radius:50%;background:#7ec8ff;box-shadow:0 0 10px rgba(126,200,255,0.35);"></div>'
-          : c.crown === 'imperial'
-            ? '<div class="crown" style="top:-6px;left:20px;width:54px;height:26px;background:linear-gradient(180deg,#fff0c3,#dca43d);clip-path:polygon(0 100%,0 40%,10% 40%,18% 0,30% 40%,50% 8%,70% 40%,82% 0,90% 40%,100% 40%,100% 100%);"></div><div class="gem" style="top:5px;left:33px;width:10px;height:10px;border-radius:50%;background:#c17cff;box-shadow:0 0 10px rgba(193,124,255,0.4);"></div><div class="gem" style="top:7px;left:51px;width:8px;height:8px;border-radius:50%;background:#7ec8ff;box-shadow:0 0 10px rgba(126,200,255,0.35);"></div>'
-            : '';
+        <g filter="url(#softShadow)" transform="translate(0 4)">
+          <ellipse cx="180" cy="272" rx="76" ry="18" fill="rgba(0,0,0,.18)"/>
 
-      const weapon = c.weapon === 'sword'
-        ? '<div class="sword" style="left:10px;top:46px;width:4px;height:58px;background:#cfd6dd;border-radius:999px;transform:rotate(-18deg);"></div><div class="sword" style="left:6px;top:82px;width:14px;height:4px;background:#8a6138;border-radius:999px;transform:rotate(-18deg);"></div>'
-        : c.weapon === 'staff'
-          ? '<div class="staff" style="right:14px;top:38px;width:4px;height:72px;background:#9d7d5d;border-radius:999px;transform:rotate(10deg);"></div><div class="staff" style="right:10px;top:30px;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff0c7,#efc15c 60%,#c7902f);box-shadow:0 0 12px rgba(239,193,92,0.35);"></div>'
-          : '';
+          ${cfg.capeVisible ? `<path d="M108 246 Q128 152 180 140 Q232 152 252 246 Q224 270 180 270 Q136 270 108 246Z" fill="url(#capeGrad)"/>` : ''}
 
-      els.avatar.innerHTML = `
-        ${weapon}
-        <div class="cape" style="background:${c.cape};"></div>
-        <div class="body" style="background:${c.body};"></div>
-        <div class="belt" style="background:${c.belt};"></div>
-        <div class="shoulder left" style="background:${c.shoulder};"></div>
-        <div class="shoulder right" style="background:${c.shoulder};"></div>
-        <div class="head"></div>
-        ${hat}
-        ${crown}
-      `;
+          <rect x="138" y="140" width="84" height="94" rx="24" fill="url(#shirtGrad)"/>
+          <ellipse cx="180" cy="144" rx="30" ry="15" fill="#e9b38a"/>
+
+          ${cfg.belt ? `<rect x="141" y="194" width="78" height="14" rx="7" fill="${cfg.belt}"/><circle cx="180" cy="201" r="6" fill="#ffd86f"/>` : ''}
+
+          <rect x="130" y="148" width="18" height="64" rx="9" fill="${cfg.skin}" transform="rotate(8 139 180)"/>
+          <rect x="212" y="148" width="18" height="64" rx="9" fill="${cfg.skin}" transform="rotate(-8 221 180)"/>
+
+          <rect x="155" y="226" width="18" height="46" rx="9" fill="${cfg.pants}"/>
+          <rect x="187" y="226" width="18" height="46" rx="9" fill="${cfg.pants}"/>
+          <rect x="149" y="265" width="28" height="12" rx="6" fill="${cfg.boot}"/>
+          <rect x="183" y="265" width="28" height="12" rx="6" fill="${cfg.boot}"/>
+
+          <circle cx="180" cy="98" r="46" fill="${cfg.skin}"/>
+          <ellipse cx="162" cy="100" rx="5" ry="7" fill="#2f2432"/>
+          <ellipse cx="198" cy="100" rx="5" ry="7" fill="#2f2432"/>
+          <path d="M165 118 Q180 128 195 118" stroke="#7a3d35" stroke-width="5" stroke-linecap="round" fill="none"/>
+          <ellipse cx="180" cy="114" rx="8" ry="5" fill="rgba(255,120,140,.25)"/>
+
+          <path d="M133 91 Q145 46 180 45 Q216 46 228 91 Q214 74 180 74 Q146 74 133 91Z" fill="${cfg.hair}"/>
+          <path d="M142 79 Q126 88 132 112" stroke="${cfg.hair}" stroke-width="12" stroke-linecap="round" fill="none"/>
+          <path d="M218 79 Q234 88 228 112" stroke="${cfg.hair}" stroke-width="12" stroke-linecap="round" fill="none"/>
+
+          ${cfg.crown ? `<g transform="translate(0 -2)"><path d="M148 58 L162 36 L180 56 L198 34 L212 58 Z" fill="${cfg.crown}" stroke="#7f5d17" stroke-width="3"/><circle cx="180" cy="48" r="5" fill="#7ec8ff"/></g>` : ''}
+          ${cfg.staff ? `<g transform="translate(232 132)"><rect x="0" y="0" width="8" height="112" rx="4" fill="#8b5f35"/><circle cx="4" cy="-6" r="13" fill="#ffd86f" stroke="#7f5d17" stroke-width="3"/></g>` : ''}
+          ${cfg.medal ? `<circle cx="180" cy="172" r="10" fill="#ffd86f" stroke="#7f5d17" stroke-width="3"/>` : ''}
+        </g>
+      </svg>`;
     }
 
-    function renderHeader() {
-      const rank = getRank(state.totalGold);
-      const passiveGold = getPassiveGold();
-      els.displayName.textContent = state.playerName || 'Unnamed';
-      els.displayRank.textContent = rank.title;
-      els.avatarDesc.textContent = rank.desc;
-      els.rankPill.textContent = rank.title;
-      els.displayGold.textContent = fmtGold(state.totalGold);
-      els.displayStreak.textContent = String(state.streak);
-      els.displayBestDay.textContent = fmtGold(state.bestDayGold);
-      els.displayBestStreak.textContent = String(state.bestStreak);
-      els.displayDays.textContent = String(state.history.length);
-      els.displayWinRate.textContent = `${victoryRate()}%`;
-      els.displayPassiveGold.textContent = fmtGold(passiveGold);
-      renderAvatar(rank);
-    }
-
-    function renderUnlocks() {
-      const passiveGold = getPassiveGold();
-      els.unlockList.innerHTML = '';
-      unlocks.forEach(item => {
-        const unlocked = state.totalGold >= item.gold;
-        const div = document.createElement('div');
-        div.className = `unlock ${unlocked ? '' : 'locked'}`.trim();
-        div.innerHTML = `
-          <div style="display:flex; gap:12px; align-items:flex-start;">
-            <div style="font-size:1.45rem; line-height:1;">${item.icon}</div>
-            <div>
-              <div class="unlockTitle">${item.title}</div>
-              <div class="unlockDesc">${item.desc}${item.passive ? ` (+${item.passive} passive gold/day)` : ''}</div>
-            </div>
-          </div>
-          <div class="unlockCost">${unlocked ? 'Unlocked' : `${item.gold} gold`}</div>
-        `;
-        els.unlockList.appendChild(div);
-      });
-    }
-
-    function renderHistory() {
-      els.historyList.innerHTML = '';
-      if (!state.history.length) {
-        const empty = document.createElement('div');
-        empty.className = 'empty';
-        empty.textContent = 'No campaign log yet. End your first day and start building the kingdom.';
-        els.historyList.appendChild(empty);
-        return;
-      }
-
-      [...state.history].reverse().forEach(entry => {
-        const diff = Number((entry.budget - entry.spent).toFixed(2));
-        const resultClass = diff > 0 ? 'good' : diff < 0 ? 'bad' : 'warn';
-        const resultText = diff > 0
-          ? `+${fmtGold(entry.gold)} gold`
-          : diff < 0
-            ? `Overspent ${fmtMoney(Math.abs(diff), entry.currency)}`
-            : 'Exact budget';
-
-        const passiveText = entry.passiveGold ? ` • Passive +${fmtGold(entry.passiveGold)}` : '';
-
-        const div = document.createElement('div');
-        div.className = 'historyItem';
-        div.innerHTML = `
-          <div class="historyTop">
-            <span>${entry.date}</span>
-            <span class="${resultClass}">${resultText}</span>
-          </div>
-          <div class="historyMeta">Budget: ${fmtMoney(entry.budget, entry.currency)} • Spent: ${fmtMoney(entry.spent, entry.currency)}${passiveText}</div>
-          ${entry.note ? `<div class="historyNote">${escapeHtml(entry.note)}</div>` : ''}
-        `;
-        els.historyList.appendChild(div);
-      });
-    }
-
-    function renderAll() {
-      els.playerName.value = state.playerName;
-      els.currency.value = state.currency;
-      if (!els.date.value) els.date.value = todayString();
-      renderHeader();
-      renderUnlocks();
-      renderHistory();
-    }
-
-    function setResult(message, tone = 'neutral') {
-      let color = 'var(--text)';
-      if (tone === 'good') color = 'var(--good)';
-      if (tone === 'warn') color = 'var(--warn)';
-      if (tone === 'bad') color = 'var(--bad)';
-      if (tone === 'gold') color = 'var(--gold)';
-      els.resultBox.style.color = color;
-      els.resultBox.textContent = message;
-    }
-
-    function calculateBaseGold(savedAmount) {
-      if (savedAmount <= 0) return 0;
-      return Math.max(1, Math.floor(savedAmount / 5));
-    }
-
-    function buildResultMessage({ diff, baseGold, passiveGold, totalGoldEarned, budget, spent, currency, streak, rankBefore, rankAfter }) {
-      if (diff > 0) {
-        const lines = [];
-        lines.push(`Victory. You stayed under budget and earned ${totalGoldEarned} gold.`);
-        lines.push(`Saved: ${fmtMoney(diff, currency)} from a ${fmtMoney(budget, currency)} limit.`);
-        lines.push(`Conversion: ${fmtMoney(diff, currency)} → ${baseGold} gold. Passive income added ${passiveGold} more.`);
-        if (streak > 1) lines.push(`Current streak: ${streak}. The treasury is getting arrogant.`);
-        if (rankAfter.title !== rankBefore.title) lines.push(`Rank up: ${rankBefore.title} → ${rankAfter.title}. Try not to waste the promotion.`);
-        if (diff >= budget * 0.5) lines.push('Brutal efficiency. That was a genuinely elite save.');
-        else if (diff >= budget * 0.2) lines.push('Solid work. Not flashy, but highly competent.');
-        else lines.push('Clean save. Respectable. Controlled. Adult behavior, somehow.');
-        return { text: lines.join('\n'), tone: 'gold' };
-      }
-
-      if (diff === 0) {
-        return {
-          text: `Exact budget hit. No base gold earned.\nSpent exactly ${fmtMoney(spent, currency)}.\nYou survived the day, which is technically a form of success.`,
-          tone: 'warn'
-        };
-      }
-
-      const over = Math.abs(diff);
-      return {
-        text: `Overspend. The streak is broken.\nYou went over by ${fmtMoney(over, currency)} on a ${fmtMoney(budget, currency)} budget.\nThe kingdom remains intact, but its confidence in you has narrowed.`,
-        tone: 'bad'
+    function getRulerConfig(rank){
+      const base = {
+        skin:'#f0ba92', hair:'#3d2b1f', shirt:'#6ba7ff', shirtDark:'#456fbd', pants:'#5b375f', boot:'#442b1d',
+        cape:'#905cff', capeDark:'#5d2f96', capeVisible:false, belt:'#845d30', crown:'', medal:false, staff:false
       };
+      switch(rank){
+        case 'Squire':
+          return { ...base, shirt:'#75c98c', shirtDark:'#4c8d61', belt:'#9b6d3f' };
+        case 'Knight':
+          return { ...base, shirt:'#90a8c7', shirtDark:'#607795', pants:'#394c6b', belt:'#7a5b30', medal:true };
+        case 'Lord':
+          return { ...base, shirt:'#9a78ff', shirtDark:'#6b4cc5', pants:'#4c3568', capeVisible:true, cape:'#d44a63', capeDark:'#84273d', medal:true };
+        case 'Duke':
+          return { ...base, shirt:'#c38c4d', shirtDark:'#936732', pants:'#533d7f', capeVisible:true, cape:'#6d5cff', capeDark:'#4030a0', belt:'#9e7236', medal:true };
+        case 'King':
+          return { ...base, shirt:'#f3d36f', shirtDark:'#c6a449', pants:'#5d3971', capeVisible:true, cape:'#cf4242', capeDark:'#8e2424', crown:'#f2c94c', medal:true, staff:true };
+        case 'Emperor':
+          return { ...base, shirt:'#fff0a5', shirtDark:'#d6bf57', pants:'#4c2f61', capeVisible:true, cape:'#7d3cff', capeDark:'#441c86', crown:'#ffd95a', medal:true, staff:true };
+        default:
+          return base;
+      }
     }
-
-    function endDay() {
-      const playerName = els.playerName.value.trim();
-      const currency = els.currency.value;
-      const date = els.date.value || todayString();
-      const budget = Number(els.budget.value);
-      const spent = Number(els.spent.value);
-      const note = els.note.value.trim();
-
-      if (!playerName) {
-        setResult('Name your ruler first. Even a budget kingdom deserves leadership.', 'warn');
-        return;
-      }
-      if (!Number.isFinite(budget) || budget < 0) {
-        setResult('Enter a valid daily budget.', 'warn');
-        return;
-      }
-      if (!Number.isFinite(spent) || spent < 0) {
-        setResult('Enter a valid spent amount.', 'warn');
-        return;
-      }
-
-      const existingIndex = state.history.findIndex(entry => entry.date === date);
-      if (existingIndex !== -1) {
-        setResult('That date already exists in your campaign log. Use another date or reset later.', 'warn');
-        return;
-      }
-
-      state.playerName = playerName;
-      state.currency = currency;
-
-      const rankBefore = getRank(state.totalGold);
-      const diff = Number((budget - spent).toFixed(2));
-      const passiveGold = getPassiveGold();
-      const baseGold = diff > 0 ? calculateBaseGold(diff) : 0;
-      const totalGoldEarned = diff > 0 ? baseGold + passiveGold : 0;
-
-      if (diff > 0) {
-        state.totalGold += totalGoldEarned;
-        state.streak += 1;
-        state.totalWins += 1;
-        if (totalGoldEarned > state.bestDayGold) state.bestDayGold = totalGoldEarned;
-        if (state.streak > state.bestStreak) state.bestStreak = state.streak;
-      } else if (diff === 0) {
-        state.streak += 1;
-        if (state.streak > state.bestStreak) state.bestStreak = state.streak;
-      } else {
-        state.streak = 0;
-      }
-
-      state.history.push({
-        date,
-        budget,
-        spent,
-        currency,
-        gold: totalGoldEarned,
-        passiveGold,
-        note
-      });
-
-      saveData();
-      const rankAfter = getRank(state.totalGold);
-      const result = buildResultMessage({ diff, baseGold, passiveGold, totalGoldEarned, budget, spent, currency, streak: state.streak, rankBefore, rankAfter });
-      setResult(result.text, result.tone);
-      renderAll();
-
-      els.spent.value = '';
-      els.note.value = '';
-      els.date.value = todayString();
-    }
-
-    function loadDemo() {
-      state = {
-        playerName: 'King Coinward',
-        currency: 'MXN',
-        totalGold: 642,
-        streak: 5,
-        bestStreak: 5,
-        bestDayGold: 28,
-        totalWins: 6,
-        history: [
-          { date: '2026-03-11', budget: 100, spent: 72, currency: 'MXN', gold: 5, passiveGold: 0, note: 'First decent save.' },
-          { date: '2026-03-12', budget: 100, spent: 40, currency: 'MXN', gold: 13, passiveGold: 1, note: 'Good discipline.' },
-          { date: '2026-03-13', budget: 100, spent: 26, currency: 'MXN', gold: 16, passiveGold: 2, note: 'Legendary restraint. Beer budget remained on leash.' },
-          { date: '2026-03-14', budget: 100, spent: 88, currency: 'MXN', gold: 5, passiveGold: 3, note: 'Small save, still a win.' },
-          { date: '2026-03-15', budget: 100, spent: 0, currency: 'MXN', gold: 24, passiveGold: 4, note: 'Treasury went feral.' },
-          { date: '2026-03-16', budget: 100, spent: 61, currency: 'MXN', gold: 15, passiveGold: 5, note: 'Clean close. Good control.' },
-          { date: '2026-03-17', budget: 100, spent: 130, currency: 'MXN', gold: 0, passiveGold: 0, note: 'Moment of weakness. The realm disapproved.' }
-        ]
-      };
-      saveData();
-      setResult('Demo kingdom loaded. This version is slower, cleaner, and less financially absurd.', 'gold');
-      renderAll();
-    }
-
-    function resetKingdom() {
-      const ok = window.confirm('Reset the entire kingdom? This deletes your ruler, gold, history, and progress.');
-      if (!ok) return;
-      state = clone(defaultData);
-      localStorage.removeItem(STORAGE_KEY);
-      els.budget.value = '';
-      els.spent.value = '';
-      els.note.value = '';
-      els.date.value = todayString();
-      setResult('Kingdom reset. Back to peasantry. Character-building, really.', 'warn');
-      renderAll();
-    }
-
-    els.saveDayBtn.addEventListener('click', endDay);
-    els.demoBtn.addEventListener('click', loadDemo);
-    els.resetBtn.addEventListener('click', resetKingdom);
-
-    els.playerName.addEventListener('change', () => {
-      state.playerName = els.playerName.value.trim();
-      saveData();
-      renderHeader();
-    });
-
-    els.currency.addEventListener('change', () => {
-      state.currency = els.currency.value;
-      saveData();
-      renderAll();
-    });
-
-    if (!els.date.value) els.date.value = todayString();
-    renderAll();
   </script>
 </body>
 </html>
