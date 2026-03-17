@@ -6,20 +6,20 @@
   <title>Budget Quest</title>
   <style>
     :root {
-      --bg: #0b0f14;
-      --bg-soft: #111821;
-      --panel: rgba(18, 25, 35, 0.94);
-      --panel-2: rgba(26, 35, 49, 0.92);
+      --bg: #0b1015;
+      --bg-soft: #121921;
+      --panel: rgba(15, 22, 31, 0.94);
+      --panel-2: rgba(24, 34, 47, 0.95);
       --line: rgba(255,255,255,0.08);
       --line-strong: rgba(255,255,255,0.14);
-      --text: #edf3fb;
-      --muted: #9fb0c5;
-      --gold: #f2c14e;
-      --good: #57d98c;
-      --warn: #ffb84d;
-      --bad: #ff7373;
-      --accent: #78a6ff;
-      --shadow: 0 20px 40px rgba(0,0,0,0.35);
+      --text: #eef4fb;
+      --muted: #9fb0bf;
+      --gold: #efc15c;
+      --good: #62d79b;
+      --warn: #ffbe5c;
+      --bad: #ff7a7a;
+      --accent: #74a8ff;
+      --shadow: 0 18px 45px rgba(0,0,0,0.35);
       --radius: 22px;
       --radius-sm: 16px;
     }
@@ -30,18 +30,16 @@
       margin: 0;
       min-height: 100%;
       background:
-        radial-gradient(circle at top, rgba(120,166,255,0.11), transparent 28%),
-        linear-gradient(180deg, #091018 0%, #0b0f14 100%);
+        radial-gradient(circle at top, rgba(116,168,255,0.10), transparent 28%),
+        linear-gradient(180deg, #091017 0%, #0b1015 100%);
       color: var(--text);
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    body {
-      padding: 24px;
-    }
+    body { padding: 24px; }
 
     .app {
-      max-width: 1220px;
+      max-width: 1280px;
       margin: 0 auto;
       display: grid;
       gap: 18px;
@@ -53,14 +51,29 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow: hidden;
+      backdrop-filter: blur(6px);
     }
 
     .hero {
+      position: relative;
       display: grid;
-      grid-template-columns: 1.25fr 0.9fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 18px;
-      padding: 24px;
-      align-items: stretch;
+      padding: 26px;
+      overflow: hidden;
+      min-height: 360px;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,0.08), transparent 26%),
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+      pointer-events: none;
+      z-index: -1;
     }
 
     .eyebrow {
@@ -76,18 +89,216 @@
 
     .title {
       margin: 0;
-      font-size: clamp(2.3rem, 6vw, 4.4rem);
-      line-height: 0.96;
-      letter-spacing: -0.05em;
+      font-size: clamp(2.6rem, 7vw, 4.8rem);
+      line-height: 0.94;
+      letter-spacing: -0.055em;
     }
 
     .subtitle {
       margin: 14px 0 0;
-      max-width: 64ch;
+      max-width: 62ch;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.72;
       font-size: 1.02rem;
     }
+
+    .heroVisual {
+      position: relative;
+      min-height: 300px;
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
+        radial-gradient(circle at 70% 20%, rgba(116,168,255,0.16), transparent 22%),
+        linear-gradient(180deg, #15212c 0%, #111821 100%);
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .skyGlow,
+    .cloud,
+    .coin,
+    .banner {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .skyGlow {
+      inset: 0;
+      background:
+        radial-gradient(circle at 70% 16%, rgba(239,193,92,0.18), transparent 15%),
+        radial-gradient(circle at 78% 26%, rgba(255,255,255,0.08), transparent 10%);
+      animation: pulse 4.2s ease-in-out infinite;
+    }
+
+    .cloud {
+      width: 92px;
+      height: 28px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      filter: blur(1px);
+      animation: drift 20s linear infinite;
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: "";
+      position: absolute;
+      background: inherit;
+      border-radius: inherit;
+    }
+
+    .cloud::before {
+      width: 36px;
+      height: 36px;
+      left: 12px;
+      top: -12px;
+    }
+
+    .cloud::after {
+      width: 28px;
+      height: 28px;
+      right: 18px;
+      top: -8px;
+    }
+
+    .cloud.c1 { top: 42px; left: -20px; animation-duration: 24s; }
+    .cloud.c2 { top: 82px; left: -70px; transform: scale(0.85); animation-duration: 19s; opacity: 0.7; }
+
+    .castle {
+      position: absolute;
+      left: 50%;
+      bottom: 86px;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 150px;
+      animation: floatCastle 4.6s ease-in-out infinite;
+    }
+
+    .castle .base,
+    .castle .tower,
+    .castle .tower::before,
+    .castle .tower::after,
+    .castle .roof,
+    .castle .gate,
+    .castle .window {
+      position: absolute;
+    }
+
+    .castle .base {
+      left: 36px;
+      bottom: 0;
+      width: 148px;
+      height: 92px;
+      background: linear-gradient(180deg, #8f97a3, #697481);
+      border: 3px solid rgba(0,0,0,0.18);
+      border-bottom-width: 5px;
+      border-radius: 10px 10px 14px 14px;
+    }
+
+    .castle .tower {
+      bottom: 32px;
+      width: 42px;
+      height: 84px;
+      background: linear-gradient(180deg, #a0a9b6, #6d7884);
+      border: 3px solid rgba(0,0,0,0.18);
+      border-radius: 10px 10px 12px 12px;
+    }
+
+    .castle .tower.left { left: 18px; }
+    .castle .tower.right { right: 18px; }
+
+    .castle .roof {
+      width: 0;
+      height: 0;
+      border-left: 24px solid transparent;
+      border-right: 24px solid transparent;
+      border-bottom: 28px solid #c15d5d;
+      top: -24px;
+      left: -3px;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.18));
+    }
+
+    .castle .gate {
+      left: 90px;
+      bottom: 0;
+      width: 40px;
+      height: 48px;
+      background: linear-gradient(180deg, #3f2f24, #2d2118);
+      border-radius: 16px 16px 0 0;
+      border: 3px solid rgba(0,0,0,0.18);
+    }
+
+    .castle .window {
+      width: 10px;
+      height: 16px;
+      background: #f7d479;
+      border-radius: 8px 8px 4px 4px;
+      box-shadow: 0 0 10px rgba(247,212,121,0.25);
+    }
+
+    .castle .w1 { left: 60px; bottom: 44px; }
+    .castle .w2 { right: 60px; bottom: 44px; }
+    .castle .w3 { left: 52px; bottom: 96px; }
+    .castle .w4 { right: 52px; bottom: 96px; }
+
+    .ground {
+      position: absolute;
+      left: -10%;
+      right: -10%;
+      bottom: 0;
+      height: 96px;
+      background:
+        radial-gradient(circle at 18% 30%, rgba(255,255,255,0.04), transparent 8%),
+        radial-gradient(circle at 54% 50%, rgba(255,255,255,0.04), transparent 8%),
+        linear-gradient(180deg, #213847 0%, #13232c 100%);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-radius: 50% 50% 0 0;
+      transform: translateY(16px);
+    }
+
+    .banner {
+      left: 50%;
+      top: 88px;
+      width: 24px;
+      height: 76px;
+      transform: translateX(74px);
+    }
+
+    .banner::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 0;
+      width: 3px;
+      height: 76px;
+      background: #d3d8df;
+    }
+
+    .banner::after {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: 13px;
+      width: 26px;
+      height: 18px;
+      background: linear-gradient(180deg, #e6c66d, #d9a844);
+      clip-path: polygon(0 0, 100% 0, 100% 70%, 72% 70%, 58% 100%, 43% 70%, 0 70%);
+      animation: wave 2.5s ease-in-out infinite;
+      transform-origin: left center;
+    }
+
+    .coin {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff3b8, #efc15c 45%, #c7902f 90%);
+      box-shadow: 0 0 12px rgba(239,193,92,0.22);
+      animation: coinBob 3.2s ease-in-out infinite;
+    }
+
+    .coin:nth-child(1) { top: 54px; right: 46px; animation-delay: 0s; }
+    .coin:nth-child(2) { top: 106px; right: 78px; animation-delay: 0.8s; }
+    .coin:nth-child(3) { top: 72px; right: 112px; animation-delay: 1.3s; }
 
     .heroCard {
       background: var(--panel);
@@ -110,7 +321,7 @@
 
     .crest {
       font-size: 2rem;
-      filter: drop-shadow(0 8px 18px rgba(242,193,78,0.18));
+      filter: drop-shadow(0 8px 18px rgba(239,193,92,0.18));
     }
 
     .gridStats {
@@ -145,13 +356,11 @@
 
     .main {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1.08fr 0.92fr;
       gap: 18px;
     }
 
-    .section {
-      padding: 20px;
-    }
+    .section { padding: 20px; }
 
     .section h2 {
       margin: 0 0 14px;
@@ -165,11 +374,7 @@
       gap: 12px;
     }
 
-    .field {
-      display: grid;
-      gap: 8px;
-    }
-
+    .field { display: grid; gap: 8px; }
     .field.full { grid-column: 1 / -1; }
 
     .field label {
@@ -186,12 +391,12 @@
       padding: 12px 14px;
       font: inherit;
       outline: none;
-      transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
     }
 
     input:focus, select:focus {
-      border-color: rgba(120,166,255,0.65);
-      box-shadow: 0 0 0 4px rgba(120,166,255,0.12);
+      border-color: rgba(116,168,255,0.65);
+      box-shadow: 0 0 0 4px rgba(116,168,255,0.12);
     }
 
     .actions {
@@ -232,7 +437,7 @@
       border-radius: 16px;
       padding: 16px;
       line-height: 1.65;
-      min-height: 100px;
+      min-height: 110px;
       white-space: pre-line;
     }
 
@@ -253,13 +458,155 @@
     .rankPill {
       padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(242,193,78,0.08);
-      border: 1px solid rgba(242,193,78,0.22);
+      background: rgba(239,193,92,0.08);
+      border: 1px solid rgba(239,193,92,0.22);
       color: var(--gold);
       font-size: 0.85rem;
       font-weight: 800;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+    }
+
+    .avatarCard {
+      display: grid;
+      grid-template-columns: 126px 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding: 14px;
+      border-radius: 18px;
+      background: #0e1621;
+      border: 1px solid var(--line);
+    }
+
+    .avatarWrap {
+      display: grid;
+      place-items: center;
+      min-height: 138px;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(255,255,255,0.10), transparent 25%),
+        linear-gradient(180deg, #16212b 0%, #0d141c 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spark {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(239,193,92,0.65);
+      box-shadow: 0 0 10px rgba(239,193,92,0.3);
+      animation: sparkle 3s ease-in-out infinite;
+    }
+
+    .spark.s1 { top: 18px; left: 20px; animation-delay: 0s; }
+    .spark.s2 { top: 30px; right: 24px; animation-delay: 1.1s; }
+    .spark.s3 { bottom: 22px; left: 28px; animation-delay: 2s; }
+
+    .avatar {
+      position: relative;
+      width: 94px;
+      height: 118px;
+      animation: bob 4s ease-in-out infinite;
+    }
+
+    .avatar .head,
+    .avatar .body,
+    .avatar .cape,
+    .avatar .hat,
+    .avatar .crown,
+    .avatar .belt,
+    .avatar .shoulder,
+    .avatar .gem,
+    .avatar .sword,
+    .avatar .staff {
+      position: absolute;
+    }
+
+    .avatar .head {
+      top: 8px;
+      left: 28px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #f1cfaa, #d5a67d);
+      z-index: 3;
+      box-shadow: inset 0 -4px 0 rgba(0,0,0,0.08);
+    }
+
+    .avatar .body {
+      left: 24px;
+      top: 40px;
+      width: 46px;
+      height: 52px;
+      border-radius: 14px 14px 10px 10px;
+      z-index: 2;
+    }
+
+    .avatar .cape {
+      left: 18px;
+      top: 40px;
+      width: 58px;
+      height: 56px;
+      border-radius: 16px 16px 12px 12px;
+      z-index: 1;
+      opacity: 0.95;
+    }
+
+    .avatar .belt {
+      left: 28px;
+      top: 70px;
+      width: 38px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.35);
+      z-index: 4;
+    }
+
+    .avatar .shoulder {
+      top: 44px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      z-index: 4;
+    }
+
+    .avatar .shoulder.left { left: 18px; }
+    .avatar .shoulder.right { right: 18px; }
+
+    .avatar .hat,
+    .avatar .crown {
+      z-index: 5;
+    }
+
+    .avatar .sword,
+    .avatar .staff {
+      z-index: 0;
+    }
+
+    .avatarMeta {
+      display: grid;
+      gap: 10px;
+      align-content: center;
+    }
+
+    .avatarTitle {
+      font-size: 1.02rem;
+      font-weight: 800;
+    }
+
+    .avatarDesc {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.62;
+    }
+
+    .bonusRow {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
     }
 
     .villageList {
@@ -297,6 +644,8 @@
       color: var(--gold);
       font-weight: 800;
       white-space: nowrap;
+      text-align: right;
+      font-size: 0.92rem;
     }
 
     .twoCol {
@@ -348,11 +697,47 @@
       margin-top: 12px;
     }
 
-    @media (max-width: 980px) {
-      .hero, .main, .twoCol, .inputs {
+    @keyframes pulse {
+      0%, 100% { opacity: 0.88; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes drift {
+      from { transform: translateX(0); }
+      to { transform: translateX(420px); }
+    }
+
+    @keyframes floatCastle {
+      0%, 100% { transform: translateX(-50%) translateY(0px); }
+      50% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    @keyframes wave {
+      0%, 100% { transform: skewY(0deg) scaleX(1); }
+      50% { transform: skewY(6deg) scaleX(1.04); }
+    }
+
+    @keyframes coinBob {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-7px) scale(1.04); }
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.75); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    @media (max-width: 1040px) {
+      .hero, .main, .twoCol, .inputs, .bonusRow, .avatarCard {
         grid-template-columns: 1fr;
       }
 
+      .heroVisual { min-height: 260px; }
       body { padding: 14px; }
     }
   </style>
@@ -365,34 +750,30 @@
         <h1 class="title">Budget Quest</h1>
         <p class="subtitle">
           Build your kingdom by spending below your own limit. Set your daily budget, report what you actually spent,
-          choose your currency, stack gold, unlock villagers and structures, and climb from peon to emperor.
-          Overspend if you want — your kingdom will judge you accordingly.
+          choose your currency, earn controlled gold at a balanced rate, unlock villagers and structures, and climb from peon to emperor.
+          Overspend if you want. The realm will not stop you. It will simply remember.
         </p>
       </div>
 
-      <div class="heroCard">
-        <div class="heroCardTitle">
-          <span>Ruler Overview</span>
-          <span class="crest">👑</span>
+      <div class="heroVisual">
+        <div class="skyGlow"></div>
+        <div class="cloud c1"></div>
+        <div class="cloud c2"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="banner"></div>
+        <div class="castle">
+          <div class="tower left"><div class="roof"></div></div>
+          <div class="tower right"><div class="roof"></div></div>
+          <div class="base"></div>
+          <div class="gate"></div>
+          <div class="window w1"></div>
+          <div class="window w2"></div>
+          <div class="window w3"></div>
+          <div class="window w4"></div>
         </div>
-        <div class="gridStats">
-          <div class="stat">
-            <div class="label">Ruler</div>
-            <div class="value" id="displayName">Unnamed</div>
-          </div>
-          <div class="stat">
-            <div class="label">Rank</div>
-            <div class="value gold" id="displayRank">Peon</div>
-          </div>
-          <div class="stat">
-            <div class="label">Total Gold</div>
-            <div class="value gold" id="displayGold">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">Current Streak</div>
-            <div class="value good" id="displayStreak">0</div>
-          </div>
-        </div>
+        <div class="ground"></div>
       </div>
     </section>
 
@@ -432,7 +813,7 @@
 
           <div class="field full">
             <label for="note">Field Report</label>
-            <input id="note" type="text" maxlength="120" placeholder="Cooked at home. Stayed disciplined. Didn’t donate my wallet to random nonsense." />
+            <input id="note" type="text" maxlength="120" placeholder="Cooked at home. Stayed disciplined. Didn’t donate my wallet to nonsense." />
           </div>
         </div>
 
@@ -443,7 +824,7 @@
         </div>
 
         <div class="resultBox" id="resultBox">Set your ruler, commit to a budget, and close the day.
-Every unit of money you save becomes gold for the kingdom.</div>
+Your savings now convert to gold at a reduced balanced rate, with extra passive income from unlocked villagers and buildings.</div>
 
         <div class="footerNote">
           Gold is the reward currency no matter which real-world currency you track in.
@@ -456,7 +837,38 @@ Every unit of money you save becomes gold for the kingdom.</div>
           <div class="rankPill" id="rankPill">Peon</div>
         </div>
 
+        <div class="avatarCard">
+          <div class="avatarWrap">
+            <div class="spark s1"></div>
+            <div class="spark s2"></div>
+            <div class="spark s3"></div>
+            <div class="avatar" id="avatar"></div>
+          </div>
+          <div class="avatarMeta">
+            <div class="avatarTitle" id="displayName">Unnamed</div>
+            <div class="avatarDesc" id="avatarDesc">A broke but determined soul in tavern rags. The journey begins with basic dignity and limited economic intelligence.</div>
+            <div class="bonusRow">
+              <div class="stat">
+                <div class="label">Rank</div>
+                <div class="value gold" id="displayRank">Peon</div>
+              </div>
+              <div class="stat">
+                <div class="label">Passive Gold / Day</div>
+                <div class="value gold" id="displayPassiveGold">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="gridStats" style="margin-bottom: 14px;">
+          <div class="stat">
+            <div class="label">Total Gold</div>
+            <div class="value gold" id="displayGold">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">Current Streak</div>
+            <div class="value good" id="displayStreak">0</div>
+          </div>
           <div class="stat">
             <div class="label">Best Save Day</div>
             <div class="value gold" id="displayBestDay">0</div>
@@ -488,42 +900,107 @@ Every unit of money you save becomes gold for the kingdom.</div>
       <div class="panel section">
         <h2>Rules of the Realm</h2>
         <div class="subtle">
-          Spend under budget and the difference becomes <span class="gold">gold</span>.<br/><br/>
-          Hit the budget exactly and you survive the day. No glory, no shame, no parade.<br/><br/>
-          Overspend and your streak breaks. Your kingdom will continue existing, but with disappointment.<br/><br/>
-          As your gold grows, your rank rises and your village unlocks peasants, farms, mills, barracks, walls, knights, and eventually an empire.<br/><br/>
-          In other words: discipline builds civilization.
+          Saved money no longer converts 1:1 into gold. That was way too generous and frankly irresponsible.<br/><br/>
+          New formula: roughly 1 gold per 5 units saved, with a minimum of 1 gold when you finish under budget.<br/><br/>
+          Unlocks are now much more expensive, and some of them generate passive gold every successful day.<br/><br/>
+          Exact budget counts as survival, not glory. Overspending breaks the streak and earns nothing.<br/><br/>
+          Rank upgrades improve your visual character from tavern drifter to imperial ruler.
         </div>
       </div>
     </section>
   </div>
 
   <script>
-    const STORAGE_KEY = 'budgetQuest_v1';
+    const STORAGE_KEY = 'budgetQuest_v2';
 
     const ranks = [
-      { min: 0, title: 'Peon' },
-      { min: 50, title: 'Villager' },
-      { min: 120, title: 'Steward' },
-      { min: 220, title: 'Lord' },
-      { min: 400, title: 'Baron' },
-      { min: 650, title: 'Warden' },
-      { min: 950, title: 'King' },
-      { min: 1400, title: 'High King' },
-      { min: 2000, title: 'Emperor' }
+      {
+        min: 0,
+        title: 'Peon',
+        desc: 'A broke but determined soul in tavern rags. The journey begins with basic dignity and limited economic intelligence.',
+        colors: {
+          body: '#6f7b8b', cape: '#42505e', shoulder: '#5a6877', belt: '#43352a', hat: 'none', crown: 'none', weapon: 'none'
+        }
+      },
+      {
+        min: 40,
+        title: 'Villager',
+        desc: 'A functioning citizen with cleaner sleeves and slightly fewer catastrophic spending decisions.',
+        colors: {
+          body: '#7c8f72', cape: '#556a4b', shoulder: '#738667', belt: '#4b3c2f', hat: 'cap', crown: 'none', weapon: 'none'
+        }
+      },
+      {
+        min: 120,
+        title: 'Steward',
+        desc: 'You now look like someone trusted with keys, ledgers, and maybe a room with a door.',
+        colors: {
+          body: '#6f7ca6', cape: '#48537b', shoulder: '#7d89b5', belt: '#43352a', hat: 'hood', crown: 'none', weapon: 'none'
+        }
+      },
+      {
+        min: 260,
+        title: 'Lord',
+        desc: 'The clothes improve, the posture improves, and the kingdom begins pretending you know what you are doing.',
+        colors: {
+          body: '#8a5c88', cape: '#5b385d', shoulder: '#a67ea3', belt: '#4b2f1f', hat: 'hood', crown: 'none', weapon: 'sword'
+        }
+      },
+      {
+        min: 500,
+        title: 'Baron',
+        desc: 'Layered fabrics, better armor, and the first signs of dangerous confidence.',
+        colors: {
+          body: '#7d3f4a', cape: '#512029', shoulder: '#b17b84', belt: '#37261d', hat: 'mantle', crown: 'none', weapon: 'sword'
+        }
+      },
+      {
+        min: 850,
+        title: 'Warden',
+        desc: 'A hardened authority figure. Discipline is no longer a mood. It is infrastructure.',
+        colors: {
+          body: '#395b74', cape: '#1d3341', shoulder: '#62869d', belt: '#2c231c', hat: 'mantle', crown: 'none', weapon: 'staff'
+        }
+      },
+      {
+        min: 1300,
+        title: 'King',
+        desc: 'Royal trim, heavier cloak, visible status. The peasants now discuss your budgeting in low voices.',
+        colors: {
+          body: '#94552c', cape: '#5c3317', shoulder: '#d3a56c', belt: '#38281d', hat: 'none', crown: 'small', weapon: 'staff'
+        }
+      },
+      {
+        min: 1900,
+        title: 'High King',
+        desc: 'Gold details, noble silhouette, and the terrifying calm of someone who has mastered restraint.',
+        colors: {
+          body: '#8357a8', cape: '#4b2d67', shoulder: '#cfb0f0', belt: '#32251c', hat: 'none', crown: 'royal', weapon: 'staff'
+        }
+      },
+      {
+        min: 2800,
+        title: 'Emperor',
+        desc: 'Full imperial authority. At this stage, overspending feels like a crime against history.',
+        colors: {
+          body: '#c09336', cape: '#6a1f2e', shoulder: '#f1d079', belt: '#3f2b17', hat: 'none', crown: 'imperial', weapon: 'staff'
+        }
+      }
     ];
 
     const unlocks = [
-      { gold: 15, icon: '🧑‍🌾', title: 'Peasant', desc: 'Someone has agreed to live in your muddy little village.' },
-      { gold: 40, icon: '🏠', title: 'Cottage', desc: 'A basic roof. Civilization begins with not sleeping in the dirt.' },
-      { gold: 80, icon: '🌾', title: 'Farm', desc: 'Food production unlocked. Tremendous innovation.' },
-      { gold: 140, icon: '🪵', title: 'Lumber Mill', desc: 'Timber means growth. Also means fewer excuses.' },
-      { gold: 230, icon: '⚒️', title: 'Workshop', desc: 'Your people now produce things besides disappointment.' },
-      { gold: 360, icon: '🛡️', title: 'Barracks', desc: 'Discipline becomes doctrine.' },
-      { gold: 520, icon: '🏰', title: 'Stone Walls', desc: 'Your settlement is no longer a rumor.' },
-      { gold: 760, icon: '🐎', title: 'Knight Order', desc: 'Mounted authority. Very convincing.' },
-      { gold: 1100, icon: '⛪', title: 'Grand Hall', desc: 'Your kingdom has an actual center of power.' },
-      { gold: 1600, icon: '👑', title: 'Imperial Capital', desc: 'At this point overspending is treason.' }
+      { gold: 30, icon: '🧑‍🌾', title: 'Peasant', desc: 'A first worker enters the realm.', passive: 1 },
+      { gold: 75, icon: '🧑‍🌾', title: 'Peasant II', desc: 'More hands. Less excuse-making.', passive: 1 },
+      { gold: 140, icon: '🏠', title: 'Cottage', desc: 'Your people no longer sleep in philosophical poverty.', passive: 0 },
+      { gold: 240, icon: '🌾', title: 'Farm', desc: 'Food supply improves. So does morale.', passive: 2 },
+      { gold: 380, icon: '🪵', title: 'Lumber Mill', desc: 'Production begins. Splinters may occur.', passive: 2 },
+      { gold: 560, icon: '🛠️', title: 'Workshop', desc: 'The village starts creating useful things.', passive: 3 },
+      { gold: 800, icon: '🛡️', title: 'Barracks', desc: 'Discipline develops a spine.', passive: 3 },
+      { gold: 1120, icon: '🏰', title: 'Stone Walls', desc: 'The settlement is now real enough to defend.', passive: 4 },
+      { gold: 1480, icon: '🐎', title: 'Knight Order', desc: 'Mounted prestige. Expensive but convincing.', passive: 5 },
+      { gold: 1950, icon: '⛪', title: 'Grand Hall', desc: 'A proper center of command.', passive: 6 },
+      { gold: 2550, icon: '🏛️', title: 'Royal District', desc: 'Urban growth with attitude.', passive: 8 },
+      { gold: 3300, icon: '👑', title: 'Imperial Capital', desc: 'The kingdom becomes an empire.', passive: 10 }
     ];
 
     const els = {
@@ -545,9 +1022,12 @@ Every unit of money you save becomes gold for the kingdom.</div>
       displayBestStreak: document.getElementById('displayBestStreak'),
       displayDays: document.getElementById('displayDays'),
       displayWinRate: document.getElementById('displayWinRate'),
+      displayPassiveGold: document.getElementById('displayPassiveGold'),
       rankPill: document.getElementById('rankPill'),
       unlockList: document.getElementById('unlockList'),
-      historyList: document.getElementById('historyList')
+      historyList: document.getElementById('historyList'),
+      avatar: document.getElementById('avatar'),
+      avatarDesc: document.getElementById('avatarDesc')
     };
 
     const defaultData = {
@@ -561,13 +1041,17 @@ Every unit of money you save becomes gold for the kingdom.</div>
       history: []
     };
 
+    function clone(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+
     function loadData() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return structuredClone(defaultData);
-        return { ...structuredClone(defaultData), ...JSON.parse(raw) };
+        if (!raw) return clone(defaultData);
+        return { ...clone(defaultData), ...JSON.parse(raw) };
       } catch {
-        return structuredClone(defaultData);
+        return clone(defaultData);
       }
     }
 
@@ -576,10 +1060,6 @@ Every unit of money you save becomes gold for the kingdom.</div>
     }
 
     let state = loadData();
-
-    function structuredClone(obj) {
-      return JSON.parse(JSON.stringify(obj));
-    }
 
     function fmtMoney(value, currency) {
       try {
@@ -609,7 +1089,11 @@ Every unit of money you save becomes gold for the kingdom.</div>
       for (const rank of ranks) {
         if (totalGold >= rank.min) current = rank;
       }
-      return current.title;
+      return current;
+    }
+
+    function getPassiveGold() {
+      return unlocks.reduce((sum, item) => sum + (state.totalGold >= item.gold ? item.passive : 0), 0);
     }
 
     function victoryRate() {
@@ -617,20 +1101,71 @@ Every unit of money you save becomes gold for the kingdom.</div>
       return Math.round((state.totalWins / state.history.length) * 100);
     }
 
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function renderAvatar(rank) {
+      const c = rank.colors;
+      const hat = c.hat === 'cap'
+        ? '<div class="hat" style="top:2px;left:25px;width:42px;height:14px;border-radius:12px 12px 4px 4px;background:#4c5a68"></div>'
+        : c.hat === 'hood'
+          ? '<div class="hat" style="top:3px;left:20px;width:54px;height:28px;border-radius:18px 18px 8px 8px;background:' + c.cape + ';"></div>'
+          : c.hat === 'mantle'
+            ? '<div class="hat" style="top:0px;left:18px;width:58px;height:18px;border-radius:12px;background:' + c.shoulder + ';"></div>'
+            : '';
+
+      const crown = c.crown === 'small'
+        ? '<div class="crown" style="top:-2px;left:29px;width:36px;height:16px;background:linear-gradient(180deg,#ffe29c,#e2b44c);clip-path:polygon(0 100%,0 48%,14% 48%,22% 0,38% 48%,50% 15%,62% 48%,78% 0,86% 48%,100% 48%,100% 100%);"></div>'
+        : c.crown === 'royal'
+          ? '<div class="crown" style="top:-4px;left:24px;width:46px;height:22px;background:linear-gradient(180deg,#ffe9b6,#e0b04c);clip-path:polygon(0 100%,0 44%,12% 44%,20% 0,34% 44%,50% 10%,66% 44%,80% 0,88% 44%,100% 44%,100% 100%);"></div><div class="gem" style="top:6px;left:43px;width:8px;height:8px;border-radius:50%;background:#7ec8ff;box-shadow:0 0 10px rgba(126,200,255,0.35);"></div>'
+          : c.crown === 'imperial'
+            ? '<div class="crown" style="top:-6px;left:20px;width:54px;height:26px;background:linear-gradient(180deg,#fff0c3,#dca43d);clip-path:polygon(0 100%,0 40%,10% 40%,18% 0,30% 40%,50% 8%,70% 40%,82% 0,90% 40%,100% 40%,100% 100%);"></div><div class="gem" style="top:5px;left:33px;width:10px;height:10px;border-radius:50%;background:#c17cff;box-shadow:0 0 10px rgba(193,124,255,0.4);"></div><div class="gem" style="top:7px;left:51px;width:8px;height:8px;border-radius:50%;background:#7ec8ff;box-shadow:0 0 10px rgba(126,200,255,0.35);"></div>'
+            : '';
+
+      const weapon = c.weapon === 'sword'
+        ? '<div class="sword" style="left:10px;top:46px;width:4px;height:58px;background:#cfd6dd;border-radius:999px;transform:rotate(-18deg);"></div><div class="sword" style="left:6px;top:82px;width:14px;height:4px;background:#8a6138;border-radius:999px;transform:rotate(-18deg);"></div>'
+        : c.weapon === 'staff'
+          ? '<div class="staff" style="right:14px;top:38px;width:4px;height:72px;background:#9d7d5d;border-radius:999px;transform:rotate(10deg);"></div><div class="staff" style="right:10px;top:30px;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff0c7,#efc15c 60%,#c7902f);box-shadow:0 0 12px rgba(239,193,92,0.35);"></div>'
+          : '';
+
+      els.avatar.innerHTML = `
+        ${weapon}
+        <div class="cape" style="background:${c.cape};"></div>
+        <div class="body" style="background:${c.body};"></div>
+        <div class="belt" style="background:${c.belt};"></div>
+        <div class="shoulder left" style="background:${c.shoulder};"></div>
+        <div class="shoulder right" style="background:${c.shoulder};"></div>
+        <div class="head"></div>
+        ${hat}
+        ${crown}
+      `;
+    }
+
     function renderHeader() {
       const rank = getRank(state.totalGold);
+      const passiveGold = getPassiveGold();
       els.displayName.textContent = state.playerName || 'Unnamed';
-      els.displayRank.textContent = rank;
-      els.rankPill.textContent = rank;
+      els.displayRank.textContent = rank.title;
+      els.avatarDesc.textContent = rank.desc;
+      els.rankPill.textContent = rank.title;
       els.displayGold.textContent = fmtGold(state.totalGold);
       els.displayStreak.textContent = String(state.streak);
       els.displayBestDay.textContent = fmtGold(state.bestDayGold);
       els.displayBestStreak.textContent = String(state.bestStreak);
       els.displayDays.textContent = String(state.history.length);
       els.displayWinRate.textContent = `${victoryRate()}%`;
+      els.displayPassiveGold.textContent = fmtGold(passiveGold);
+      renderAvatar(rank);
     }
 
     function renderUnlocks() {
+      const passiveGold = getPassiveGold();
       els.unlockList.innerHTML = '';
       unlocks.forEach(item => {
         const unlocked = state.totalGold >= item.gold;
@@ -641,7 +1176,7 @@ Every unit of money you save becomes gold for the kingdom.</div>
             <div style="font-size:1.45rem; line-height:1;">${item.icon}</div>
             <div>
               <div class="unlockTitle">${item.title}</div>
-              <div class="unlockDesc">${item.desc}</div>
+              <div class="unlockDesc">${item.desc}${item.passive ? ` (+${item.passive} passive gold/day)` : ''}</div>
             </div>
           </div>
           <div class="unlockCost">${unlocked ? 'Unlocked' : `${item.gold} gold`}</div>
@@ -669,6 +1204,8 @@ Every unit of money you save becomes gold for the kingdom.</div>
             ? `Overspent ${fmtMoney(Math.abs(diff), entry.currency)}`
             : 'Exact budget';
 
+        const passiveText = entry.passiveGold ? ` • Passive +${fmtGold(entry.passiveGold)}` : '';
+
         const div = document.createElement('div');
         div.className = 'historyItem';
         div.innerHTML = `
@@ -676,20 +1213,11 @@ Every unit of money you save becomes gold for the kingdom.</div>
             <span>${entry.date}</span>
             <span class="${resultClass}">${resultText}</span>
           </div>
-          <div class="historyMeta">Budget: ${fmtMoney(entry.budget, entry.currency)} • Spent: ${fmtMoney(entry.spent, entry.currency)}</div>
+          <div class="historyMeta">Budget: ${fmtMoney(entry.budget, entry.currency)} • Spent: ${fmtMoney(entry.spent, entry.currency)}${passiveText}</div>
           ${entry.note ? `<div class="historyNote">${escapeHtml(entry.note)}</div>` : ''}
         `;
         els.historyList.appendChild(div);
       });
-    }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
     }
 
     function renderAll() {
@@ -711,29 +1239,35 @@ Every unit of money you save becomes gold for the kingdom.</div>
       els.resultBox.textContent = message;
     }
 
-    function buildResultMessage({ diff, goldEarned, budget, spent, currency, streak, rankBefore, rankAfter }) {
+    function calculateBaseGold(savedAmount) {
+      if (savedAmount <= 0) return 0;
+      return Math.max(1, Math.floor(savedAmount / 5));
+    }
+
+    function buildResultMessage({ diff, baseGold, passiveGold, totalGoldEarned, budget, spent, currency, streak, rankBefore, rankAfter }) {
       if (diff > 0) {
         const lines = [];
-        lines.push(`Victory. You stayed under budget and earned ${goldEarned} gold.`);
+        lines.push(`Victory. You stayed under budget and earned ${totalGoldEarned} gold.`);
         lines.push(`Saved: ${fmtMoney(diff, currency)} from a ${fmtMoney(budget, currency)} limit.`);
-        if (streak > 1) lines.push(`Current streak: ${streak}. Discipline is becoming policy.`);
-        if (rankAfter !== rankBefore) lines.push(`Rank up: ${rankBefore} → ${rankAfter}. Try not to embarrass the crown.`);
-        if (diff >= budget * 0.5) lines.push('Brutal efficiency. That was a raid-level save.');
-        else if (diff >= budget * 0.2) lines.push('Solid work. The treasury approves. Barely emotional, but approving.');
-        else lines.push('Clean save. Not legendary, but respectable.');
+        lines.push(`Conversion: ${fmtMoney(diff, currency)} → ${baseGold} gold. Passive income added ${passiveGold} more.`);
+        if (streak > 1) lines.push(`Current streak: ${streak}. The treasury is getting arrogant.`);
+        if (rankAfter.title !== rankBefore.title) lines.push(`Rank up: ${rankBefore.title} → ${rankAfter.title}. Try not to waste the promotion.`);
+        if (diff >= budget * 0.5) lines.push('Brutal efficiency. That was a genuinely elite save.');
+        else if (diff >= budget * 0.2) lines.push('Solid work. Not flashy, but highly competent.');
+        else lines.push('Clean save. Respectable. Controlled. Adult behavior, somehow.');
         return { text: lines.join('\n'), tone: 'gold' };
       }
 
       if (diff === 0) {
         return {
-          text: `Exact budget hit. No gold earned, no shame suffered.\nSpent exactly ${fmtMoney(spent, currency)}.\nA strangely surgical performance.` ,
+          text: `Exact budget hit. No base gold earned.\nSpent exactly ${fmtMoney(spent, currency)}.\nYou survived the day, which is technically a form of success.`,
           tone: 'warn'
         };
       }
 
       const over = Math.abs(diff);
       return {
-        text: `Overspend. The streak is broken.\nYou went over by ${fmtMoney(over, currency)} on a ${fmtMoney(budget, currency)} budget.\nThe kingdom remains operational, but morale has questions.`,
+        text: `Overspend. The streak is broken.\nYou went over by ${fmtMoney(over, currency)} on a ${fmtMoney(budget, currency)} budget.\nThe kingdom remains intact, but its confidence in you has narrowed.`,
         tone: 'bad'
       };
     }
@@ -760,24 +1294,25 @@ Every unit of money you save becomes gold for the kingdom.</div>
       }
 
       const existingIndex = state.history.findIndex(entry => entry.date === date);
-      const rankBefore = getRank(state.totalGold);
-
       if (existingIndex !== -1) {
-        setResult('That date already exists in your campaign log. Delete/reset later or use another date for now.', 'warn');
+        setResult('That date already exists in your campaign log. Use another date or reset later.', 'warn');
         return;
       }
 
       state.playerName = playerName;
       state.currency = currency;
 
+      const rankBefore = getRank(state.totalGold);
       const diff = Number((budget - spent).toFixed(2));
-      const goldEarned = diff > 0 ? Math.round(diff) : 0;
+      const passiveGold = getPassiveGold();
+      const baseGold = diff > 0 ? calculateBaseGold(diff) : 0;
+      const totalGoldEarned = diff > 0 ? baseGold + passiveGold : 0;
 
       if (diff > 0) {
-        state.totalGold += goldEarned;
+        state.totalGold += totalGoldEarned;
         state.streak += 1;
         state.totalWins += 1;
-        if (goldEarned > state.bestDayGold) state.bestDayGold = goldEarned;
+        if (totalGoldEarned > state.bestDayGold) state.bestDayGold = totalGoldEarned;
         if (state.streak > state.bestStreak) state.bestStreak = state.streak;
       } else if (diff === 0) {
         state.streak += 1;
@@ -791,13 +1326,14 @@ Every unit of money you save becomes gold for the kingdom.</div>
         budget,
         spent,
         currency,
-        gold: goldEarned,
+        gold: totalGoldEarned,
+        passiveGold,
         note
       });
 
       saveData();
       const rankAfter = getRank(state.totalGold);
-      const result = buildResultMessage({ diff, goldEarned, budget, spent, currency, streak: state.streak, rankBefore, rankAfter });
+      const result = buildResultMessage({ diff, baseGold, passiveGold, totalGoldEarned, budget, spent, currency, streak: state.streak, rankBefore, rankAfter });
       setResult(result.text, result.tone);
       renderAll();
 
@@ -810,29 +1346,30 @@ Every unit of money you save becomes gold for the kingdom.</div>
       state = {
         playerName: 'King Coinward',
         currency: 'MXN',
-        totalGold: 281,
-        streak: 4,
-        bestStreak: 4,
-        bestDayGold: 74,
-        totalWins: 5,
+        totalGold: 642,
+        streak: 5,
+        bestStreak: 5,
+        bestDayGold: 28,
+        totalWins: 6,
         history: [
-          { date: '2026-03-12', budget: 100, spent: 82, currency: 'MXN', gold: 18, note: 'Small save. Acceptable.' },
-          { date: '2026-03-13', budget: 100, spent: 55, currency: 'MXN', gold: 45, note: 'Cooked at home. Treasury smiled.' },
-          { date: '2026-03-14', budget: 100, spent: 26, currency: 'MXN', gold: 74, note: 'Legendary restraint.' },
-          { date: '2026-03-15', budget: 100, spent: 91, currency: 'MXN', gold: 9, note: 'Not glorious, but still a win.' },
-          { date: '2026-03-16', budget: 100, spent: 0, currency: 'MXN', gold: 100, note: 'The villagers are suspiciously impressed.' },
-          { date: '2026-03-17', budget: 100, spent: 65, currency: 'MXN', gold: 35, note: 'Clean close. Good control.' }
+          { date: '2026-03-11', budget: 100, spent: 72, currency: 'MXN', gold: 5, passiveGold: 0, note: 'First decent save.' },
+          { date: '2026-03-12', budget: 100, spent: 40, currency: 'MXN', gold: 13, passiveGold: 1, note: 'Good discipline.' },
+          { date: '2026-03-13', budget: 100, spent: 26, currency: 'MXN', gold: 16, passiveGold: 2, note: 'Legendary restraint. Beer budget remained on leash.' },
+          { date: '2026-03-14', budget: 100, spent: 88, currency: 'MXN', gold: 5, passiveGold: 3, note: 'Small save, still a win.' },
+          { date: '2026-03-15', budget: 100, spent: 0, currency: 'MXN', gold: 24, passiveGold: 4, note: 'Treasury went feral.' },
+          { date: '2026-03-16', budget: 100, spent: 61, currency: 'MXN', gold: 15, passiveGold: 5, note: 'Clean close. Good control.' },
+          { date: '2026-03-17', budget: 100, spent: 130, currency: 'MXN', gold: 0, passiveGold: 0, note: 'Moment of weakness. The realm disapproved.' }
         ]
       };
       saveData();
-      setResult('Demo kingdom loaded. Observe what financial discipline can do when left unsupervised.', 'gold');
+      setResult('Demo kingdom loaded. This version is slower, cleaner, and less financially absurd.', 'gold');
       renderAll();
     }
 
     function resetKingdom() {
       const ok = window.confirm('Reset the entire kingdom? This deletes your ruler, gold, history, and progress.');
       if (!ok) return;
-      state = structuredClone(defaultData);
+      state = clone(defaultData);
       localStorage.removeItem(STORAGE_KEY);
       els.budget.value = '';
       els.spent.value = '';
