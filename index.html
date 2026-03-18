@@ -340,7 +340,7 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'budgetQuest_v5';
+    const STORAGE_KEY = 'budgetQuest_v6';
 
     const hairColors = [
       { id:'dark_brown', name:'Dark Brown', value:'#3c281d' },
@@ -353,24 +353,24 @@
 
     const hairStylesByGender = {
       male: [
-        { id:'short_hero', name:'Short Hero Cut' },
-        { id:'swept_rogue', name:'Swept Rogue' },
-        { id:'spiky_champion', name:'Spiky Champion' },
-        { id:'prince_wave', name:'Prince Wave' }
+        { id:'royal_sweep', name:'Royal Sweep' },
+        { id:'hero_quiff', name:'Hero Quiff' },
+        { id:'battle_trim', name:'Battle Trim' },
+        { id:'noble_wave', name:'Noble Wave' }
       ],
       female: [
-        { id:'adventurer_bob', name:'Adventurer Bob' },
-        { id:'long_royal', name:'Long Royal Flow' },
-        { id:'braided_guardian', name:'Braided Guardian' },
-        { id:'high_pony', name:'High Ponytail' }
+        { id:'queen_bob', name:'Queen Bob' },
+        { id:'royal_flow', name:'Royal Flow' },
+        { id:'high_pony', name:'High Ponytail' },
+        { id:'forest_braid', name:'Forest Braid' }
       ]
     };
 
     const beardStyles = [
       { id:'none', name:'No Beard' },
-      { id:'short_box', name:'Short Beard' },
-      { id:'mustache_goatee', name:'Mustache + Goatee' },
-      { id:'full_king', name:'Full King Beard' }
+      { id:'royal_trim', name:'Royal Trim' },
+      { id:'hero_mustache', name:'Hero Mustache' },
+      { id:'king_full', name:'King Beard' }
     ];
 
     const buildingDefs = [
@@ -481,9 +481,9 @@
         ownedCosmetics: [],
         equippedCosmetics: {},
         look: {
-          hairStyle: 'short_hero',
+          hairStyle: 'royal_sweep',
           hairColor: 'dark_brown',
-          beardStyle: 'short_box'
+          beardStyle: 'royal_trim'
         },
         buildings: Object.fromEntries(buildingDefs.map(b => [b.id, 0]))
       };
@@ -511,11 +511,11 @@
     function persist(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
     function ensureLookDefaults(){
-      if(!state.look) state.look = { hairStyle:'short_hero', hairColor:'dark_brown', beardStyle:'short_box' };
+      if(!state.look) state.look = { hairStyle:'royal_sweep', hairColor:'dark_brown', beardStyle:'royal_trim' };
       if(!hairColors.some(c => c.id === state.look.hairColor)) state.look.hairColor = 'dark_brown';
       const styles = hairStylesByGender[state.gender] || hairStylesByGender.male;
       if(!styles.some(s => s.id === state.look.hairStyle)) state.look.hairStyle = styles[0].id;
-      if(!beardStyles.some(b => b.id === state.look.beardStyle)) state.look.beardStyle = 'short_box';
+      if(!beardStyles.some(b => b.id === state.look.beardStyle)) state.look.beardStyle = 'royal_trim';
       if(state.gender === 'female') state.look.beardStyle = 'none';
     }
 
@@ -563,7 +563,7 @@
       const styles = hairStylesByGender[state.gender];
       state.look.hairStyle = styles[0].id;
       if(state.gender === 'female') state.look.beardStyle = 'none';
-      else if(state.look.beardStyle === 'none') state.look.beardStyle = 'short_box';
+      else if(state.look.beardStyle === 'none') state.look.beardStyle = 'royal_trim';
       populateLookControls();
       syncInputs();
       renderRuler();
@@ -590,23 +590,13 @@
       for(const rank of ranks){ if(state.gold >= rank.minGold) current = rank; }
       return current;
     }
-
-    function getNextRank(){
-      const current = getRank();
-      return ranks.find(r => r.minGold > current.minGold) || null;
-    }
-
+    function getNextRank(){ const current = getRank(); return ranks.find(r => r.minGold > current.minGold) || null; }
     function getRankIncome(){ return getRank().rankIncome; }
-
     function getPassiveIncome(){
       const buildingIncome = buildingDefs.reduce((sum, b) => sum + ((state.buildings[b.id] || 0) * b.income), 0);
       return buildingIncome + getRankIncome();
     }
-
-    function getTypeCount(type){
-      return buildingDefs.filter(b => b.type === type).reduce((sum, b) => sum + (state.buildings[b.id] || 0), 0);
-    }
-
+    function getTypeCount(type){ return buildingDefs.filter(b => b.type === type).reduce((sum, b) => sum + (state.buildings[b.id] || 0), 0); }
     function getPopCap(){ return getRank().popCap; }
 
     function canBuyBuilding(building){
@@ -617,12 +607,7 @@
       if(state.gold < cost) return { ok:false, reason:`Need ${cost} gold.` };
       return { ok:true, reason:'' };
     }
-
-    function getBuildingCost(building){
-      const owned = state.buildings[building.id] || 0;
-      return Math.round(building.baseCost * Math.pow(1.5, owned));
-    }
-
+    function getBuildingCost(building){ const owned = state.buildings[building.id] || 0; return Math.round(building.baseCost * Math.pow(1.5, owned)); }
     function isCosmeticUnlocked(cosmetic){ return cosmetic.ranks.includes(getRank().name); }
     function isCosmeticOwned(id){ return state.ownedCosmetics.includes(id); }
     function isCosmeticEquipped(id){ return Object.values(state.equippedCosmetics).includes(id); }
@@ -635,45 +620,28 @@
       state.look.beardStyle = state.gender === 'male' ? els.beardStyle.value : 'none';
       persist();
       renderAll();
-      flashLog(`Ruler saved. ${state.rulerName || 'Unnamed Ruler'} now has the new phase 1 look.`);
+      flashLog(`Ruler saved. ${state.rulerName || 'Unnamed Ruler'} now has the premium cartoon look.`);
     }
 
     function logDay(){
       const budget = Number(els.budget.value);
       const spent = Number(els.spent.value);
       if(!Number.isFinite(budget) || !Number.isFinite(spent) || budget < 0 || spent < 0){ flashLog('Enter a valid budget and spending amount first.'); return; }
-
       const today = new Date().toISOString().slice(0,10);
       if(state.lastLogDate === today){ flashLog('You already logged today. Come back tomorrow for the next battle.'); return; }
-
       const saved = Math.max(0, budget - spent);
       const overspent = Math.max(0, spent - budget);
       let earnedGold = Math.floor(saved / 10);
       let streakBonus = 0;
-
-      if(saved > 0){
-        state.streak += 1;
-        if(state.streak > 0 && state.streak % 7 === 0) streakBonus = 5;
-      } else {
-        state.streak = 0;
-      }
-
+      if(saved > 0){ state.streak += 1; if(state.streak > 0 && state.streak % 7 === 0) streakBonus = 5; } else { state.streak = 0; }
       const totalEarned = earnedGold + streakBonus;
       state.gold += totalEarned;
       state.lastLogDate = today;
       state.history.push({ date: today, budget, spent, saved, overspent, earnedGold: totalEarned, passiveGold: 0, currency: state.currency });
-      persist();
-      renderAll();
-
-      if(saved > 0){
-        let msg = `Victory. You saved ${state.currency}${saved.toFixed(2)} and earned ${earnedGold} gold.`;
-        if(streakBonus) msg += ` Streak reward: +${streakBonus} bonus gold.`;
-        flashLog(msg);
-      } else if(overspent > 0){
-        flashLog(`You went over budget by ${state.currency}${overspent.toFixed(2)}. No gold today. The realm is disappointed.`);
-      } else {
-        flashLog('Perfectly on budget. Controlled, but no savings means no gold.');
-      }
+      persist(); renderAll();
+      if(saved > 0){ let msg = `Victory. You saved ${state.currency}${saved.toFixed(2)} and earned ${earnedGold} gold.`; if(streakBonus) msg += ` Streak reward: +${streakBonus} bonus gold.`; flashLog(msg); }
+      else if(overspent > 0){ flashLog(`You went over budget by ${state.currency}${overspent.toFixed(2)}. No gold today. The realm is disappointed.`); }
+      else { flashLog('Perfectly on budget. Controlled, but no savings means no gold.'); }
     }
 
     function collectIncome(){
@@ -681,12 +649,10 @@
       if(income <= 0){ flashLog('You need rank income or buildings before collecting passive income.'); return; }
       const today = new Date().toISOString().slice(0,10);
       if(state.lastIncomeDate === today){ flashLog('Passive income already collected today.'); return; }
-
       state.gold += income;
       state.lastIncomeDate = today;
       state.history.push({ date: today + ' · income', budget: 0, spent: 0, saved: 0, overspent: 0, earnedGold: income, passiveGold: income, currency: state.currency });
-      persist();
-      renderAll();
+      persist(); renderAll();
       flashLog(`Your kingdom produced ${income} gold today (${getRankIncome()} from rank, ${income - getRankIncome()} from buildings).`);
     }
 
@@ -706,21 +672,13 @@
       const cosmetic = cosmetics.find(c => c.id === id);
       if(!cosmetic) return;
       if(!isCosmeticUnlocked(cosmetic)){ flashLog(`${cosmetic.name} unlocks later. Reach ${cosmetic.ranks[0]}.`); return; }
-
       if(!isCosmeticOwned(id)){
         if(state.gold < cosmetic.cost){ flashLog(`Not enough gold for ${cosmetic.name}. You need ${cosmetic.cost} gold.`); return; }
         state.gold -= cosmetic.cost;
         state.ownedCosmetics.push(id);
       }
-
-      if(state.equippedCosmetics[cosmetic.slot] === id){
-        delete state.equippedCosmetics[cosmetic.slot];
-        flashLog(`${cosmetic.name} unequipped.`);
-      } else {
-        state.equippedCosmetics[cosmetic.slot] = id;
-        flashLog(`${cosmetic.name} equipped.`);
-      }
-
+      if(state.equippedCosmetics[cosmetic.slot] === id){ delete state.equippedCosmetics[cosmetic.slot]; flashLog(`${cosmetic.name} unequipped.`); }
+      else { state.equippedCosmetics[cosmetic.slot] = id; flashLog(`${cosmetic.name} equipped.`); }
       persist(); renderAll();
     }
 
@@ -739,27 +697,13 @@
       els.rankDisplay.textContent = rank.name;
       els.incomeDisplay.textContent = getPassiveIncome();
       els.rankGlow.textContent = `✦ ${rank.name}`;
-      renderRuler();
-      renderXP();
-      renderBuildings();
-      renderCosmetics();
-      renderVillage();
-      renderHistory();
-      renderRankGuide();
-      syncInputs();
+      renderRuler(); renderXP(); renderBuildings(); renderCosmetics(); renderVillage(); renderHistory(); renderRankGuide(); syncInputs();
     }
 
     function renderXP(){
-      const current = getRank();
-      const next = getNextRank();
-      if(!next){
-        els.xpFill.style.width = '100%';
-        els.xpLeftLabel.textContent = 'Maximum rank reached';
-        els.xpRightLabel.textContent = `${Math.floor(state.gold)} gold total`;
-        return;
-      }
-      const currentMin = current.minGold;
-      const nextMin = next.minGold;
+      const current = getRank(); const next = getNextRank();
+      if(!next){ els.xpFill.style.width = '100%'; els.xpLeftLabel.textContent = 'Maximum rank reached'; els.xpRightLabel.textContent = `${Math.floor(state.gold)} gold total`; return; }
+      const currentMin = current.minGold, nextMin = next.minGold;
       const progress = Math.max(0, Math.min(1, (state.gold - currentMin) / (nextMin - currentMin)));
       els.xpFill.style.width = `${progress * 100}%`;
       els.xpLeftLabel.textContent = `${current.name} → ${next.name}`;
@@ -786,16 +730,9 @@
         if(building.type === 'farmer') extra = `Farmer cap: ${getTypeCount('farmer')} / ${getPopCap()}`;
         if(building.type === 'special') extra = 'No rank cap';
         card.innerHTML = `
-          <div class="buildingTop">
-            <div>
-              <div class="buildingName">${building.emoji} ${building.name}</div>
-              <div class="buildingMeta">Owned: ${owned} · +${building.income} gold/day each</div>
-            </div>
-            <div class="cost">Cost: ${cost}</div>
-          </div>
+          <div class="buildingTop"><div><div class="buildingName">${building.emoji} ${building.name}</div><div class="buildingMeta">Owned: ${owned} · +${building.income} gold/day each</div></div><div class="cost">Cost: ${cost}</div></div>
           <div class="buildingMeta">${extra}</div>
-          <button class="primary buyBtn" ${!check.ok ? 'disabled' : ''}>Buy</button>
-        `;
+          <button class="primary buyBtn" ${!check.ok ? 'disabled' : ''}>Buy</button>`;
         card.querySelector('button').addEventListener('click', () => buyBuilding(building.id));
         els.buildingGrid.appendChild(card);
       }
@@ -804,23 +741,13 @@
     function renderCosmetics(){
       els.cosmeticGrid.innerHTML = '';
       for(const cosmetic of cosmetics){
-        const owned = isCosmeticOwned(cosmetic.id);
-        const unlocked = isCosmeticUnlocked(cosmetic);
-        const equipped = isCosmeticEquipped(cosmetic.id);
-        const nextRankName = cosmetic.ranks[0];
+        const owned = isCosmeticOwned(cosmetic.id), unlocked = isCosmeticUnlocked(cosmetic), equipped = isCosmeticEquipped(cosmetic.id), nextRankName = cosmetic.ranks[0];
         const card = document.createElement('div');
         card.className = 'cosmeticCard';
         card.innerHTML = `
-          <div class="cosmeticTop">
-            <div>
-              <div class="cosmeticName">${cosmetic.emoji} ${cosmetic.name}</div>
-              <div class="cosmeticMeta">${owned ? 'Owned prestige cosmetic' : `Cost: ${cosmetic.cost} gold`}</div>
-            </div>
-            ${owned ? `<div class="ownedBadge">${equipped ? 'Equipped' : 'Owned'}</div>` : `<div class="cost">${cosmetic.cost}</div>`}
-          </div>
+          <div class="cosmeticTop"><div><div class="cosmeticName">${cosmetic.emoji} ${cosmetic.name}</div><div class="cosmeticMeta">${owned ? 'Owned prestige cosmetic' : `Cost: ${cosmetic.cost} gold`}</div></div>${owned ? `<div class="ownedBadge">${equipped ? 'Equipped' : 'Owned'}</div>` : `<div class="cost">${cosmetic.cost}</div>`}</div>
           <div class="cosmeticMeta">${unlocked ? `Available for ${getRank().name}` : `Unlocks at ${nextRankName}`}</div>
-          <button class="secondary buyBtn" ${!unlocked && !owned ? 'disabled' : ''}>${owned ? (equipped ? 'Unequip' : 'Equip') : 'Buy'}</button>
-        `;
+          <button class="secondary buyBtn" ${!unlocked && !owned ? 'disabled' : ''}>${owned ? (equipped ? 'Unequip' : 'Equip') : 'Buy'}</button>`;
         card.querySelector('button').addEventListener('click', () => buyOrEquipCosmetic(cosmetic.id));
         els.cosmeticGrid.appendChild(card);
       }
@@ -859,11 +786,7 @@
         const resultText = entry.passiveGold ? `+${entry.passiveGold} passive gold` : diff > 0 ? `+${entry.earnedGold} gold` : diff < 0 ? `Overspent ${entry.currency}${entry.overspent.toFixed(2)}` : 'Exact budget';
         const div = document.createElement('div');
         div.className = 'historyItem';
-        div.innerHTML = `
-          <div class="historyTop"><span>${entry.date}</span><span class="${resultClass}">${resultText}</span></div>
-          <div class="historyMeta">Budget: ${entry.currency}${Number(entry.budget).toFixed(2)} • Spent: ${entry.currency}${Number(entry.spent).toFixed(2)}</div>
-          <div class="historyNote">${entry.saved > 0 ? `Saved ${entry.currency}${entry.saved.toFixed(2)}` : entry.overspent > 0 ? `Went over by ${entry.currency}${entry.overspent.toFixed(2)}` : entry.passiveGold ? 'Income collected from status and settlement.' : 'Held the exact line.'}</div>
-        `;
+        div.innerHTML = `<div class="historyTop"><span>${entry.date}</span><span class="${resultClass}">${resultText}</span></div><div class="historyMeta">Budget: ${entry.currency}${Number(entry.budget).toFixed(2)} • Spent: ${entry.currency}${Number(entry.spent).toFixed(2)}</div><div class="historyNote">${entry.saved > 0 ? `Saved ${entry.currency}${entry.saved.toFixed(2)}` : entry.overspent > 0 ? `Went over by ${entry.currency}${entry.overspent.toFixed(2)}` : entry.passiveGold ? 'Income collected from status and settlement.' : 'Held the exact line.'}</div>`;
         els.historyList.appendChild(div);
       });
     }
@@ -874,12 +797,7 @@
       ranks.forEach(rank => {
         const div = document.createElement('div');
         div.className = `rankCard ${rank.name === currentName ? 'activeRank' : ''}`;
-        div.innerHTML = `
-          <div class="rankTop"><span>${rank.name}</span><span>${rank.minGold}+ gold</span></div>
-          <div class="rankMeta">Population cap: ${rank.popCap} peasants / ${rank.popCap} farmers</div>
-          <div class="rankMeta">Rank passive income: ${rank.rankIncome} gold/day</div>
-          <div class="rankMeta">${rank.next ? `Next promotion at ${rank.next} gold` : 'Final rank reached here'}</div>
-        `;
+        div.innerHTML = `<div class="rankTop"><span>${rank.name}</span><span>${rank.minGold}+ gold</span></div><div class="rankMeta">Population cap: ${rank.popCap} peasants / ${rank.popCap} farmers</div><div class="rankMeta">Rank passive income: ${rank.rankIncome} gold/day</div><div class="rankMeta">${rank.next ? `Next promotion at ${rank.next} gold` : 'Final rank reached here'}</div>`;
         els.rankList.appendChild(div);
       });
     }
@@ -897,78 +815,74 @@
     }
 
     function flashLog(text){ els.logBox.textContent = text; }
-
-    function getHairColorValue(id){
-      return (hairColors.find(c => c.id === id) || hairColors[0]).value;
-    }
+    function getHairColorValue(id){ return (hairColors.find(c => c.id === id) || hairColors[0]).value; }
 
     function createRulerSVG(rankName, gender, equipped, look){
       const cfg = getRulerConfig(rankName, gender);
       const hairColor = getHairColorValue(look?.hairColor || 'dark_brown');
-      const hairStyle = look?.hairStyle || (gender === 'male' ? 'short_hero' : 'adventurer_bob');
-      const beardStyle = gender === 'male' ? (look?.beardStyle || 'short_box') : 'none';
-
+      const hairStyle = look?.hairStyle || (gender === 'male' ? 'royal_sweep' : 'queen_bob');
+      const beardStyle = gender === 'male' ? (look?.beardStyle || 'royal_trim') : 'none';
       const weapon = equipped.weapon ? cosmetics.find(c => c.id === equipped.weapon) : null;
       const head = equipped.head ? cosmetics.find(c => c.id === equipped.head) : null;
       const back = equipped.back ? cosmetics.find(c => c.id === equipped.back) : null;
       const offhand = equipped.offhand ? cosmetics.find(c => c.id === equipped.offhand) : null;
 
-      const throne = back && back.id === 'throne' ? `<g opacity=".96"><rect x="104" y="172" width="152" height="98" rx="16" fill="#6d4313"/><rect x="132" y="124" width="96" height="82" rx="16" fill="#b8872a"/><rect x="114" y="136" width="14" height="58" rx="7" fill="#ffdb78"/><rect x="232" y="136" width="14" height="58" rx="7" fill="#ffdb78"/></g>` : '';
-      const weaponSvg = getWeaponSVG(weapon?.id);
-      const offhandSvg = offhand && offhand.id === 'royal_orb' ? `<g transform="translate(112 184)"><circle cx="0" cy="0" r="16" fill="#8dd7ff" opacity=".30"/><circle cx="0" cy="0" r="10" fill="#7ec8ff" stroke="#dff6ff" stroke-width="2"/></g>` : '';
-      const baseCrown = cfg.crown ? `<g transform="translate(0 -2)"><path d="M146 58 L160 34 L180 54 L200 32 L214 58 Z" fill="${cfg.crown}" stroke="#7f5d17" stroke-width="3"/><circle cx="180" cy="47" r="5" fill="#7ec8ff"/></g>` : '';
-      const grandCrown = head && head.id === 'big_crown' ? `<g transform="translate(0 -12)"><path d="M140 64 L154 24 L180 50 L206 22 L220 64 Z" fill="#ffd95a" stroke="#7f5d17" stroke-width="4"/><circle cx="180" cy="42" r="7" fill="#82d4ff"/><circle cx="157" cy="54" r="4" fill="#ff808f"/><circle cx="203" cy="52" r="4" fill="#80e09b"/></g>` : '';
-      const medal = cfg.medal ? `<circle cx="180" cy="190" r="11" fill="#ffd86f" stroke="#7f5d17" stroke-width="3"/>` : '';
+      const headShape = gender === 'female'
+        ? `<path d="M144 118 Q144 80 180 72 Q216 80 216 118 Q216 154 198 176 Q190 186 180 188 Q170 186 162 176 Q144 154 144 118Z" fill="${cfg.skin}"/>`
+        : `<path d="M142 118 Q142 78 180 70 Q218 78 218 118 Q218 152 200 174 Q192 184 180 186 Q168 184 160 174 Q142 152 142 118Z" fill="${cfg.skin}"/>`;
+
+      const outfit = gender === 'female'
+        ? `<path d="M138 170 Q158 152 180 152 Q202 152 222 170 L238 260 Q216 286 180 290 Q144 286 122 260 Z" fill="url(#shirtGrad)"/>`
+        : `<path d="M136 170 Q156 150 180 150 Q204 150 224 170 L230 252 Q210 282 180 286 Q150 282 130 252 Z" fill="url(#shirtGrad)"/>`;
+
+      const cape = cfg.capeVisible ? `<path d="M102 248 Q126 166 180 154 Q234 166 258 248 Q226 288 180 292 Q134 288 102 248Z" fill="url(#capeGrad)"/>` : '';
+      const shoulderPads = `<ellipse cx="142" cy="176" rx="18" ry="14" fill="${cfg.shoulder}"/><ellipse cx="218" cy="176" rx="18" ry="14" fill="${cfg.shoulder}"/>`;
+      const arms = `<path d="M124 182 Q122 154 142 156 Q156 158 154 182 L150 226 Q148 242 134 242 Q118 242 118 224 Z" fill="${cfg.skin}"/><path d="M236 182 Q238 154 218 156 Q204 158 206 182 L210 226 Q212 242 226 242 Q242 242 242 224 Z" fill="${cfg.skin}"/>`;
+      const legs = `<rect x="156" y="246" width="18" height="48" rx="9" fill="${cfg.pants}"/><rect x="186" y="246" width="18" height="48" rx="9" fill="${cfg.pants}"/><rect x="150" y="286" width="30" height="12" rx="6" fill="${cfg.boot}"/><rect x="182" y="286" width="30" height="12" rx="6" fill="${cfg.boot}"/>`;
+      const belt = `<rect x="144" y="214" width="72" height="14" rx="7" fill="${cfg.belt}"/><circle cx="180" cy="221" r="7" fill="#ffd86f" stroke="#9f6d17" stroke-width="2"/>`;
+      const eyes = `<ellipse cx="162" cy="118" rx="8" ry="10" fill="#ffffff"/><ellipse cx="198" cy="118" rx="8" ry="10" fill="#ffffff"/><ellipse cx="163" cy="120" rx="3.4" ry="4.6" fill="#2b2230"/><ellipse cx="197" cy="120" rx="3.4" ry="4.6" fill="#2b2230"/><path d="M152 103 Q162 96 172 102" stroke="#41333e" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M188 102 Q198 96 208 104" stroke="#41333e" stroke-width="4.5" stroke-linecap="round" fill="none"/>`;
+      const nose = `<path d="M178 124 Q184 134 178 140" stroke="#c88563" stroke-width="3.5" stroke-linecap="round" fill="none"/>`;
+      const mouth = `<path d="M166 148 Q180 160 194 148" stroke="#80433d" stroke-width="5" stroke-linecap="round" fill="none"/>`;
+      const blush = `<ellipse cx="154" cy="136" rx="9" ry="5" fill="rgba(255,140,150,.16)"/><ellipse cx="206" cy="136" rx="9" ry="5" fill="rgba(255,140,150,.16)"/>`;
       const beardSvg = gender === 'male' ? getBeardSVG(beardStyle, hairColor) : '';
       const hairBack = getHairBackSVG(gender, hairStyle, hairColor);
       const hairFront = getHairFrontSVG(gender, hairStyle, hairColor);
-      const faceShape = gender === 'female'
-        ? `<ellipse cx="180" cy="110" rx="40" ry="44" fill="${cfg.skin}"/>`
-        : `<circle cx="180" cy="108" r="42" fill="${cfg.skin}"/>`;
-      const outfit = gender === 'female'
-        ? `<path d="M144 154 Q180 132 216 154 L234 252 Q211 282 180 282 Q149 282 126 252 Z" fill="url(#shirtGrad)"/>`
-        : `<rect x="136" y="150" width="88" height="102" rx="26" fill="url(#shirtGrad)"/>`;
-      const shoulders = gender === 'female'
-        ? `<circle cx="142" cy="168" r="14" fill="${cfg.shoulder}"/><circle cx="218" cy="168" r="14" fill="${cfg.shoulder}"/>`
-        : `<circle cx="140" cy="168" r="15" fill="${cfg.shoulder}"/><circle cx="220" cy="168" r="15" fill="${cfg.shoulder}"/>`;
-      const cape = cfg.capeVisible ? `<path d="M102 250 Q126 154 180 142 Q234 154 258 250 Q226 284 180 286 Q134 284 102 250Z" fill="url(#capeGrad)"/>` : '';
-      const baseStaff = cfg.staff ? `<g transform="translate(238 140)"><rect x="0" y="0" width="8" height="112" rx="4" fill="#8b5f35"/><circle cx="4" cy="-8" r="14" fill="#ffd86f" stroke="#7f5d17" stroke-width="3"/></g>` : '';
+      const crown = cfg.crown ? `<g transform="translate(0 -6)"><path d="M146 80 L158 46 L180 72 L202 42 L214 80 Z" fill="${cfg.crown}" stroke="#8b6518" stroke-width="4"/><circle cx="180" cy="60" r="6" fill="#7ec8ff"/></g>` : '';
+      const grandCrown = head && head.id === 'big_crown' ? `<g transform="translate(0 -18)"><path d="M140 88 L154 32 L180 68 L206 28 L220 88 Z" fill="#ffd95a" stroke="#8b6518" stroke-width="5"/><circle cx="180" cy="56" r="8" fill="#83d8ff"/><circle cx="158" cy="72" r="5" fill="#ff8896"/><circle cx="202" cy="70" r="5" fill="#8be7a7"/></g>` : '';
+      const throne = back && back.id === 'throne' ? `<g opacity=".98"><rect x="106" y="176" width="148" height="98" rx="18" fill="#744513"/><rect x="132" y="122" width="96" height="86" rx="18" fill="#c18b30"/><rect x="116" y="134" width="14" height="58" rx="7" fill="#ffde7f"/><rect x="230" y="134" width="14" height="58" rx="7" fill="#ffde7f"/></g>` : '';
+      const medal = cfg.medal ? `<circle cx="180" cy="196" r="12" fill="#ffd86f" stroke="#8b6518" stroke-width="3"/>` : '';
+      const staff = cfg.staff ? `<g transform="translate(236 152)"><rect x="0" y="0" width="10" height="110" rx="5" fill="#8b5f35"/><circle cx="5" cy="-10" r="15" fill="#ffd86f" stroke="#8b6518" stroke-width="3"/></g>` : '';
+      const weaponSvg = getWeaponSVG(weapon?.id);
+      const offhandSvg = offhand && offhand.id === 'royal_orb' ? `<g transform="translate(118 194)"><circle cx="0" cy="0" r="18" fill="#8dd7ff" opacity=".30"/><circle cx="0" cy="0" r="11" fill="#7ec8ff" stroke="#dff6ff" stroke-width="2.5"/></g>` : '';
 
       return `
-      <svg viewBox="0 0 360 340" width="100%" height="100%" aria-label="Cartoon ruler">
+      <svg viewBox="0 0 360 340" width="100%" height="100%" aria-label="Premium cartoon ruler">
         <defs>
           <linearGradient id="capeGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${cfg.cape}"/><stop offset="100%" stop-color="${cfg.capeDark}"/></linearGradient>
           <linearGradient id="shirtGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${cfg.shirt}"/><stop offset="100%" stop-color="${cfg.shirtDark}"/></linearGradient>
-          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="rgba(0,0,0,.28)"/></filter>
-          <filter id="glowGold" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="rgba(247,200,74,.30)"/></filter>
+          <filter id="softShadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="rgba(0,0,0,.28)"/></filter>
+          <filter id="goldGlow" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="rgba(247,200,74,.35)"/></filter>
         </defs>
-        <g filter="url(#softShadow)" transform="translate(0 4)">
-          <ellipse cx="180" cy="296" rx="84" ry="20" fill="rgba(0,0,0,.18)"/>
+        <g filter="url(#softShadow)" transform="translate(0 2)">
+          <ellipse cx="180" cy="302" rx="88" ry="18" fill="rgba(0,0,0,.18)"/>
           ${throne}
           ${cape}
           ${hairBack}
           ${outfit}
-          ${shoulders}
-          ${cfg.belt ? `<rect x="142" y="206" width="76" height="14" rx="7" fill="${cfg.belt}"/><circle cx="180" cy="213" r="6" fill="#ffd86f"/>` : ''}
-          <rect x="125" y="163" width="20" height="72" rx="10" fill="${cfg.skin}" transform="rotate(10 135 195)"/>
-          <rect x="215" y="163" width="20" height="72" rx="10" fill="${cfg.skin}" transform="rotate(-10 225 195)"/>
-          <rect x="154" y="244" width="18" height="50" rx="9" fill="${cfg.pants}"/>
-          <rect x="188" y="244" width="18" height="50" rx="9" fill="${cfg.pants}"/>
-          <rect x="148" y="287" width="30" height="12" rx="6" fill="${cfg.boot}"/>
-          <rect x="182" y="287" width="30" height="12" rx="6" fill="${cfg.boot}"/>
-          ${faceShape}
-          <ellipse cx="162" cy="110" rx="6" ry="8" fill="#2c2430"/>
-          <ellipse cx="198" cy="110" rx="6" ry="8" fill="#2c2430"/>
-          <path d="M156 98 Q162 92 170 96" stroke="#2c2430" stroke-width="4" stroke-linecap="round" fill="none"/>
-          <path d="M190 96 Q198 92 204 98" stroke="#2c2430" stroke-width="4" stroke-linecap="round" fill="none"/>
-          <path d="M166 132 Q180 142 194 132" stroke="#7a3d35" stroke-width="5" stroke-linecap="round" fill="none"/>
-          <ellipse cx="156" cy="126" rx="8" ry="5" fill="rgba(255,120,140,.18)"/>
-          <ellipse cx="204" cy="126" rx="8" ry="5" fill="rgba(255,120,140,.18)"/>
+          ${shoulderPads}
+          ${arms}
+          ${legs}
+          ${belt}
+          ${headShape}
+          ${blush}
+          ${eyes}
+          ${nose}
+          ${mouth}
           ${beardSvg}
           ${hairFront}
-          ${baseCrown}
-          ${grandCrown ? `<g filter="url(#glowGold)">${grandCrown}</g>` : ''}
-          ${baseStaff}
+          ${crown}
+          ${grandCrown ? `<g filter="url(#goldGlow)">${grandCrown}</g>` : ''}
+          ${staff}
           ${weaponSvg}
           ${offhandSvg}
           ${medal}
@@ -979,78 +893,73 @@
     function getHairBackSVG(gender, style, color){
       if(gender === 'male'){
         switch(style){
-          case 'swept_rogue':
-            return `<path d="M138 102 Q146 72 178 68 Q214 72 226 102 Q222 128 214 142 Q196 156 180 156 Q162 156 146 142 Q140 128 138 102Z" fill="${color}"/><path d="M214 84 Q232 98 228 124" stroke="${color}" stroke-width="14" stroke-linecap="round" fill="none"/>`;
-          case 'spiky_champion':
-            return `<path d="M140 102 Q148 68 180 66 Q212 68 220 102 Q214 130 206 142 Q194 152 180 152 Q166 152 154 142 Q146 130 140 102Z" fill="${color}"/>`;
-          case 'prince_wave':
-            return `<path d="M136 104 Q142 70 178 64 Q216 68 224 104 Q222 134 214 146 Q198 160 180 160 Q162 160 146 146 Q138 132 136 104Z" fill="${color}"/><path d="M146 114 Q140 132 146 150" stroke="${color}" stroke-width="12" stroke-linecap="round" fill="none"/>`;
+          case 'hero_quiff':
+            return `<path d="M144 110 Q146 80 172 70 Q202 66 220 88 Q220 126 208 150 Q194 166 180 166 Q166 166 152 150 Q144 134 144 110Z" fill="${color}"/>`;
+          case 'battle_trim':
+            return `<path d="M144 112 Q146 84 174 72 Q202 72 216 92 Q216 126 206 146 Q194 158 180 160 Q166 158 154 146 Q144 128 144 112Z" fill="${color}"/>`;
+          case 'noble_wave':
+            return `<path d="M142 110 Q148 78 176 68 Q208 70 220 92 Q220 134 210 154 Q196 170 180 172 Q164 170 150 154 Q142 138 142 110Z" fill="${color}"/>`;
           default:
-            return `<path d="M140 100 Q146 70 180 66 Q214 70 220 100 Q214 126 206 138 Q194 150 180 150 Q166 150 154 138 Q146 126 140 100Z" fill="${color}"/>`;
+            return `<path d="M144 112 Q146 82 174 70 Q204 68 218 90 Q218 128 208 150 Q194 164 180 166 Q166 164 152 150 Q144 132 144 112Z" fill="${color}"/>`;
         }
       }
       switch(style){
-        case 'long_royal':
-          return `<path d="M132 100 Q138 64 180 60 Q222 64 228 100 Q228 154 220 222 Q204 242 180 246 Q156 242 140 222 Q132 154 132 100Z" fill="${color}"/>`;
-        case 'braided_guardian':
-          return `<path d="M136 102 Q142 66 180 60 Q218 66 224 102 Q224 154 214 210 Q198 228 180 230 Q162 228 146 210 Q136 154 136 102Z" fill="${color}"/><path d="M148 148 Q136 176 148 214" stroke="${color}" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M212 148 Q224 176 212 214" stroke="${color}" stroke-width="11" stroke-linecap="round" fill="none"/>`;
+        case 'royal_flow':
+          return `<path d="M136 112 Q142 72 180 62 Q218 72 224 112 Q224 164 216 228 Q202 248 180 252 Q158 248 144 228 Q136 164 136 112Z" fill="${color}"/>`;
         case 'high_pony':
-          return `<path d="M136 102 Q144 68 180 62 Q216 68 224 102 Q220 142 214 172 Q198 188 180 188 Q162 188 146 172 Q140 142 136 102Z" fill="${color}"/><path d="M180 56 Q216 58 230 86 Q228 106 214 114 Q210 78 180 56Z" fill="${color}"/>`;
+          return `<path d="M138 112 Q144 74 180 64 Q216 74 222 112 Q220 154 212 188 Q198 204 180 206 Q162 204 148 188 Q140 154 138 112Z" fill="${color}"/><path d="M184 64 Q220 68 232 96 Q224 116 210 118 Q210 88 184 64Z" fill="${color}"/>`;
+        case 'forest_braid':
+          return `<path d="M138 112 Q144 74 180 64 Q216 74 222 112 Q220 162 212 212 Q198 228 180 230 Q162 228 148 212 Q140 162 138 112Z" fill="${color}"/><path d="M146 154 Q136 188 148 224" stroke="${color}" stroke-width="12" stroke-linecap="round" fill="none"/>`;
         default:
-          return `<path d="M136 102 Q142 66 180 60 Q218 66 224 102 Q222 150 214 194 Q198 212 180 214 Q162 212 146 194 Q138 150 136 102Z" fill="${color}"/>`;
+          return `<path d="M138 112 Q144 74 180 64 Q216 74 222 112 Q220 160 212 204 Q198 220 180 222 Q162 220 148 204 Q140 160 138 112Z" fill="${color}"/>`;
       }
     }
 
     function getHairFrontSVG(gender, style, color){
       if(gender === 'male'){
         switch(style){
-          case 'swept_rogue':
-            return `<path d="M138 96 Q150 46 184 48 Q214 52 226 92 Q206 76 186 74 Q164 72 138 96Z" fill="${color}"/><path d="M156 70 Q196 60 220 78 Q196 92 166 90 Z" fill="${shadeColor(color,-12)}"/>`;
-          case 'spiky_champion':
-            return `<path d="M140 94 L150 66 L164 84 L176 60 L188 82 L202 58 L214 86 L222 94 Q202 76 180 76 Q158 76 140 94Z" fill="${color}"/>`;
-          case 'prince_wave':
-            return `<path d="M136 98 Q148 48 182 48 Q214 52 224 94 Q212 82 198 78 Q178 72 164 78 Q150 84 136 98Z" fill="${color}"/><path d="M154 82 Q178 60 208 72 Q198 92 170 94 Z" fill="${shadeColor(color,-10)}"/>`;
+          case 'hero_quiff':
+            return `<path d="M144 108 Q150 68 180 60 Q210 62 220 94 Q208 86 196 84 Q184 82 170 86 Q158 90 144 108Z" fill="${color}"/><path d="M156 82 Q176 54 214 74 Q198 100 162 98 Z" fill="${shadeColor(color,-10)}"/>`;
+          case 'battle_trim':
+            return `<path d="M146 108 L156 82 L172 96 L184 74 L196 96 L210 80 L216 108 Q198 96 180 94 Q162 96 146 108Z" fill="${color}"/>`;
+          case 'noble_wave':
+            return `<path d="M144 110 Q150 66 182 60 Q210 64 220 98 Q208 88 194 86 Q176 82 164 88 Q152 94 144 110Z" fill="${color}"/><path d="M156 96 Q176 70 210 82 Q194 104 166 104 Z" fill="${shadeColor(color,-8)}"/>`;
           default:
-            return `<path d="M138 96 Q148 50 180 48 Q212 50 222 96 Q210 80 180 78 Q150 80 138 96Z" fill="${color}"/>`;
+            return `<path d="M144 108 Q150 70 180 62 Q210 68 218 98 Q206 90 180 90 Q156 92 144 108Z" fill="${color}"/>`;
         }
       }
       switch(style){
-        case 'long_royal':
-          return `<path d="M140 92 Q148 48 180 46 Q212 48 220 92 Q214 82 204 76 Q196 106 190 124 Q184 134 180 134 Q176 134 170 124 Q164 106 156 76 Q146 82 140 92Z" fill="${color}"/><path d="M154 116 Q144 140 148 172" stroke="${color}" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M206 116 Q216 140 212 172" stroke="${color}" stroke-width="12" stroke-linecap="round" fill="none"/>`;
-        case 'braided_guardian':
-          return `<path d="M142 92 Q150 48 180 48 Q210 48 218 92 Q214 82 204 74 Q198 102 192 118 Q186 128 180 128 Q174 128 168 118 Q162 102 156 74 Q146 82 142 92Z" fill="${color}"/><path d="M150 122 Q142 148 150 184" stroke="${shadeColor(color,-8)}" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M210 122 Q218 148 210 184" stroke="${shadeColor(color,-8)}" stroke-width="9" stroke-linecap="round" fill="none"/>`;
+        case 'royal_flow':
+          return `<path d="M144 108 Q152 70 180 62 Q208 70 216 108 Q206 96 198 92 Q194 120 186 138 Q182 144 180 144 Q178 144 174 138 Q166 120 162 92 Q154 96 144 108Z" fill="${color}"/><path d="M154 136 Q146 158 150 182" stroke="${color}" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M206 136 Q214 158 210 182" stroke="${color}" stroke-width="12" stroke-linecap="round" fill="none"/>`;
         case 'high_pony':
-          return `<path d="M140 94 Q152 48 180 46 Q208 48 220 94 Q212 80 198 74 Q194 102 188 118 Q184 126 180 126 Q176 126 172 118 Q166 102 162 74 Q148 80 140 94Z" fill="${color}"/>`;
+          return `<path d="M144 108 Q152 70 180 62 Q208 70 216 108 Q206 96 196 90 Q190 116 184 132 Q182 138 180 138 Q178 138 176 132 Q170 116 164 90 Q154 96 144 108Z" fill="${color}"/>`;
+        case 'forest_braid':
+          return `<path d="M144 108 Q152 70 180 62 Q208 70 216 108 Q206 96 198 92 Q194 118 186 134 Q182 140 180 140 Q178 140 174 134 Q166 118 162 92 Q154 96 144 108Z" fill="${color}"/><path d="M152 142 Q146 164 154 194" stroke="${shadeColor(color,-10)}" stroke-width="9" stroke-linecap="round" fill="none"/>`;
         default:
-          return `<path d="M142 94 Q150 50 180 48 Q210 50 218 94 Q214 82 204 76 Q198 104 192 120 Q186 130 180 130 Q174 130 168 120 Q162 104 156 76 Q146 82 142 94Z" fill="${color}"/>`;
+          return `<path d="M144 108 Q152 70 180 62 Q208 70 216 108 Q206 96 198 90 Q192 118 186 136 Q182 142 180 142 Q178 142 174 136 Q168 118 162 90 Q154 96 144 108Z" fill="${color}"/>`;
       }
     }
 
     function getBeardSVG(style, color){
       switch(style){
-        case 'mustache_goatee':
-          return `<path d="M166 136 Q172 142 180 140 Q188 142 194 136" stroke="${color}" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M176 146 Q180 154 184 146 L184 162 Q180 168 176 162 Z" fill="${color}"/>`;
-        case 'full_king':
-          return `<path d="M158 134 Q166 150 180 152 Q194 150 202 134 Q208 150 202 174 Q192 190 180 194 Q168 190 158 174 Q152 150 158 134Z" fill="${color}"/>`;
+        case 'hero_mustache':
+          return `<path d="M164 146 Q172 154 180 152 Q188 154 196 146" stroke="${color}" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M174 156 Q180 162 186 156" stroke="${color}" stroke-width="5" stroke-linecap="round" fill="none"/>`;
+        case 'king_full':
+          return `<path d="M158 144 Q166 158 180 160 Q194 158 202 144 Q208 158 202 180 Q194 196 180 200 Q166 196 158 180 Q152 158 158 144Z" fill="${color}"/>`;
         case 'none':
           return '';
         default:
-          return `<path d="M162 136 Q170 150 180 150 Q190 150 198 136 Q202 150 198 164 Q190 174 180 176 Q170 174 162 164 Q158 150 162 136Z" fill="${color}"/>`;
+          return `<path d="M162 146 Q170 158 180 160 Q190 158 198 146 Q200 158 196 170 Q190 178 180 180 Q170 178 164 170 Q160 158 162 146Z" fill="${color}"/>`;
       }
     }
 
     function getWeaponSVG(id){
       switch(id){
-        case 'dagger':
-          return `<g transform="translate(238 192) rotate(-8)"><rect x="0" y="0" width="7" height="56" rx="3" fill="#8b5f35"/><path d="M3.5 -18 L12 4 L-5 4 Z" fill="#d9e6f2"/><rect x="-7" y="8" width="20" height="5" rx="2" fill="#ffd86f"/></g>`;
-        case 'axe':
-          return `<g transform="translate(240 166)"><rect x="0" y="0" width="8" height="88" rx="4" fill="#8b5f35"/><path d="M8 10 Q34 14 28 40 Q18 46 8 34 Z" fill="#d9e6f2"/></g>`;
-        case 'sword':
-          return `<g transform="translate(240 156)"><rect x="0" y="0" width="8" height="98" rx="4" fill="#8b5f35"/><rect x="1" y="-34" width="6" height="42" rx="3" fill="#e7f2ff"/><rect x="-9" y="6" width="26" height="6" rx="3" fill="#ffd86f"/></g>`;
-        case 'staff':
-          return `<g transform="translate(240 140)"><rect x="0" y="0" width="8" height="114" rx="4" fill="#8b5f35"/><circle cx="4" cy="-8" r="14" fill="#8dd7ff" stroke="#dff6ff" stroke-width="2"/></g>`;
-        default:
-          return '';
+        case 'dagger': return `<g transform="translate(238 198) rotate(-8)"><rect x="0" y="0" width="7" height="56" rx="3" fill="#8b5f35"/><path d="M3.5 -18 L12 4 L-5 4 Z" fill="#d9e6f2"/><rect x="-7" y="8" width="20" height="5" rx="2" fill="#ffd86f"/></g>`;
+        case 'axe': return `<g transform="translate(240 172)"><rect x="0" y="0" width="8" height="88" rx="4" fill="#8b5f35"/><path d="M8 10 Q34 14 28 40 Q18 46 8 34 Z" fill="#d9e6f2"/></g>`;
+        case 'sword': return `<g transform="translate(240 162)"><rect x="0" y="0" width="8" height="98" rx="4" fill="#8b5f35"/><rect x="1" y="-34" width="6" height="42" rx="3" fill="#e7f2ff"/><rect x="-9" y="6" width="26" height="6" rx="3" fill="#ffd86f"/></g>`;
+        case 'staff': return `<g transform="translate(240 146)"><rect x="0" y="0" width="8" height="114" rx="4" fill="#8b5f35"/><circle cx="4" cy="-8" r="14" fill="#8dd7ff" stroke="#dff6ff" stroke-width="2"/></g>`;
+        default: return '';
       }
     }
 
