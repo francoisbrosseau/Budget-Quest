@@ -341,6 +341,11 @@
       box-shadow: 0 0 0 4px rgba(116,168,255,0.12);
     }
 
+    select:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
     .actions {
       display: flex;
       flex-wrap: wrap;
@@ -503,6 +508,17 @@
       color: var(--muted);
       font-size: 0.92rem;
       line-height: 1.62;
+    }
+
+    .assetHint {
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.55;
+      word-break: break-word;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
     }
 
     .portraitControls {
@@ -682,7 +698,7 @@
         <p class="subtitle">
           Build your kingdom by spending below your own limit. Set your daily budget, report what you actually spent,
           choose your currency, earn controlled gold at a balanced rate, unlock villagers and structures, and climb from peon to emperor.
-          The ruler system is now asset-based and ready for many hairstyles, hair colors, beard variants, and later female versions without rewriting the game again.
+          The ruler portrait system is now fully asset-ready for male, female, multiple hairstyles, beard variants, and hair colors.
         </p>
       </div>
 
@@ -784,7 +800,8 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
 
           <div class="portraitMeta">
             <div class="portraitName" id="displayName">Unnamed</div>
-            <div class="portraitDesc" id="avatarDesc">A broke but determined soul at the beginning of the road. The portrait system is now driven by asset names instead of hardcoded one-off logic.</div>
+            <div class="portraitDesc" id="avatarDesc">A broke but determined soul at the beginning of the road. The portrait system is now fully asset-driven.</div>
+            <div class="assetHint" id="portraitAssetPath">Expected file: assets/rulers/male/male_1_brown_clean.png</div>
           </div>
 
           <div class="portraitControls">
@@ -793,7 +810,7 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
               <select id="genderSelect"></select>
             </div>
             <div class="field">
-              <label for="haircutSelect">Haircut</label>
+              <label for="haircutSelect">Hairstyle</label>
               <select id="haircutSelect"></select>
             </div>
             <div class="field">
@@ -862,18 +879,34 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
           New formula: roughly 1 gold per 5 units saved, with a minimum of 1 gold when you finish under budget.<br/><br/>
           Unlocks are now much more expensive, and some of them generate passive gold every successful day.<br/><br/>
           Exact budget counts as survival, not glory. Overspending breaks the streak and earns nothing.<br/><br/>
-          Portrait assets now follow this naming rule:<br/><br/>
+          Portrait assets follow this naming rule:<br/><br/>
           <strong>assets/rulers/GENDER/GENDER_HAIRCUT_COLOR_BEARD.png</strong><br/><br/>
           Example:<br/>
-          <strong>assets/rulers/male/male_1_black_clean.png</strong><br/><br/>
-          So later you can add male/female, haircut 1/2/3, clean/beard, and many colors without rewriting the logic.
+          <strong>assets/rulers/male/male_2_black_beard.png</strong><br/><br/>
+          Female portraits also use the same format, so for now they will be:<br/>
+          <strong>assets/rulers/female/female_1_blonde_clean.png</strong><br/><br/>
+          This file is now ready for all planned asset combinations.
         </div>
       </div>
     </section>
   </div>
 
   <script>
-    const STORAGE_KEY = 'budgetQuest_v3';
+    const STORAGE_KEY = 'budgetQuest_v4';
+
+    const BASE_COLORS = ['brown', 'black', 'blonde', 'ginger', 'gray'];
+
+    const COLOR_LABELS = {
+      brown: 'Brown',
+      black: 'Black',
+      blonde: 'Blonde',
+      ginger: 'Ginger',
+      gray: 'Gray'
+    };
+
+    function makeColorSet() {
+      return [...BASE_COLORS];
+    }
 
     const ASSET_CATALOG = {
       male: {
@@ -882,22 +915,40 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
           '1': {
             label: 'Haircut 1',
             beards: {
-              clean: { label: 'Clean', colors: ['brown', 'black', 'blonde', 'ginger', 'gray'] },
-              beard: { label: 'Beard', colors: [] }
+              clean: {
+                label: 'Clean',
+                colors: makeColorSet()
+              },
+              beard: {
+                label: 'Beard',
+                colors: makeColorSet()
+              }
             }
           },
           '2': {
             label: 'Haircut 2',
             beards: {
-              clean: { label: 'Clean', colors: [] },
-              beard: { label: 'Beard', colors: [] }
+              clean: {
+                label: 'Clean',
+                colors: makeColorSet()
+              },
+              beard: {
+                label: 'Beard',
+                colors: makeColorSet()
+              }
             }
           },
           '3': {
             label: 'Haircut 3',
             beards: {
-              clean: { label: 'Clean', colors: [] },
-              beard: { label: 'Beard', colors: [] }
+              clean: {
+                label: 'Clean',
+                colors: makeColorSet()
+              },
+              beard: {
+                label: 'Beard',
+                colors: makeColorSet()
+              }
             }
           }
         }
@@ -908,19 +959,28 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
           '1': {
             label: 'Haircut 1',
             beards: {
-              clean: { label: 'Clean', colors: [] }
+              clean: {
+                label: 'Clean',
+                colors: makeColorSet()
+              }
             }
           },
           '2': {
             label: 'Haircut 2',
             beards: {
-              clean: { label: 'Clean', colors: [] }
+              clean: {
+                label: 'Clean',
+                colors: makeColorSet()
+              }
             }
           },
           '3': {
             label: 'Haircut 3',
             beards: {
-              clean: { label: 'Clean', colors: [] }
+              clean: {
+                label: 'Clean',
+                colors: makeColorSet()
+              }
             }
           }
         }
@@ -984,7 +1044,8 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
       colorSelect: document.getElementById('colorSelect'),
       portraitImage: document.getElementById('portraitImage'),
       portraitPlaceholder: document.getElementById('portraitPlaceholder'),
-      portraitAssetLabel: document.getElementById('portraitAssetLabel')
+      portraitAssetLabel: document.getElementById('portraitAssetLabel'),
+      portraitAssetPath: document.getElementById('portraitAssetPath')
     };
 
     const defaultData = {
@@ -1087,20 +1148,35 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
       return genderData.haircuts[state.character.haircut] || Object.values(genderData.haircuts)[0];
     }
 
+    function getCurrentBeardData() {
+      const haircutData = getCurrentHaircutData();
+      return haircutData.beards[state.character.beard] || Object.values(haircutData.beards)[0];
+    }
+
+    function prettyColor(color) {
+      return COLOR_LABELS[color] || color;
+    }
+
     function sanitizeCharacterSelection() {
       const genderKeys = Object.keys(ASSET_CATALOG);
-      if (!genderKeys.includes(state.character.gender)) state.character.gender = genderKeys[0];
+      if (!genderKeys.includes(state.character.gender)) {
+        state.character.gender = genderKeys[0];
+      }
 
       const genderData = getCurrentGenderData();
       const haircutKeys = Object.keys(genderData.haircuts);
-      if (!haircutKeys.includes(state.character.haircut)) state.character.haircut = haircutKeys[0];
+      if (!haircutKeys.includes(state.character.haircut)) {
+        state.character.haircut = haircutKeys[0];
+      }
 
       const haircutData = getCurrentHaircutData();
       const beardKeys = Object.keys(haircutData.beards);
-      if (!beardKeys.includes(state.character.beard)) state.character.beard = beardKeys[0];
+      if (!beardKeys.includes(state.character.beard)) {
+        state.character.beard = beardKeys[0];
+      }
 
-      const beardData = haircutData.beards[state.character.beard];
-      const colors = beardData.colors;
+      const beardData = getCurrentBeardData();
+      const colors = beardData.colors || [];
       if (!colors.length) {
         state.character.color = '';
       } else if (!colors.includes(state.character.color)) {
@@ -1140,12 +1216,13 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
         .map(([key, value]) => `<option value="${key}">${value.label}</option>`)
         .join('');
       els.beardSelect.value = state.character.beard;
+      els.beardSelect.disabled = Object.keys(haircutData.beards).length <= 1;
 
-      const beardData = haircutData.beards[state.character.beard];
+      const beardData = getCurrentBeardData();
       if (beardData.colors.length) {
         els.colorSelect.disabled = false;
         els.colorSelect.innerHTML = beardData.colors
-          .map(color => `<option value="${color}">${color.charAt(0).toUpperCase() + color.slice(1)}</option>`)
+          .map(color => `<option value="${color}">${prettyColor(color)}</option>`)
           .join('');
         els.colorSelect.value = state.character.color;
       } else {
@@ -1163,6 +1240,10 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
       const assetPath = buildAssetPath();
 
       els.portraitAssetLabel.textContent = assetName || 'missing_asset';
+      els.portraitAssetPath.textContent = assetPath
+        ? `Expected file: ${assetPath}`
+        : 'No file expected yet for this selection.';
+
       els.portraitImage.style.display = assetPath ? 'block' : 'none';
       els.portraitPlaceholder.style.display = assetPath ? 'none' : 'grid';
 
@@ -1181,6 +1262,8 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
 
       if (els.portraitImage.getAttribute('src') !== assetPath) {
         els.portraitImage.setAttribute('src', assetPath);
+      } else if (els.portraitImage.complete && els.portraitImage.naturalWidth > 0) {
+        els.portraitImage.onload?.();
       }
     }
 
@@ -1405,7 +1488,7 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
         ]
       };
       saveData();
-      setResult('Demo kingdom loaded. The scalable portrait system is now live.', 'gold');
+      setResult('Demo kingdom loaded. The full asset-ready portrait system is live.', 'gold');
       renderAll();
     }
 
