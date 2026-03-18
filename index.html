@@ -72,12 +72,15 @@
     .tag{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--muted);font-size:.92rem;font-weight:700}
     .rankGlow{color:var(--gold-2)}
     .rulerStage{
-      position:relative;border-radius:22px;min-height:320px;
-      background:radial-gradient(circle at 50% 24%, rgba(255,255,255,.09), transparent 30%),linear-gradient(180deg, rgba(126,200,255,.08), rgba(165,140,255,.1));
+      position:relative;border-radius:22px;min-height:340px;
+      background:
+        radial-gradient(circle at 50% 22%, rgba(255,255,255,.12), transparent 28%),
+        radial-gradient(circle at 50% 12%, rgba(247,200,74,.18), transparent 26%),
+        linear-gradient(180deg, rgba(126,200,255,.08), rgba(165,140,255,.12));
       border:1px solid rgba(255,255,255,.09);overflow:hidden;
     }
-    .rulerStage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:74px;background:linear-gradient(180deg, transparent, rgba(0,0,0,.23))}
-    .stageGround{position:absolute;left:0;right:0;bottom:0;height:78px;background:linear-gradient(180deg, #254c2a, #1b2f1f);border-top:1px solid rgba(255,255,255,.06)}
+    .rulerStage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:78px;background:linear-gradient(180deg, transparent, rgba(0,0,0,.26))}
+    .stageGround{position:absolute;left:0;right:0;bottom:0;height:82px;background:linear-gradient(180deg, #335f36, #1b2f1f);border-top:1px solid rgba(255,255,255,.06)}
     .rulerNameBox{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:.98rem;color:var(--muted)}
     .rulerNameStrong{color:var(--text);font-weight:800}
 
@@ -109,12 +112,21 @@
     .good{color:var(--green);font-weight:800}.bad{color:var(--red);font-weight:800}.goldText{color:var(--gold);font-weight:800}
 
     .subGrid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-    .buildingGrid,.cosmeticGrid{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:12px}
-    .building,.cosmeticCard{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:8px}
-    .buildingTop,.cosmeticTop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-    .buildingName,.cosmeticName{font-weight:800}.buildingMeta,.cosmeticMeta{font-size:.9rem;color:var(--muted)}.cost{font-size:.88rem;color:var(--gold-2);font-weight:700}
+    .buildingGrid,.cosmeticGrid,.customGrid{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:12px}
+    .building,.cosmeticCard,.customCard{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:8px}
+    .buildingTop,.cosmeticTop,.customTop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .buildingName,.cosmeticName,.customName{font-weight:800}.buildingMeta,.cosmeticMeta,.customMeta{font-size:.9rem;color:var(--muted)}.cost{font-size:.88rem;color:var(--gold-2);font-weight:700}
     .buyBtn{padding:10px 12px;border-radius:14px;font-size:.95rem}.buyBtn:disabled{opacity:.45;cursor:not-allowed;transform:none}
     .ownedBadge{display:inline-flex;align-items:center;justify-content:center;padding:4px 8px;border-radius:999px;background:rgba(128,224,155,.14);color:var(--green);font-size:.78rem;font-weight:800;border:1px solid rgba(128,224,155,.2)}
+
+    .customGrid .field{gap:6px}
+    .swatchRow{display:flex;gap:8px;flex-wrap:wrap}
+    .swatchBtn{
+      width:28px;height:28px;border-radius:999px;border:2px solid rgba(255,255,255,.18);cursor:pointer;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.2);transition:transform .15s ease,border-color .15s ease;
+    }
+    .swatchBtn:hover{transform:translateY(-1px)}
+    .swatchBtn.active{border-color:#ffe488;box-shadow:0 0 0 2px rgba(247,200,74,.18)}
 
     .village{margin-top:14px;min-height:350px;border-radius:22px;background:linear-gradient(180deg, rgba(126,200,255,.12), rgba(255,255,255,.03)),linear-gradient(180deg, #417fd0 0%, #7edcff 42%, #93d673 42%, #5ea25a 100%);border:1px solid rgba(255,255,255,.09);position:relative;overflow:hidden;padding:12px}
     .cloud{position:absolute;width:84px;height:34px;border-radius:999px;background:rgba(255,255,255,.8);filter:blur(1px);opacity:.65;animation:cloudDrift linear infinite}
@@ -146,7 +158,7 @@
     @media (max-width: 700px){
       .wrap{width:min(100% - 16px, 1300px);margin:12px auto 28px}
       .banner,.section,.rulerPanel{padding:16px}
-      .formGrid,.buildingGrid,.cosmeticGrid{grid-template-columns:1fr}
+      .formGrid,.buildingGrid,.cosmeticGrid,.customGrid{grid-template-columns:1fr}
       .stats{grid-template-columns:1fr 1fr}
       .titleRow{align-items:flex-start}
       .crest{width:58px;height:58px;font-size:28px}
@@ -165,7 +177,7 @@
           <div class="crest">🏰</div>
           <div>
             <h1>Budget Quest</h1>
-            <p class="subtitle">Turn saving money into a kingdom-building RPG. Every <strong>10</strong> saved gives <strong>1 gold</strong>. Your ruler now has <strong>cosmetics</strong>, each rank gives more <strong>population capacity</strong>, and rank progression now grants <strong>daily passive income</strong> too.</p>
+            <p class="subtitle">Turn saving money into a kingdom-building RPG. Every <strong>10</strong> saved gives <strong>1 gold</strong>. Phase 1 is now focused on a cleaner, more alive ruler style with proper customization: male or female, multiple haircuts, hair colors, and beard control for the male ruler.</p>
           </div>
         </div>
 
@@ -178,9 +190,9 @@
 
         <div class="pillRow">
           <div class="pill">⚥ Male or female ruler</div>
-          <div class="pill">🎖 10 ranks + XP bar</div>
-          <div class="pill">🗡 Expensive cosmetics</div>
-          <div class="pill">👥 Rank-based population caps</div>
+          <div class="pill">✂️ 4 haircut variants</div>
+          <div class="pill">🎨 Hair color picker</div>
+          <div class="pill">🧔 Beard toggle for male</div>
         </div>
       </section>
 
@@ -229,25 +241,63 @@
             <div class="villageStage" id="villageStage"></div>
             <div class="terrain"></div>
           </div>
-          <div class="tiny" style="margin-top:12px;">Population capacity rises with rank. Build your economy, then pour gold into cosmetics and prestige.</div>
+          <div class="tiny" style="margin-top:12px;">Village stays temporary for now. Phase 2 will replace this with the overhead plot system.</div>
         </section>
       </div>
 
       <div class="rightColumn">
         <section class="panel section">
+          <h2>Ruler Creator</h2>
+          <div class="customGrid">
+            <div class="customCard">
+              <div class="customTop">
+                <div>
+                  <div class="customName">Identity</div>
+                  <div class="customMeta">Choose the base look of your ruler.</div>
+                </div>
+              </div>
+              <div class="field">
+                <label for="rulerName">Ruler name</label>
+                <input id="rulerName" type="text" placeholder="Enter your ruler name" />
+              </div>
+              <div class="field">
+                <label for="gender">Ruler style</label>
+                <select id="gender">
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="hairStyle">Haircut</label>
+                <select id="hairStyle"></select>
+              </div>
+              <div class="field" id="beardWrap">
+                <label for="beardStyle">Beard</label>
+                <select id="beardStyle"></select>
+              </div>
+            </div>
+
+            <div class="customCard">
+              <div class="customTop">
+                <div>
+                  <div class="customName">Hair Color</div>
+                  <div class="customMeta">Quick presets to keep the ruler easy to tune.</div>
+                </div>
+              </div>
+              <div class="swatchRow" id="hairColorSwatches"></div>
+              <div class="customMeta" id="hairColorLabel">Current: Dark Brown</div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="primary" id="saveProfileBtn">Save Ruler</button>
+            <button class="secondary" id="randomizeRulerBtn">Randomize Look</button>
+          </div>
+        </section>
+
+        <section class="panel section">
           <h2>Daily Budget Battle</h2>
           <div class="formGrid">
-            <div class="field">
-              <label for="rulerName">Ruler name</label>
-              <input id="rulerName" type="text" placeholder="Enter your ruler name" />
-            </div>
-            <div class="field">
-              <label for="gender">Ruler style</label>
-              <select id="gender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-            </div>
             <div class="field">
               <label for="currency">Currency</label>
               <select id="currency">
@@ -269,12 +319,11 @@
 
           <div class="actions">
             <button class="primary" id="logDayBtn">Log Today</button>
-            <button class="secondary" id="saveProfileBtn">Save Profile</button>
             <button class="secondary" id="collectIncomeBtn">Collect Passive Income</button>
             <button class="secondary" id="resetBtn">Reset Kingdom</button>
           </div>
 
-          <div class="logBox" id="logBox">Welcome to your kingdom. Set a budget, log your spending, and grow from peasant to supreme emperor.</div>
+          <div class="logBox" id="logBox">Welcome to your kingdom. Set a budget, shape your ruler, and grow from peasant to supreme emperor.</div>
         </section>
 
         <section class="panel section">
@@ -291,7 +340,38 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'budgetQuest_v4';
+    const STORAGE_KEY = 'budgetQuest_v5';
+
+    const hairColors = [
+      { id:'dark_brown', name:'Dark Brown', value:'#3c281d' },
+      { id:'black', name:'Black', value:'#1b1b22' },
+      { id:'chestnut', name:'Chestnut', value:'#6e442d' },
+      { id:'blonde', name:'Blonde', value:'#d9b361' },
+      { id:'silver', name:'Silver', value:'#b8bec9' },
+      { id:'red', name:'Copper Red', value:'#9f4a2a' }
+    ];
+
+    const hairStylesByGender = {
+      male: [
+        { id:'short_hero', name:'Short Hero Cut' },
+        { id:'swept_rogue', name:'Swept Rogue' },
+        { id:'spiky_champion', name:'Spiky Champion' },
+        { id:'prince_wave', name:'Prince Wave' }
+      ],
+      female: [
+        { id:'adventurer_bob', name:'Adventurer Bob' },
+        { id:'long_royal', name:'Long Royal Flow' },
+        { id:'braided_guardian', name:'Braided Guardian' },
+        { id:'high_pony', name:'High Ponytail' }
+      ]
+    };
+
+    const beardStyles = [
+      { id:'none', name:'No Beard' },
+      { id:'short_box', name:'Short Beard' },
+      { id:'mustache_goatee', name:'Mustache + Goatee' },
+      { id:'full_king', name:'Full King Beard' }
+    ];
 
     const buildingDefs = [
       { id: 'peasant_hut', name: 'Peasant Hut', emoji: '🛖', type: 'peasant', baseCost: 34, income: 2 },
@@ -347,6 +427,11 @@
       spent: document.getElementById('spent'),
       rulerName: document.getElementById('rulerName'),
       gender: document.getElementById('gender'),
+      hairStyle: document.getElementById('hairStyle'),
+      beardStyle: document.getElementById('beardStyle'),
+      beardWrap: document.getElementById('beardWrap'),
+      hairColorSwatches: document.getElementById('hairColorSwatches'),
+      hairColorLabel: document.getElementById('hairColorLabel'),
       logBox: document.getElementById('logBox'),
       buildingGrid: document.getElementById('buildingGrid'),
       cosmeticGrid: document.getElementById('cosmeticGrid'),
@@ -356,13 +441,17 @@
       logDayBtn: document.getElementById('logDayBtn'),
       saveProfileBtn: document.getElementById('saveProfileBtn'),
       collectIncomeBtn: document.getElementById('collectIncomeBtn'),
-      resetBtn: document.getElementById('resetBtn')
+      resetBtn: document.getElementById('resetBtn'),
+      randomizeRulerBtn: document.getElementById('randomizeRulerBtn')
     };
 
     bootstrap();
 
     function bootstrap(){
       seedCoins();
+      ensureLookDefaults();
+      populateLookControls();
+      renderHairSwatches();
       syncInputs();
       renderAll();
 
@@ -370,8 +459,12 @@
       els.saveProfileBtn.addEventListener('click', saveProfile);
       els.collectIncomeBtn.addEventListener('click', collectIncome);
       els.resetBtn.addEventListener('click', resetGame);
+      els.randomizeRulerBtn.addEventListener('click', randomizeRuler);
+
       els.rulerName.addEventListener('input', () => { state.rulerName = els.rulerName.value.trim(); renderRuler(); persist(); });
-      els.gender.addEventListener('change', () => { state.gender = els.gender.value; renderRuler(); persist(); });
+      els.gender.addEventListener('change', onGenderChange);
+      els.hairStyle.addEventListener('change', () => { state.look.hairStyle = els.hairStyle.value; renderRuler(); persist(); });
+      els.beardStyle.addEventListener('change', () => { state.look.beardStyle = els.beardStyle.value; renderRuler(); persist(); });
       els.currency.addEventListener('change', () => { state.currency = els.currency.value; persist(); renderAll(); });
     }
 
@@ -387,6 +480,11 @@
         history: [],
         ownedCosmetics: [],
         equippedCosmetics: {},
+        look: {
+          hairStyle: 'short_hero',
+          hairColor: 'dark_brown',
+          beardStyle: 'short_box'
+        },
         buildings: Object.fromEntries(buildingDefs.map(b => [b.id, 0]))
       };
     }
@@ -399,6 +497,7 @@
         return {
           ...defaultState(),
           ...parsed,
+          look: { ...defaultState().look, ...(parsed.look || {}) },
           buildings: { ...defaultState().buildings, ...(parsed.buildings || {}) },
           history: Array.isArray(parsed.history) ? parsed.history : [],
           ownedCosmetics: Array.isArray(parsed.ownedCosmetics) ? parsed.ownedCosmetics : [],
@@ -411,10 +510,79 @@
 
     function persist(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
+    function ensureLookDefaults(){
+      if(!state.look) state.look = { hairStyle:'short_hero', hairColor:'dark_brown', beardStyle:'short_box' };
+      if(!hairColors.some(c => c.id === state.look.hairColor)) state.look.hairColor = 'dark_brown';
+      const styles = hairStylesByGender[state.gender] || hairStylesByGender.male;
+      if(!styles.some(s => s.id === state.look.hairStyle)) state.look.hairStyle = styles[0].id;
+      if(!beardStyles.some(b => b.id === state.look.beardStyle)) state.look.beardStyle = 'short_box';
+      if(state.gender === 'female') state.look.beardStyle = 'none';
+    }
+
+    function populateLookControls(){
+      const styles = hairStylesByGender[state.gender] || hairStylesByGender.male;
+      els.hairStyle.innerHTML = styles.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+      els.beardStyle.innerHTML = beardStyles.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+    }
+
     function syncInputs(){
+      ensureLookDefaults();
       els.currency.value = state.currency;
       els.gender.value = state.gender || 'male';
       els.rulerName.value = state.rulerName || '';
+      populateLookControls();
+      els.hairStyle.value = state.look.hairStyle;
+      els.beardStyle.value = state.look.beardStyle;
+      els.beardWrap.style.display = state.gender === 'male' ? 'flex' : 'none';
+      const color = hairColors.find(c => c.id === state.look.hairColor);
+      els.hairColorLabel.textContent = `Current: ${color ? color.name : 'Dark Brown'}`;
+      renderHairSwatches();
+    }
+
+    function renderHairSwatches(){
+      els.hairColorSwatches.innerHTML = '';
+      hairColors.forEach(color => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `swatchBtn ${state.look.hairColor === color.id ? 'active' : ''}`;
+        btn.style.background = color.value;
+        btn.title = color.name;
+        btn.addEventListener('click', () => {
+          state.look.hairColor = color.id;
+          els.hairColorLabel.textContent = `Current: ${color.name}`;
+          renderHairSwatches();
+          renderRuler();
+          persist();
+        });
+        els.hairColorSwatches.appendChild(btn);
+      });
+    }
+
+    function onGenderChange(){
+      state.gender = els.gender.value;
+      const styles = hairStylesByGender[state.gender];
+      state.look.hairStyle = styles[0].id;
+      if(state.gender === 'female') state.look.beardStyle = 'none';
+      else if(state.look.beardStyle === 'none') state.look.beardStyle = 'short_box';
+      populateLookControls();
+      syncInputs();
+      renderRuler();
+      persist();
+    }
+
+    function randomizeRuler(){
+      const gender = Math.random() > 0.5 ? 'male' : 'female';
+      state.gender = gender;
+      const styles = hairStylesByGender[gender];
+      state.look.hairStyle = styles[Math.floor(Math.random() * styles.length)].id;
+      state.look.hairColor = hairColors[Math.floor(Math.random() * hairColors.length)].id;
+      state.look.beardStyle = gender === 'male'
+        ? beardStyles[Math.floor(Math.random() * beardStyles.length)].id
+        : 'none';
+      syncInputs();
+      renderRuler();
+      persist();
+      flashLog('Ruler look randomized.');
     }
 
     function getRank(){
@@ -463,9 +631,11 @@
       state.rulerName = els.rulerName.value.trim();
       state.currency = els.currency.value;
       state.gender = els.gender.value;
+      state.look.hairStyle = els.hairStyle.value;
+      state.look.beardStyle = state.gender === 'male' ? els.beardStyle.value : 'none';
       persist();
       renderAll();
-      flashLog(`Profile saved. ${state.rulerName || 'Unnamed Ruler'} now rules as a ${state.gender}.`);
+      flashLog(`Ruler saved. ${state.rulerName || 'Unnamed Ruler'} now has the new phase 1 look.`);
     }
 
     function logDay(){
@@ -576,6 +746,7 @@
       renderVillage();
       renderHistory();
       renderRankGuide();
+      syncInputs();
     }
 
     function renderXP(){
@@ -599,7 +770,7 @@
       const rank = getRank();
       els.rulerNameDisplay.textContent = state.rulerName || 'No name yet';
       els.rulerFlavor.textContent = rank.flavor;
-      els.rulerSvgHolder.innerHTML = createRulerSVG(rank.name, state.gender || 'male', state.equippedCosmetics);
+      els.rulerSvgHolder.innerHTML = createRulerSVG(rank.name, state.gender || 'male', state.equippedCosmetics, state.look);
     }
 
     function renderBuildings(){
@@ -727,60 +898,76 @@
 
     function flashLog(text){ els.logBox.textContent = text; }
 
-    function createRulerSVG(rankName, gender, equipped){
+    function getHairColorValue(id){
+      return (hairColors.find(c => c.id === id) || hairColors[0]).value;
+    }
+
+    function createRulerSVG(rankName, gender, equipped, look){
       const cfg = getRulerConfig(rankName, gender);
+      const hairColor = getHairColorValue(look?.hairColor || 'dark_brown');
+      const hairStyle = look?.hairStyle || (gender === 'male' ? 'short_hero' : 'adventurer_bob');
+      const beardStyle = gender === 'male' ? (look?.beardStyle || 'short_box') : 'none';
+
       const weapon = equipped.weapon ? cosmetics.find(c => c.id === equipped.weapon) : null;
       const head = equipped.head ? cosmetics.find(c => c.id === equipped.head) : null;
       const back = equipped.back ? cosmetics.find(c => c.id === equipped.back) : null;
       const offhand = equipped.offhand ? cosmetics.find(c => c.id === equipped.offhand) : null;
 
-      const hairBack = gender === 'female'
-        ? `<path d="M132 98 Q136 154 145 210 Q161 230 180 232 Q199 230 215 210 Q224 154 228 98 Q218 60 180 58 Q142 60 132 98Z" fill="${cfg.hair}" opacity=".95"/>`
-        : `<path d="M138 92 Q144 70 180 68 Q216 70 222 92 Q220 118 214 138 Q197 152 180 152 Q163 152 146 138 Q140 118 138 92Z" fill="${cfg.hair}" opacity=".9"/>`;
-      const headShape = gender === 'female' ? `<ellipse cx="180" cy="104" rx="38" ry="42" fill="${cfg.skin}"/>` : `<circle cx="180" cy="102" r="40" fill="${cfg.skin}"/>`;
-      const outfit = gender === 'female' ? `<path d="M145 146 Q180 126 215 146 L232 242 Q209 270 180 270 Q151 270 128 242 Z" fill="url(#shirtGrad)"/>` : `<rect x="138" y="140" width="84" height="96" rx="24" fill="url(#shirtGrad)"/>`;
-      const shoulders = gender === 'female' ? `<circle cx="142" cy="158" r="13" fill="${cfg.shoulder}"/><circle cx="218" cy="158" r="13" fill="${cfg.shoulder}"/>` : `<circle cx="140" cy="158" r="14" fill="${cfg.shoulder}"/><circle cx="220" cy="158" r="14" fill="${cfg.shoulder}"/>`;
-      const hairFront = gender === 'female'
-        ? `<path d="M142 88 Q150 52 180 50 Q210 52 218 88 Q214 78 204 74 Q201 100 194 122 Q186 132 180 132 Q174 132 166 122 Q159 100 156 74 Q146 78 142 88Z" fill="${cfg.hair}"/><path d="M152 112 Q142 136 146 162" stroke="${cfg.hair}" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M208 112 Q218 136 214 162" stroke="${cfg.hair}" stroke-width="10" stroke-linecap="round" fill="none"/>`
-        : `<path d="M136 94 Q146 50 180 48 Q214 50 224 94 Q210 76 180 74 Q150 76 136 94Z" fill="${cfg.hair}"/><path d="M145 82 Q128 92 134 114" stroke="${cfg.hair}" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M215 82 Q232 92 226 114" stroke="${cfg.hair}" stroke-width="12" stroke-linecap="round" fill="none"/>`;
-
-      const baseCrown = cfg.crown ? `<g transform="translate(0 -2)"><path d="M148 58 L162 36 L180 56 L198 34 L212 58 Z" fill="${cfg.crown}" stroke="#7f5d17" stroke-width="3"/><circle cx="180" cy="48" r="5" fill="#7ec8ff"/></g>` : '';
-      const bigCrown = head && head.id === 'big_crown' ? `<g transform="translate(0 -10)"><path d="M142 62 L156 28 L180 52 L204 24 L218 62 Z" fill="#ffd95a" stroke="#7f5d17" stroke-width="4"/><circle cx="180" cy="44" r="6" fill="#7ec8ff"/><circle cx="157" cy="53" r="4" fill="#ff808f"/><circle cx="203" cy="51" r="4" fill="#80e09b"/></g>` : '';
-      const throne = back && back.id === 'throne' ? `<g opacity=".95"><rect x="112" y="168" width="136" height="96" rx="14" fill="#7f5d17"/><rect x="132" y="132" width="96" height="66" rx="14" fill="#b7862f"/><rect x="121" y="140" width="10" height="52" rx="5" fill="#ffd86f"/><rect x="229" y="140" width="10" height="52" rx="5" fill="#ffd86f"/></g>` : '';
-      const baseStaff = cfg.staff ? `<g transform="translate(236 132)"><rect x="0" y="0" width="8" height="112" rx="4" fill="#8b5f35"/><circle cx="4" cy="-6" r="13" fill="#ffd86f" stroke="#7f5d17" stroke-width="3"/></g>` : '';
+      const throne = back && back.id === 'throne' ? `<g opacity=".96"><rect x="104" y="172" width="152" height="98" rx="16" fill="#6d4313"/><rect x="132" y="124" width="96" height="82" rx="16" fill="#b8872a"/><rect x="114" y="136" width="14" height="58" rx="7" fill="#ffdb78"/><rect x="232" y="136" width="14" height="58" rx="7" fill="#ffdb78"/></g>` : '';
       const weaponSvg = getWeaponSVG(weapon?.id);
-      const offhandSvg = offhand && offhand.id === 'royal_orb' ? `<g transform="translate(116 182)"><circle cx="0" cy="0" r="14" fill="#8dd7ff" opacity=".35"/><circle cx="0" cy="0" r="9" fill="#7ec8ff" stroke="#dff6ff" stroke-width="2"/></g>` : '';
-      const medal = cfg.medal ? `<circle cx="180" cy="178" r="10" fill="#ffd86f" stroke="#7f5d17" stroke-width="3"/>` : '';
+      const offhandSvg = offhand && offhand.id === 'royal_orb' ? `<g transform="translate(112 184)"><circle cx="0" cy="0" r="16" fill="#8dd7ff" opacity=".30"/><circle cx="0" cy="0" r="10" fill="#7ec8ff" stroke="#dff6ff" stroke-width="2"/></g>` : '';
+      const baseCrown = cfg.crown ? `<g transform="translate(0 -2)"><path d="M146 58 L160 34 L180 54 L200 32 L214 58 Z" fill="${cfg.crown}" stroke="#7f5d17" stroke-width="3"/><circle cx="180" cy="47" r="5" fill="#7ec8ff"/></g>` : '';
+      const grandCrown = head && head.id === 'big_crown' ? `<g transform="translate(0 -12)"><path d="M140 64 L154 24 L180 50 L206 22 L220 64 Z" fill="#ffd95a" stroke="#7f5d17" stroke-width="4"/><circle cx="180" cy="42" r="7" fill="#82d4ff"/><circle cx="157" cy="54" r="4" fill="#ff808f"/><circle cx="203" cy="52" r="4" fill="#80e09b"/></g>` : '';
+      const medal = cfg.medal ? `<circle cx="180" cy="190" r="11" fill="#ffd86f" stroke="#7f5d17" stroke-width="3"/>` : '';
+      const beardSvg = gender === 'male' ? getBeardSVG(beardStyle, hairColor) : '';
+      const hairBack = getHairBackSVG(gender, hairStyle, hairColor);
+      const hairFront = getHairFrontSVG(gender, hairStyle, hairColor);
+      const faceShape = gender === 'female'
+        ? `<ellipse cx="180" cy="110" rx="40" ry="44" fill="${cfg.skin}"/>`
+        : `<circle cx="180" cy="108" r="42" fill="${cfg.skin}"/>`;
+      const outfit = gender === 'female'
+        ? `<path d="M144 154 Q180 132 216 154 L234 252 Q211 282 180 282 Q149 282 126 252 Z" fill="url(#shirtGrad)"/>`
+        : `<rect x="136" y="150" width="88" height="102" rx="26" fill="url(#shirtGrad)"/>`;
+      const shoulders = gender === 'female'
+        ? `<circle cx="142" cy="168" r="14" fill="${cfg.shoulder}"/><circle cx="218" cy="168" r="14" fill="${cfg.shoulder}"/>`
+        : `<circle cx="140" cy="168" r="15" fill="${cfg.shoulder}"/><circle cx="220" cy="168" r="15" fill="${cfg.shoulder}"/>`;
+      const cape = cfg.capeVisible ? `<path d="M102 250 Q126 154 180 142 Q234 154 258 250 Q226 284 180 286 Q134 284 102 250Z" fill="url(#capeGrad)"/>` : '';
+      const baseStaff = cfg.staff ? `<g transform="translate(238 140)"><rect x="0" y="0" width="8" height="112" rx="4" fill="#8b5f35"/><circle cx="4" cy="-8" r="14" fill="#ffd86f" stroke="#7f5d17" stroke-width="3"/></g>` : '';
 
       return `
-      <svg viewBox="0 0 360 320" width="100%" height="100%" aria-label="Cartoon ruler">
+      <svg viewBox="0 0 360 340" width="100%" height="100%" aria-label="Cartoon ruler">
         <defs>
           <linearGradient id="capeGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${cfg.cape}"/><stop offset="100%" stop-color="${cfg.capeDark}"/></linearGradient>
           <linearGradient id="shirtGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${cfg.shirt}"/><stop offset="100%" stop-color="${cfg.shirtDark}"/></linearGradient>
           <filter id="softShadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="rgba(0,0,0,.28)"/></filter>
+          <filter id="glowGold" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="rgba(247,200,74,.30)"/></filter>
         </defs>
         <g filter="url(#softShadow)" transform="translate(0 4)">
-          <ellipse cx="180" cy="278" rx="78" ry="18" fill="rgba(0,0,0,.18)"/>
+          <ellipse cx="180" cy="296" rx="84" ry="20" fill="rgba(0,0,0,.18)"/>
           ${throne}
-          ${cfg.capeVisible ? `<path d="M106 246 Q128 152 180 140 Q232 152 254 246 Q224 274 180 274 Q136 274 106 246Z" fill="url(#capeGrad)"/>` : ''}
+          ${cape}
           ${hairBack}
           ${outfit}
           ${shoulders}
-          ${cfg.belt ? `<rect x="142" y="196" width="76" height="14" rx="7" fill="${cfg.belt}"/><circle cx="180" cy="203" r="6" fill="#ffd86f"/>` : ''}
-          <rect x="128" y="154" width="18" height="66" rx="9" fill="${cfg.skin}" transform="rotate(8 137 186)"/>
-          <rect x="214" y="154" width="18" height="66" rx="9" fill="${cfg.skin}" transform="rotate(-8 223 186)"/>
-          <rect x="155" y="228" width="18" height="46" rx="9" fill="${cfg.pants}"/>
-          <rect x="187" y="228" width="18" height="46" rx="9" fill="${cfg.pants}"/>
-          <rect x="149" y="267" width="28" height="12" rx="6" fill="${cfg.boot}"/>
-          <rect x="183" y="267" width="28" height="12" rx="6" fill="${cfg.boot}"/>
-          ${headShape}
-          <ellipse cx="162" cy="104" rx="5" ry="7" fill="#2f2432"/>
-          <ellipse cx="198" cy="104" rx="5" ry="7" fill="#2f2432"/>
-          <path d="M165 122 Q180 132 195 122" stroke="#7a3d35" stroke-width="5" stroke-linecap="round" fill="none"/>
-          <ellipse cx="180" cy="118" rx="8" ry="5" fill="rgba(255,120,140,.25)"/>
+          ${cfg.belt ? `<rect x="142" y="206" width="76" height="14" rx="7" fill="${cfg.belt}"/><circle cx="180" cy="213" r="6" fill="#ffd86f"/>` : ''}
+          <rect x="125" y="163" width="20" height="72" rx="10" fill="${cfg.skin}" transform="rotate(10 135 195)"/>
+          <rect x="215" y="163" width="20" height="72" rx="10" fill="${cfg.skin}" transform="rotate(-10 225 195)"/>
+          <rect x="154" y="244" width="18" height="50" rx="9" fill="${cfg.pants}"/>
+          <rect x="188" y="244" width="18" height="50" rx="9" fill="${cfg.pants}"/>
+          <rect x="148" y="287" width="30" height="12" rx="6" fill="${cfg.boot}"/>
+          <rect x="182" y="287" width="30" height="12" rx="6" fill="${cfg.boot}"/>
+          ${faceShape}
+          <ellipse cx="162" cy="110" rx="6" ry="8" fill="#2c2430"/>
+          <ellipse cx="198" cy="110" rx="6" ry="8" fill="#2c2430"/>
+          <path d="M156 98 Q162 92 170 96" stroke="#2c2430" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M190 96 Q198 92 204 98" stroke="#2c2430" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M166 132 Q180 142 194 132" stroke="#7a3d35" stroke-width="5" stroke-linecap="round" fill="none"/>
+          <ellipse cx="156" cy="126" rx="8" ry="5" fill="rgba(255,120,140,.18)"/>
+          <ellipse cx="204" cy="126" rx="8" ry="5" fill="rgba(255,120,140,.18)"/>
+          ${beardSvg}
           ${hairFront}
           ${baseCrown}
-          ${bigCrown}
+          ${grandCrown ? `<g filter="url(#glowGold)">${grandCrown}</g>` : ''}
           ${baseStaff}
           ${weaponSvg}
           ${offhandSvg}
@@ -789,24 +976,97 @@
       </svg>`;
     }
 
+    function getHairBackSVG(gender, style, color){
+      if(gender === 'male'){
+        switch(style){
+          case 'swept_rogue':
+            return `<path d="M138 102 Q146 72 178 68 Q214 72 226 102 Q222 128 214 142 Q196 156 180 156 Q162 156 146 142 Q140 128 138 102Z" fill="${color}"/><path d="M214 84 Q232 98 228 124" stroke="${color}" stroke-width="14" stroke-linecap="round" fill="none"/>`;
+          case 'spiky_champion':
+            return `<path d="M140 102 Q148 68 180 66 Q212 68 220 102 Q214 130 206 142 Q194 152 180 152 Q166 152 154 142 Q146 130 140 102Z" fill="${color}"/>`;
+          case 'prince_wave':
+            return `<path d="M136 104 Q142 70 178 64 Q216 68 224 104 Q222 134 214 146 Q198 160 180 160 Q162 160 146 146 Q138 132 136 104Z" fill="${color}"/><path d="M146 114 Q140 132 146 150" stroke="${color}" stroke-width="12" stroke-linecap="round" fill="none"/>`;
+          default:
+            return `<path d="M140 100 Q146 70 180 66 Q214 70 220 100 Q214 126 206 138 Q194 150 180 150 Q166 150 154 138 Q146 126 140 100Z" fill="${color}"/>`;
+        }
+      }
+      switch(style){
+        case 'long_royal':
+          return `<path d="M132 100 Q138 64 180 60 Q222 64 228 100 Q228 154 220 222 Q204 242 180 246 Q156 242 140 222 Q132 154 132 100Z" fill="${color}"/>`;
+        case 'braided_guardian':
+          return `<path d="M136 102 Q142 66 180 60 Q218 66 224 102 Q224 154 214 210 Q198 228 180 230 Q162 228 146 210 Q136 154 136 102Z" fill="${color}"/><path d="M148 148 Q136 176 148 214" stroke="${color}" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M212 148 Q224 176 212 214" stroke="${color}" stroke-width="11" stroke-linecap="round" fill="none"/>`;
+        case 'high_pony':
+          return `<path d="M136 102 Q144 68 180 62 Q216 68 224 102 Q220 142 214 172 Q198 188 180 188 Q162 188 146 172 Q140 142 136 102Z" fill="${color}"/><path d="M180 56 Q216 58 230 86 Q228 106 214 114 Q210 78 180 56Z" fill="${color}"/>`;
+        default:
+          return `<path d="M136 102 Q142 66 180 60 Q218 66 224 102 Q222 150 214 194 Q198 212 180 214 Q162 212 146 194 Q138 150 136 102Z" fill="${color}"/>`;
+      }
+    }
+
+    function getHairFrontSVG(gender, style, color){
+      if(gender === 'male'){
+        switch(style){
+          case 'swept_rogue':
+            return `<path d="M138 96 Q150 46 184 48 Q214 52 226 92 Q206 76 186 74 Q164 72 138 96Z" fill="${color}"/><path d="M156 70 Q196 60 220 78 Q196 92 166 90 Z" fill="${shadeColor(color,-12)}"/>`;
+          case 'spiky_champion':
+            return `<path d="M140 94 L150 66 L164 84 L176 60 L188 82 L202 58 L214 86 L222 94 Q202 76 180 76 Q158 76 140 94Z" fill="${color}"/>`;
+          case 'prince_wave':
+            return `<path d="M136 98 Q148 48 182 48 Q214 52 224 94 Q212 82 198 78 Q178 72 164 78 Q150 84 136 98Z" fill="${color}"/><path d="M154 82 Q178 60 208 72 Q198 92 170 94 Z" fill="${shadeColor(color,-10)}"/>`;
+          default:
+            return `<path d="M138 96 Q148 50 180 48 Q212 50 222 96 Q210 80 180 78 Q150 80 138 96Z" fill="${color}"/>`;
+        }
+      }
+      switch(style){
+        case 'long_royal':
+          return `<path d="M140 92 Q148 48 180 46 Q212 48 220 92 Q214 82 204 76 Q196 106 190 124 Q184 134 180 134 Q176 134 170 124 Q164 106 156 76 Q146 82 140 92Z" fill="${color}"/><path d="M154 116 Q144 140 148 172" stroke="${color}" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M206 116 Q216 140 212 172" stroke="${color}" stroke-width="12" stroke-linecap="round" fill="none"/>`;
+        case 'braided_guardian':
+          return `<path d="M142 92 Q150 48 180 48 Q210 48 218 92 Q214 82 204 74 Q198 102 192 118 Q186 128 180 128 Q174 128 168 118 Q162 102 156 74 Q146 82 142 92Z" fill="${color}"/><path d="M150 122 Q142 148 150 184" stroke="${shadeColor(color,-8)}" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M210 122 Q218 148 210 184" stroke="${shadeColor(color,-8)}" stroke-width="9" stroke-linecap="round" fill="none"/>`;
+        case 'high_pony':
+          return `<path d="M140 94 Q152 48 180 46 Q208 48 220 94 Q212 80 198 74 Q194 102 188 118 Q184 126 180 126 Q176 126 172 118 Q166 102 162 74 Q148 80 140 94Z" fill="${color}"/>`;
+        default:
+          return `<path d="M142 94 Q150 50 180 48 Q210 50 218 94 Q214 82 204 76 Q198 104 192 120 Q186 130 180 130 Q174 130 168 120 Q162 104 156 76 Q146 82 142 94Z" fill="${color}"/>`;
+      }
+    }
+
+    function getBeardSVG(style, color){
+      switch(style){
+        case 'mustache_goatee':
+          return `<path d="M166 136 Q172 142 180 140 Q188 142 194 136" stroke="${color}" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M176 146 Q180 154 184 146 L184 162 Q180 168 176 162 Z" fill="${color}"/>`;
+        case 'full_king':
+          return `<path d="M158 134 Q166 150 180 152 Q194 150 202 134 Q208 150 202 174 Q192 190 180 194 Q168 190 158 174 Q152 150 158 134Z" fill="${color}"/>`;
+        case 'none':
+          return '';
+        default:
+          return `<path d="M162 136 Q170 150 180 150 Q190 150 198 136 Q202 150 198 164 Q190 174 180 176 Q170 174 162 164 Q158 150 162 136Z" fill="${color}"/>`;
+      }
+    }
+
     function getWeaponSVG(id){
       switch(id){
         case 'dagger':
-          return `<g transform="translate(234 182) rotate(-8)"><rect x="0" y="0" width="7" height="56" rx="3" fill="#8b5f35"/><path d="M3.5 -18 L12 4 L-5 4 Z" fill="#d9e6f2"/><rect x="-7" y="8" width="20" height="5" rx="2" fill="#ffd86f"/></g>`;
+          return `<g transform="translate(238 192) rotate(-8)"><rect x="0" y="0" width="7" height="56" rx="3" fill="#8b5f35"/><path d="M3.5 -18 L12 4 L-5 4 Z" fill="#d9e6f2"/><rect x="-7" y="8" width="20" height="5" rx="2" fill="#ffd86f"/></g>`;
         case 'axe':
-          return `<g transform="translate(236 156)"><rect x="0" y="0" width="8" height="88" rx="4" fill="#8b5f35"/><path d="M8 10 Q34 14 28 40 Q18 46 8 34 Z" fill="#d9e6f2"/></g>`;
+          return `<g transform="translate(240 166)"><rect x="0" y="0" width="8" height="88" rx="4" fill="#8b5f35"/><path d="M8 10 Q34 14 28 40 Q18 46 8 34 Z" fill="#d9e6f2"/></g>`;
         case 'sword':
-          return `<g transform="translate(236 146)"><rect x="0" y="0" width="8" height="98" rx="4" fill="#8b5f35"/><rect x="1" y="-34" width="6" height="42" rx="3" fill="#e7f2ff"/><rect x="-9" y="6" width="26" height="6" rx="3" fill="#ffd86f"/></g>`;
+          return `<g transform="translate(240 156)"><rect x="0" y="0" width="8" height="98" rx="4" fill="#8b5f35"/><rect x="1" y="-34" width="6" height="42" rx="3" fill="#e7f2ff"/><rect x="-9" y="6" width="26" height="6" rx="3" fill="#ffd86f"/></g>`;
         case 'staff':
-          return `<g transform="translate(236 130)"><rect x="0" y="0" width="8" height="114" rx="4" fill="#8b5f35"/><circle cx="4" cy="-8" r="14" fill="#8dd7ff" stroke="#dff6ff" stroke-width="2"/></g>`;
+          return `<g transform="translate(240 140)"><rect x="0" y="0" width="8" height="114" rx="4" fill="#8b5f35"/><circle cx="4" cy="-8" r="14" fill="#8dd7ff" stroke="#dff6ff" stroke-width="2"/></g>`;
         default:
           return '';
       }
     }
 
+    function shadeColor(hex, percent){
+      const clean = hex.replace('#','');
+      const num = parseInt(clean, 16);
+      const amt = Math.round(2.55 * percent);
+      const r = Math.max(0, Math.min(255, (num >> 16) + amt));
+      const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+      const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+      return '#' + (0x1000000 + (r * 0x10000) + (g * 0x100) + b).toString(16).slice(1);
+    }
+
     function getRulerConfig(rank, gender){
       const base = {
-        skin:'#f0ba92', hair: gender === 'female' ? '#5a3426' : '#3d2b1f', shirt:'#6ba7ff', shirtDark:'#456fbd', shoulder:'#85b3ff',
+        skin:'#f0ba92', shirt:'#6ba7ff', shirtDark:'#456fbd', shoulder:'#85b3ff',
         pants:'#5b375f', boot:'#442b1d', cape:'#905cff', capeDark:'#5d2f96', capeVisible:false, belt:'#845d30', crown:'', medal:false, staff:false
       };
       switch(rank){
@@ -818,7 +1078,7 @@
         case 'Duke': return { ...base, shirt:'#f0b85f', shirtDark:'#b57a2a', shoulder:'#ffe1aa', pants:'#5a3670', capeVisible:true, cape:'#7a35b7', capeDark:'#481d70', medal:true };
         case 'Archduke': return { ...base, shirt:'#e4d074', shirtDark:'#b8a244', shoulder:'#fff1b1', pants:'#59356e', capeVisible:true, cape:'#b93567', capeDark:'#6c1f3d', medal:true, staff:true };
         case 'King': return { ...base, shirt:'#fff0a5', shirtDark:'#d6bf57', shoulder:'#fff5c8', pants:'#4c2f61', capeVisible:true, cape:'#cf4242', capeDark:'#8e2424', crown:'#f2c94c', medal:true, staff:true };
-        case 'Supreme Emperor': return { ...base, shirt:'#fff4bb', shirtDark:'#d9c66d', shoulder:'#fff8d8', pants:'#47275c', capeVisible:true, cape:'#6e2cff', capeDark:'#3d157f', crown:'#ffd95a', medal:true, staff:true, hair: gender === 'female' ? '#2f1b15' : '#2d1e13' };
+        case 'Supreme Emperor': return { ...base, shirt:'#fff4bb', shirtDark:'#d9c66d', shoulder:'#fff8d8', pants:'#47275c', capeVisible:true, cape:'#6e2cff', capeDark:'#3d157f', crown:'#ffd95a', medal:true, staff:true };
         default: return base;
       }
     }
