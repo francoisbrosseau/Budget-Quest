@@ -1,126 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Budget Quest</title>
-
-<style>
-body {
-  margin: 0;
-  background: #0f172a;
-  font-family: Arial, sans-serif;
-  color: white;
-}
-
-.container {
-  max-width: 500px;
-  margin: 40px auto;
-  background: #1e293b;
-  border-radius: 20px;
-  padding: 20px;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.badge {
-  background: #0f172a;
-  padding: 6px 12px;
-  border-radius: 999px;
-}
-
-.card {
-  background: linear-gradient(#1e3a8a, #14532d);
-  border-radius: 20px;
-  height: 320px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  overflow: hidden;
-}
-
-/* 🔥 KEY FIX */
-#rulerImage {
-  height: 115%;
-  width: auto;
-  object-fit: contain;
-  transition: transform 0.2s ease;
-}
-
-.info {
-  margin-top: 15px;
-}
-
-.progress {
-  height: 8px;
-  background: #334155;
-  border-radius: 999px;
-  margin-top: 10px;
-  overflow: hidden;
-}
-
-.bar {
-  height: 100%;
-  width: 0%;
-  background: gold;
-}
-
-button {
-  margin-top: 15px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Budget Quest</title>
+  <style>
+    :root{
+      --bg1:#201433;
+      --bg2:#0f1020;
+      --panel:#171b31cc;
+      --line:#ffffff18;
+      --text:#f6f0dc;
+      --muted:#c8bfd9;
+      --gold:#f7c84a;
+      --gold-2:#ffea8b;
+      --green:#80e09b;
+      --red:#ff808f;
+      --blue:#7ec8ff;
+      --shadow:0 18px 40px rgba(0,0,0,.35);
+      --radius:24px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top, #3b2068 0%, transparent 28%),
+        radial-gradient(circle at 80% 10%, #1b4d74 0%, transparent 18%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+    .coins{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+    .coin{position:absolute;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #fff7bf, var(--gold));box-shadow:0 0 14px rgba(247,200,74,.35);opacity:.18;animation:floatCoin linear infinite}
+    @keyframes floatCoin{from{transform:translateY(110vh) rotate(0deg)}to{transform:translateY(-15vh) rotate(360deg)}}
+    .wrap{position:relative;z-index:1;width:min(1300px, calc(100% - 28px));margin:22px auto 42px}
+    .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:20px;align-items:stretch;margin-bottom:20px}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+    .banner{padding:26px 28px;position:relative;overflow:hidden;min-height:280px}
+    .banner::before{content:"";position:absolute;inset:auto -120px -90px auto;width:260px;height:260px;background:radial-gradient(circle, rgba(247,200,74,.22), transparent 70%);filter:blur(10px)}
+    .titleRow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .crest{width:68px;height:68px;border-radius:18px;display:grid;place-items:center;font-size:34px;background:linear-gradient(180deg,#4d2d7e,#27173f);border:1px solid #ffffff24;box-shadow:inset 0 1px 0 rgba(255,255,255,.16);animation:wiggle 4.5s ease-in-out infinite}
+    @keyframes wiggle{0%,100%{transform:rotate(0deg)}50%{transform:rotate(2deg)}}
+    h1{margin:0;font-size:clamp(2rem,4vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .subtitle{margin:10px 0 0;color:var(--muted);font-size:1.02rem;max-width:780px;line-height:1.6}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+    .stat{padding:14px 14px 12px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+    .stat .label{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .stat .value{font-size:1.35rem;font-weight:800;margin-top:6px}
+    .rulerPanel{padding:18px;display:grid;grid-template-rows:auto 1fr auto auto;gap:12px;overflow:hidden;min-height:360px}
+    .rulerTop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+    .tag{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--muted);font-size:.92rem;font-weight:700}
+    .rankGlow{color:var(--gold-2)}
+    .rulerStage{position:relative;border-radius:24px;min-height:360px;background:radial-gradient(circle at 50% 18%, rgba(255,255,255,.18), transparent 24%),radial-gradient(circle at 50% 8%, rgba(247,200,74,.18), transparent 22%),linear-gradient(180deg, rgba(113,173,255,.12), rgba(188,133,255,.12));border:1px solid rgba(255,255,255,.10);overflow:hidden;display:grid;place-items:end center;padding:20px 20px 0}
+    .rulerStage::before{content:"";position:absolute;inset:16px;pointer-events:none;border-radius:22px;background:linear-gradient(180deg, rgba(255,255,255,.06), transparent 38%);border:1px solid rgba(255,255,255,.06)}
+    .rulerStage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:88px;background:linear-gradient(180deg, transparent, rgba(0,0,0,.28))}
+    .stageGround{position:absolute;left:0;right:0;bottom:0;height:92px;background:linear-gradient(180deg,#3a7241,#1f3423);border-top:1px solid rgba(255,255,255,.06)}
+    .rulerImageWrap{position:relative;z-index:2;width:min(100%,360px);display:grid;place-items:end center;height:100%;animation:rulerBob 4s ease-in-out infinite;filter:drop-shadow(0 18px 28px rgba(0,0,0,.35))}
+    .rulerImage{max-width:100%;max-height:330px;object-fit:contain;display:block}
+    @keyframes rulerBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    .rulerNameBox{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:.98rem;color:var(--muted)}
+    .rulerNameStrong{color:var(--text);font-weight:800}
+    .xpWrap{display:grid;gap:7px}
+    .xpMeta{display:flex;justify-content:space-between;gap:10px;align-items:center;color:var(--muted);font-size:.9rem;font-weight:700}
+    .xpBar{height:16px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+    .xpFill{height:100%;width:0%;background:linear-gradient(90deg,#8dd7ff,#f7c84a);border-radius:999px;transition:width .35s ease}
+    .mainGrid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
+    .leftColumn,.rightColumn{display:grid;gap:20px}
+    .section{padding:20px}
+    .section h2{margin:0 0 14px;font-size:1.15rem;letter-spacing:-.02em}
+    .formGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .field{display:flex;flex-direction:column;gap:7px}
+    .field.full{grid-column:1/-1}
+    label{font-size:.9rem;color:var(--muted);font-weight:700}
+    input,select,button{font:inherit}
+    input,select{width:100%;padding:13px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:rgba(10,12,25,.8);color:var(--text);outline:none}
+    input:focus,select:focus{border-color:rgba(247,200,74,.55);box-shadow:0 0 0 3px rgba(247,200,74,.12)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    button{border:none;cursor:pointer;padding:13px 18px;border-radius:16px;font-weight:800;transition:.18s transform ease,.18s opacity ease,.18s box-shadow ease}
+    button:hover{transform:translateY(-1px)} button:active{transform:translateY(1px)}
+    .primary{color:#241500;background:linear-gradient(180deg,#ffe488,#f7c84a);box-shadow:0 10px 24px rgba(247,200,74,.22)}
+    .secondary{color:var(--text);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
+    .logBox{margin-top:16px;padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);min-height:90px;color:var(--muted);line-height:1.55;white-space:pre-line}
+    .good{color:var(--green);font-weight:800}.bad{color:var(--red);font-weight:800}.goldText{color:var(--gold);font-weight:800}
+    .subGrid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .buildingGrid,.cosmeticGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .building,.cosmeticCard{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:8px}
+    .buildingTop,.cosmeticTop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .buildingName,.cosmeticName{font-weight:800}.buildingMeta,.cosmeticMeta{font-size:.9rem;color:var(--muted)}.cost{font-size:.88rem;color:var(--gold-2);font-weight:700}
+    .buyBtn{padding:10px 12px;border-radius:14px;font-size:.95rem}.buyBtn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .ownedBadge{display:inline-flex;align-items:center;justify-content:center;padding:4px 8px;border-radius:999px;background:rgba(128,224,155,.14);color:var(--green);font-size:.78rem;font-weight:800;border:1px solid rgba(128,224,155,.2)}
+    .pillRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:.88rem;color:var(--muted)}
+    .village{margin-top:14px;min-height:350px;border-radius:22px;background:linear-gradient(180deg, rgba(126,200,255,.12), rgba(255,255,255,.03)),linear-gradient(180deg,#417fd0 0%,#7edcff 42%,#93d673 42%,#5ea25a 100%);border:1px solid rgba(255,255,255,.09);position:relative;overflow:hidden;padding:12px}
+    .cloud{position:absolute;width:84px;height:34px;border-radius:999px;background:rgba(255,255,255,.8);filter:blur(1px);opacity:.65;animation:cloudDrift linear infinite}
+    .cloud::before,.cloud::after{content:"";position:absolute;background:inherit;border-radius:50%}.cloud::before{width:36px;height:36px;left:10px;top:-12px}.cloud::after{width:44px;height:44px;right:10px;top:-18px}
+    @keyframes cloudDrift{from{transform:translateX(-130px)}to{transform:translateX(calc(100vw + 200px))}}
+    .terrain{position:absolute;left:0;right:0;bottom:0;height:64px;background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.14))}
+    .villageStage{position:absolute;left:18px;right:18px;bottom:24px;height:235px}
+    .villageItem{position:absolute;display:flex;align-items:flex-end;justify-content:center;filter:drop-shadow(0 8px 8px rgba(0,0,0,.2));animation:bob 3.2s ease-in-out infinite}.villageItem:nth-child(2n){animation-duration:3.7s}.villageItem:nth-child(3n){animation-duration:4.2s}
+    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+    .historyList{display:grid;gap:10px;max-height:380px;overflow:auto;padding-right:2px}
+    .historyItem,.rankCard{background:#0e1621;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:5px}
+    .historyTop,.rankTop{display:flex;justify-content:space-between;gap:10px;font-weight:800}
+    .historyMeta,.historyNote,.rankMeta{color:var(--muted);font-size:.92rem}
+    .empty{color:var(--muted);background:#0e1621;border:1px dashed rgba(255,255,255,.16);border-radius:14px;padding:16px}
+    .rankList{display:grid;gap:10px;max-height:530px;overflow:auto;padding-right:2px}.activeRank{border-color:rgba(247,200,74,.35);box-shadow:0 0 0 1px rgba(247,200,74,.18) inset}
+    @media (max-width:1120px){.hero,.mainGrid,.subGrid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:700px){.wrap{width:min(100% - 16px,1300px);margin:12px auto 28px}.banner,.section,.rulerPanel{padding:16px}.formGrid,.buildingGrid,.cosmeticGrid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.titleRow{align-items:flex-start}.crest{width:58px;height:58px;font-size:28px}.stat .value{font-size:1.15rem}.village{min-height:300px}.villageStage{height:185px}.rulerImage{max-height:280px}}
+  </style>
 </head>
-
 <body>
-
-<div class="container">
-
-  <div class="header">
-    <div class="badge">Ruler Portrait</div>
-    <div class="badge">⭐ Peasant</div>
-  </div>
-
-  <div class="card">
-    <img id="rulerImage" src="assets/rulers/male/male_1_brown_clean.png">
-  </div>
-
-  <div class="info">
-    <strong>Your ruler: No name yet</strong>
-    <p>A broke but stubborn soul with a dream of ruling through self-control.</p>
-
-    <div>Peasant → Villager <span style="float:right">0 / 18 gold</span></div>
-
-    <div class="progress">
-      <div class="bar"></div>
+  <div class="coins" id="coins"></div>
+  <div class="wrap">
+    <div class="hero">
+      <section class="panel banner">
+        <div class="titleRow">
+          <div class="crest">🏰</div>
+          <div>
+            <h1>Budget Quest</h1>
+            <p class="subtitle">Turn saving money into a kingdom-building RPG. Every <strong>10</strong> saved gives <strong>1 gold</strong>. The ugly ruler is gone. The new portrait system is live, while the rank guide, upgrades, expansion loop, and kingdom progression are all restored.</p>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="label">Treasury</div><div class="value"><span id="goldDisplay">0</span> Gold</div></div>
+          <div class="stat"><div class="label">Daily Streak</div><div class="value"><span id="streakDisplay">0</span> Days</div></div>
+          <div class="stat"><div class="label">Royal Rank</div><div class="value" id="rankDisplay">Peasant</div></div>
+          <div class="stat"><div class="label">Passive Income</div><div class="value"><span id="incomeDisplay">0</span> / day</div></div>
+        </div>
+        <div class="pillRow">
+          <div class="pill">🖼 Real portrait test active</div>
+          <div class="pill">👑 Rank progression restored</div>
+          <div class="pill">🏘 Kingdom expansion restored</div>
+          <div class="pill">🗡 Cosmetics system restored</div>
+        </div>
+      </section>
+      <aside class="panel rulerPanel">
+        <div class="rulerTop">
+          <div class="tag">Ruler Portrait</div>
+          <div class="tag rankGlow" id="rankGlow">✦ Peasant</div>
+        </div>
+        <div class="rulerStage">
+          <div class="rulerImageWrap">
+            <img id="rulerImage" class="rulerImage" src="assets/rulers/male/male_1_brown_clean.png" alt="Ruler portrait" />
+          </div>
+          <div class="stageGround"></div>
+        </div>
+        <div class="rulerNameBox">
+          <div>Your ruler: <span class="rulerNameStrong" id="rulerNameDisplay">No name yet</span></div>
+          <div id="rulerFlavor">A broke but stubborn soul with a dream of ruling through self-control.</div>
+        </div>
+        <div class="xpWrap">
+          <div class="xpMeta"><span id="xpLeftLabel">Rank progress</span><span id="xpRightLabel">0 / 18 gold</span></div>
+          <div class="xpBar"><div class="xpFill" id="xpFill"></div></div>
+        </div>
+      </aside>
+    </div>
+    <div class="mainGrid">
+      <div class="leftColumn">
+        <section class="panel section">
+          <h2>Kingdom Expansion</h2>
+          <div class="subGrid">
+            <div><div class="buildingGrid" id="buildingGrid"></div></div>
+            <div><div class="cosmeticGrid" id="cosmeticGrid"></div></div>
+          </div>
+          <div class="village" id="village">
+            <div class="cloud" style="top:18px; left:-100px; animation-duration:32s;"></div>
+            <div class="cloud" style="top:56px; left:-180px; animation-duration:42s; opacity:.55; transform:scale(.85)"></div>
+            <div class="cloud" style="top:88px; left:-260px; animation-duration:52s; opacity:.42; transform:scale(.72)"></div>
+            <div class="villageStage" id="villageStage"></div>
+            <div class="terrain"></div>
+          </div>
+          <div class="historyMeta" style="margin-top:12px;">This is still the temporary village display. The future overhead map with clickable plots comes next after the portrait pack is stable.</div>
+        </section>
+      </div>
+      <div class="rightColumn">
+        <section class="panel section">
+          <h2>Ruler Creator</h2>
+          <div class="formGrid">
+            <div class="field full">
+              <label for="rulerName">Ruler name</label>
+              <input id="rulerName" type="text" placeholder="Enter your ruler name" />
+            </div>
+            <div class="field">
+              <label>Portrait system</label>
+              <input type="text" value="Male portrait 01" disabled />
+            </div>
+            <div class="field">
+              <label for="hairColorSelect">Hair color</label>
+              <select id="hairColorSelect">
+                <option value="brown">Brown</option>
+                <option value="black">Black</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Beard status</label>
+              <input type="text" value="Clean only for this test" disabled />
+            </div>
+            <div class="field">
+              <label>Variant status</label>
+              <input type="text" value="More variants coming next" disabled />
+            </div>
+          </div>
+          <div class="actions">
+            <button class="primary" id="saveProfileBtn">Save Ruler</button>
+            <button class="secondary" disabled>Female / hair variants next</button>
+          </div>
+        </section>
+        <section class="panel section">
+          <h2>Daily Budget Battle</h2>
+          <div class="formGrid">
+            <div class="field">
+              <label for="currency">Currency</label>
+              <select id="currency">
+                <option value="$">USD ($)</option>
+                <option value="C$">CAD (C$)</option>
+                <option value="MX$">MXN (MX$)</option>
+                <option value="€">EUR (€)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="budget">Daily budget</label>
+              <input id="budget" type="number" min="0" step="0.01" placeholder="Example: 40" />
+            </div>
+            <div class="field full">
+              <label for="spent">Amount spent today</label>
+              <input id="spent" type="number" min="0" step="0.01" placeholder="Example: 31.50" />
+            </div>
+          </div>
+          <div class="actions">
+            <button class="primary" id="logDayBtn">Log Today</button>
+            <button class="secondary" id="collectIncomeBtn">Collect Passive Income</button>
+            <button class="secondary" id="resetBtn">Reset Kingdom</button>
+          </div>
+          <div class="logBox" id="logBox">Welcome to your kingdom. The full interface is back, now using the real portrait image.</div>
+        </section>
+        <section class="panel section">
+          <h2>Rank Guide</h2>
+          <div class="rankList" id="rankList"></div>
+        </section>
+        <section class="panel section">
+          <h2>Campaign Log</h2>
+          <div class="historyList" id="historyList"></div>
+        </section>
+      </div>
     </div>
   </div>
-
-  <!-- TEST BUTTONS -->
-  <button onclick="setHair('brown')">Brown Hair</button>
-  <button onclick="setHair('black')">Black Hair</button>
-
-</div>
-
-<script>
-function setHair(type) {
-  const img = document.getElementById("rulerImage");
-
-  if (type === "black") {
-    img.src = "assets/rulers/male/male_1_black_clean.png";
-    img.style.transform = "scale(1.15)";
-  } else {
-    img.src = "assets/rulers/male/male_1_brown_clean.png";
-    img.style.transform = "scale(1)";
-  }
-}
-</script>
-
+  <script>
+    const STORAGE_KEY = 'budgetQuest_v9';
+    const buildingDefs = [
+      { id: 'peasant_hut', name: 'Peasant Hut', emoji: '🛖', type: 'peasant', baseCost: 34, income: 2 },
+      { id: 'farm', name: 'Farm Plot', emoji: '🌾', type: 'farmer', baseCost: 110, income: 6 },
+      { id: 'tavern', name: 'Tiny Tavern', emoji: '🍺', type: 'special', baseCost: 78, income: 4 },
+      { id: 'mill', name: 'Wind Mill', emoji: '🌬️', type: 'special', baseCost: 165, income: 9 },
+      { id: 'forge', name: 'Forge', emoji: '⚒️', type: 'special', baseCost: 235, income: 13 },
+      { id: 'barracks', name: 'Barracks', emoji: '🛡️', type: 'special', baseCost: 330, income: 18 },
+      { id: 'tower', name: 'Watch Tower', emoji: '🗼', type: 'special', baseCost: 455, income: 25 },
+      { id: 'keep', name: 'Stone Keep', emoji: '🏯', type: 'special', baseCost: 620, income: 33 },
+      { id: 'castle', name: 'Royal Castle', emoji: '🏰', type: 'special', baseCost: 850, income: 45 }
+    ];
+    const cosmetics = [
+      { id:'dagger', name:'Jeweled Dagger', emoji:'🗡️', cost:160, slot:'weapon', ranks:['Villager','Squire','Knight','Baron','Count','Duke','Archduke','King','Supreme Emperor'] },
+      { id:'axe', name:'War Axe', emoji:'🪓', cost:250, slot:'weapon', ranks:['Squire','Knight','Baron','Count','Duke','Archduke','King','Supreme Emperor'] },
+      { id:'sword', name:'Royal Sword', emoji:'⚔️', cost:420, slot:'weapon', ranks:['Knight','Baron','Count','Duke','Archduke','King','Supreme Emperor'] },
+      { id:'staff', name:'Arcane Staff', emoji:'🪄', cost:520, slot:'weapon', ranks:['Count','Duke','Archduke','King','Supreme Emperor'] },
+      { id:'big_crown', name:'Grand Crown', emoji:'👑', cost:700, slot:'head', ranks:['Duke','Archduke','King','Supreme Emperor'] },
+      { id:'throne', name:'Golden Throne', emoji:'🪑', cost:980, slot:'back', ranks:['King','Supreme Emperor'] },
+      { id:'royal_orb', name:'Imperial Orb', emoji:'🔮', cost:760, slot:'offhand', ranks:['Archduke','King','Supreme Emperor'] }
+    ];
+    const ranks = [
+      { name:'Peasant', minGold:0, next:18, popCap:5, rankIncome:0, flavor:'A broke but stubborn soul with a dream of ruling through self-control.' },
+      { name:'Villager', minGold:18, next:50, popCap:7, rankIncome:2, flavor:'You look less lost and more like a person with a plan.' },
+      { name:'Squire', minGold:50, next:100, popCap:9, rankIncome:4, flavor:'You have discipline, clean boots, and a tiny sense of destiny.' },
+      { name:'Knight', minGold:100, next:180, popCap:11, rankIncome:6, flavor:'You now save with steel in your spine and purpose in your walk.' },
+      { name:'Baron', minGold:180, next:290, popCap:13, rankIncome:8, flavor:'A little authority enters the room before you do.' },
+      { name:'Count', minGold:290, next:430, popCap:15, rankIncome:11, flavor:'Your treasury starts to feel serious and so does your wardrobe.' },
+      { name:'Duke', minGold:430, next:620, popCap:17, rankIncome:14, flavor:'Your kingdom has substance now. Even your mistakes sound expensive.' },
+      { name:'Archduke', minGold:620, next:880, popCap:20, rankIncome:18, flavor:'You radiate planning, status, and terrifying budget calm.' },
+      { name:'King', minGold:880, next:1200, popCap:24, rankIncome:23, flavor:'You no longer merely save. You command a realm.' },
+      { name:'Supreme Emperor', minGold:1200, next:null, popCap:30, rankIncome:30, flavor:'Your rule is absolute. Wasteful spending bows before you.' }
+    ];
+    const state = loadState();
+    const els = {
+      goldDisplay: document.getElementById('goldDisplay'), streakDisplay: document.getElementById('streakDisplay'), rankDisplay: document.getElementById('rankDisplay'), incomeDisplay: document.getElementById('incomeDisplay'), rankGlow: document.getElementById('rankGlow'), rulerNameDisplay: document.getElementById('rulerNameDisplay'), rulerFlavor: document.getElementById('rulerFlavor'), xpFill: document.getElementById('xpFill'), xpLeftLabel: document.getElementById('xpLeftLabel'), xpRightLabel: document.getElementById('xpRightLabel'), currency: document.getElementById('currency'), budget: document.getElementById('budget'), spent: document.getElementById('spent'), rulerName: document.getElementById('rulerName'), hairColorSelect: document.getElementById('hairColorSelect'), rulerImage: document.getElementById('rulerImage'), logBox: document.getElementById('logBox'), buildingGrid: document.getElementById('buildingGrid'), cosmeticGrid: document.getElementById('cosmeticGrid'), villageStage: document.getElementById('villageStage'), historyList: document.getElementById('historyList'), rankList: document.getElementById('rankList'), logDayBtn: document.getElementById('logDayBtn'), saveProfileBtn: document.getElementById('saveProfileBtn'), collectIncomeBtn: document.getElementById('collectIncomeBtn'), resetBtn: document.getElementById('resetBtn')
+    };
+    function defaultState(){return{gold:0,streak:0,currency:'$',rulerName:'',hairColor:'brown',lastLogDate:'',lastIncomeDate:'',history:[],ownedCosmetics:[],equippedCosmetics:{},buildings:Object.fromEntries(buildingDefs.map(b=>[b.id,0]))}}
+    function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return defaultState();const parsed=JSON.parse(raw);return {...defaultState(),...parsed,buildings:{...defaultState().buildings,...(parsed.buildings||{})},history:Array.isArray(parsed.history)?parsed.history:[],ownedCosmetics:Array.isArray(parsed.ownedCosmetics)?parsed.ownedCosmetics:[],equippedCosmetics:parsed.equippedCosmetics&&typeof parsed.equippedCosmetics==='object'?parsed.equippedCosmetics:{}}}catch{return defaultState()}}
+    function persist(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
+    function seedCoins(){const holder=document.getElementById('coins');holder.innerHTML='';for(let i=0;i<26;i++){const c=document.createElement('div');c.className='coin';c.style.left=Math.random()*100+'vw';c.style.animationDuration=14+Math.random()*24+'s';c.style.animationDelay=-(Math.random()*20)+'s';c.style.transform=`scale(${.75+Math.random()*1.15})`;holder.appendChild(c)}}
+    function getRank(){let current=ranks[0];for(const rank of ranks){if(state.gold>=rank.minGold)current=rank}return current}
+    function getNextRank(){const current=getRank();return ranks.find(r=>r.minGold>current.minGold)||null}
+    function getRankIncome(){return getRank().rankIncome}
+    function getPassiveIncome(){const buildingIncome=buildingDefs.reduce((sum,b)=>sum+((state.buildings[b.id]||0)*b.income),0);return buildingIncome+getRankIncome()}
+    function getTypeCount(type){return buildingDefs.filter(b=>b.type===type).reduce((sum,b)=>sum+(state.buildings[b.id]||0),0)}
+    function getPopCap(){return getRank().popCap}
+    function getBuildingCost(building){const owned=state.buildings[building.id]||0;return Math.round(building.baseCost*Math.pow(1.5,owned))}
+    function isCosmeticUnlocked(cosmetic){return cosmetic.ranks.includes(getRank().name)}
+    function isCosmeticOwned(id){return state.ownedCosmetics.includes(id)}
+    function isCosmeticEquipped(id){return Object.values(state.equippedCosmetics).includes(id)}
+    function canBuyBuilding(building){const cap=getPopCap();if(building.type==='peasant'&&getTypeCount('peasant')>=cap)return{ok:false,reason:`Peasant cap reached for ${getRank().name} (${cap}).`};if(building.type==='farmer'&&getTypeCount('farmer')>=cap)return{ok:false,reason:`Farmer cap reached for ${getRank().name} (${cap}).`};const cost=getBuildingCost(building);if(state.gold<cost)return{ok:false,reason:`Need ${cost} gold.`};return{ok:true,reason:''}}
+    function flashLog(text){els.logBox.textContent=text}
+    function getRulerImagePath(){
+      return `assets/rulers/male/male_1_${state.hairColor || 'brown'}_clean.png`;
+    }
+    function updateRulerImage(){
+      els.rulerImage.src = getRulerImagePath();
+    }
+    function saveProfile(){state.rulerName=els.rulerName.value.trim();state.hairColor=els.hairColorSelect.value;persist();renderAll();flashLog('Ruler saved. Hair color switching is active.')}
+    function logDay(){const budget=Number(els.budget.value),spent=Number(els.spent.value);if(!Number.isFinite(budget)||!Number.isFinite(spent)||budget<0||spent<0){flashLog('Enter a valid budget and spending amount first.');return}const today=new Date().toISOString().slice(0,10);if(state.lastLogDate===today){flashLog('You already logged today. Come back tomorrow for the next battle.');return}const saved=Math.max(0,budget-spent),overspent=Math.max(0,spent-budget);let earnedGold=Math.floor(saved/10),streakBonus=0;if(saved>0){state.streak+=1;if(state.streak>0&&state.streak%7===0)streakBonus=5}else state.streak=0;const totalEarned=earnedGold+streakBonus;state.gold+=totalEarned;state.lastLogDate=today;state.history.push({date:today,budget,spent,saved,overspent,earnedGold:totalEarned,passiveGold:0,currency:state.currency});persist();renderAll();if(saved>0){let msg=`Victory. You saved ${state.currency}${saved.toFixed(2)} and earned ${earnedGold} gold.`;if(streakBonus)msg+=` Streak reward: +${streakBonus} bonus gold.`;flashLog(msg)}else if(overspent>0){flashLog(`You went over budget by ${state.currency}${overspent.toFixed(2)}. No gold today. The realm is disappointed.`)}else flashLog('Perfectly on budget. Controlled, but no savings means no gold.')}
+    function collectIncome(){const income=getPassiveIncome();if(income<=0){flashLog('You need rank income or buildings before collecting passive income.');return}const today=new Date().toISOString().slice(0,10);if(state.lastIncomeDate===today){flashLog('Passive income already collected today.');return}state.gold+=income;state.lastIncomeDate=today;state.history.push({date:today+' · income',budget:0,spent:0,saved:0,overspent:0,earnedGold:income,passiveGold:income,currency:state.currency});persist();renderAll();flashLog(`Your kingdom produced ${income} gold today (${getRankIncome()} from rank, ${income-getRankIncome()} from buildings).`)}
+    function buyBuilding(id){const building=buildingDefs.find(b=>b.id===id);if(!building)return;const check=canBuyBuilding(building);if(!check.ok){flashLog(`${building.name}: ${check.reason}`);return}const cost=getBuildingCost(building);state.gold-=cost;state.buildings[id]=(state.buildings[id]||0)+1;persist();renderAll();flashLog(`You bought ${building.name} for ${cost} gold. The settlement expands.`)}
+    function buyOrEquipCosmetic(id){const cosmetic=cosmetics.find(c=>c.id===id);if(!cosmetic)return;if(!isCosmeticUnlocked(cosmetic)){flashLog(`${cosmetic.name} unlocks later. Reach ${cosmetic.ranks[0]}.`);return}if(!isCosmeticOwned(id)){if(state.gold<cosmetic.cost){flashLog(`Not enough gold for ${cosmetic.name}. You need ${cosmetic.cost} gold.`);return}state.gold-=cosmetic.cost;state.ownedCosmetics.push(id)}if(state.equippedCosmetics[cosmetic.slot]===id){delete state.equippedCosmetics[cosmetic.slot];flashLog(`${cosmetic.name} unequipped.`)}else{state.equippedCosmetics[cosmetic.slot]=id;flashLog(`${cosmetic.name} equipped.`)}persist();renderAll()}
+    function resetGame(){const yes=confirm('Reset the entire kingdom? This clears your gold, streak, buildings, cosmetics, and ruler progress.');if(!yes)return;Object.assign(state,defaultState());persist();renderAll();flashLog('Kingdom reset. A new adventure begins.')}
+    function renderXP(){const current=getRank(),next=getNextRank();if(!next){els.xpFill.style.width='100%';els.xpLeftLabel.textContent='Maximum rank reached';els.xpRightLabel.textContent=`${Math.floor(state.gold)} gold total`;return}const currentMin=current.minGold,nextMin=next.minGold;const progress=Math.max(0,Math.min(1,(state.gold-currentMin)/(nextMin-currentMin)));els.xpFill.style.width=`${progress*100}%`;els.xpLeftLabel.textContent=`${current.name} → ${next.name}`;els.xpRightLabel.textContent=`${Math.floor(state.gold-currentMin)} / ${nextMin-currentMin} gold`}
+    function renderBuildings(){els.buildingGrid.innerHTML='';for(const building of buildingDefs){const owned=state.buildings[building.id]||0,cost=getBuildingCost(building),check=canBuyBuilding(building);const card=document.createElement('div');card.className='building';let extra='';if(building.type==='peasant')extra=`Peasant cap: ${getTypeCount('peasant')} / ${getPopCap()}`;if(building.type==='farmer')extra=`Farmer cap: ${getTypeCount('farmer')} / ${getPopCap()}`;if(building.type==='special')extra='No rank cap';card.innerHTML=`<div class="buildingTop"><div><div class="buildingName">${building.emoji} ${building.name}</div><div class="buildingMeta">Owned: ${owned} · +${building.income} gold/day each</div></div><div class="cost">Cost: ${cost}</div></div><div class="buildingMeta">${extra}</div><button class="primary buyBtn" ${!check.ok?'disabled':''}>Buy</button>`;card.querySelector('button').addEventListener('click',()=>buyBuilding(building.id));els.buildingGrid.appendChild(card)}}
+    function renderCosmetics(){els.cosmeticGrid.innerHTML='';for(const cosmetic of cosmetics){const owned=isCosmeticOwned(cosmetic.id),unlocked=isCosmeticUnlocked(cosmetic),equipped=isCosmeticEquipped(cosmetic.id),nextRankName=cosmetic.ranks[0];const card=document.createElement('div');card.className='cosmeticCard';card.innerHTML=`<div class="cosmeticTop"><div><div class="cosmeticName">${cosmetic.emoji} ${cosmetic.name}</div><div class="cosmeticMeta">${owned?'Owned prestige cosmetic':`Cost: ${cosmetic.cost} gold`}</div></div>${owned?`<div class="ownedBadge">${equipped?'Equipped':'Owned'}</div>`:`<div class="cost">${cosmetic.cost}</div>`}</div><div class="cosmeticMeta">${unlocked?`Available for ${getRank().name}`:`Unlocks at ${nextRankName}`}</div><button class="secondary buyBtn" ${!unlocked&&!owned?'disabled':''}>${owned?(equipped?'Unequip':'Equip'):'Buy'}</button>`;card.querySelector('button').addEventListener('click',()=>buyOrEquipCosmetic(cosmetic.id));els.cosmeticGrid.appendChild(card)}}
+    function renderVillage(){const pieces=[];const placements=[{x:6,y:146,s:46},{x:64,y:140,s:54},{x:130,y:132,s:58},{x:204,y:126,s:68},{x:288,y:124,s:74},{x:370,y:130,s:64},{x:450,y:142,s:54},{x:524,y:148,s:46},{x:94,y:88,s:52},{x:178,y:74,s:60},{x:266,y:70,s:64},{x:356,y:78,s:58},{x:444,y:92,s:48}];let idx=0;for(const b of buildingDefs){const count=state.buildings[b.id]||0;for(let i=0;i<count;i++){const p=placements[idx%placements.length];pieces.push(`<div class="villageItem" title="${b.name}" style="left:${p.x}px; bottom:${p.y}px; font-size:${p.s}px">${b.emoji}</div>`);idx++}}if(idx===0){pieces.push('<div class="villageItem" style="left:24px; bottom:140px; font-size:42px">🔥</div>');pieces.push('<div class="villageItem" style="left:90px; bottom:128px; font-size:58px">🛖</div>');pieces.push('<div class="villageItem" style="left:174px; bottom:120px; font-size:44px">🌲</div>');pieces.push('<div class="villageItem" style="left:248px; bottom:122px; font-size:40px">🌲</div>')}els.villageStage.innerHTML=pieces.join('')}
+    function renderHistory(){els.historyList.innerHTML='';if(!state.history.length){els.historyList.innerHTML='<div class="empty">No campaign log yet. Log your first day and start the rise.</div>';return}[...state.history].reverse().forEach(entry=>{const diff=(entry.saved||0)-(entry.overspent||0);const resultClass=entry.passiveGold?'goldText':diff>0?'good':diff<0?'bad':'goldText';const resultText=entry.passiveGold?`+${entry.passiveGold} passive gold`:diff>0?`+${entry.earnedGold} gold`:diff<0?`Overspent ${entry.currency}${entry.overspent.toFixed(2)}`:'Exact budget';const div=document.createElement('div');div.className='historyItem';div.innerHTML=`<div class="historyTop"><span>${entry.date}</span><span class="${resultClass}">${resultText}</span></div><div class="historyMeta">Budget: ${entry.currency}${Number(entry.budget).toFixed(2)} • Spent: ${entry.currency}${Number(entry.spent).toFixed(2)}</div><div class="historyNote">${entry.saved>0?`Saved ${entry.currency}${entry.saved.toFixed(2)}`:entry.overspent>0?`Went over by ${entry.currency}${entry.overspent.toFixed(2)}`:entry.passiveGold?'Income collected from status and settlement.':'Held the exact line.'}</div>`;els.historyList.appendChild(div)})}
+    function renderRankGuide(){const currentName=getRank().name;els.rankList.innerHTML='';ranks.forEach(rank=>{const div=document.createElement('div');div.className=`rankCard ${rank.name===currentName?'activeRank':''}`;div.innerHTML=`<div class="rankTop"><span>${rank.name}</span><span>${rank.minGold}+ gold</span></div><div class="rankMeta">Population cap: ${rank.popCap} peasants / ${rank.popCap} farmers</div><div class="rankMeta">Rank passive income: ${rank.rankIncome} gold/day</div><div class="rankMeta">${rank.next?`Next promotion at ${rank.next} gold`:'Final rank reached here'}</div>`;els.rankList.appendChild(div)})}
+    function renderAll(){const rank=getRank();els.goldDisplay.textContent=Math.floor(state.gold);els.streakDisplay.textContent=state.streak;els.rankDisplay.textContent=rank.name;els.incomeDisplay.textContent=getPassiveIncome();els.rankGlow.textContent=`✦ ${rank.name}`;els.rulerNameDisplay.textContent=state.rulerName||'No name yet';els.rulerFlavor.textContent=rank.flavor;els.rulerName.value=state.rulerName||'';els.hairColorSelect.value=state.hairColor||'brown';updateRulerImage();renderXP();renderBuildings();renderCosmetics();renderVillage();renderHistory();renderRankGuide()}
+    els.logDayBtn.addEventListener('click',logDay);els.saveProfileBtn.addEventListener('click',saveProfile);els.collectIncomeBtn.addEventListener('click',collectIncome);els.resetBtn.addEventListener('click',resetGame);els.hairColorSelect.addEventListener('change',()=>{state.hairColor=els.hairColorSelect.value;updateRulerImage();persist();flashLog(`Switched to ${state.hairColor} hair.`)});seedCoins();renderAll();
+  </script>
 </body>
 </html>
