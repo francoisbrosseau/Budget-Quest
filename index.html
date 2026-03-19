@@ -437,32 +437,32 @@
 
     /* IMPORTANT: portrait box now shrinks to image size */
     .portraitStageWrap {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      width: 100%;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
 
-    .portraitStage {
-      position: relative;
-      display: inline-block;
-      width: fit-content;
-      height: fit-content;
-      background: #000;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 2px;
-      overflow: hidden;
-    }
+.portraitStage {
+  position: relative;
+  width: 360px;
+  height: 360px;
+  background: #000;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .portraitImage {
-      display: block;
-      width: auto;
-      max-width: min(100%, 360px);
-      height: auto;
-      max-height: 520px;
-      background: #000;
-    }
+.portraitImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
 
     .portraitPlaceholder {
       display: none;
