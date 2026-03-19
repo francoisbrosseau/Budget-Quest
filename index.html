@@ -7,7 +7,6 @@
   <style>
     :root {
       --bg: #0b1015;
-      --bg-soft: #121921;
       --panel: rgba(15, 22, 31, 0.94);
       --panel-2: rgba(24, 34, 47, 0.95);
       --line: rgba(255,255,255,0.08);
@@ -21,7 +20,6 @@
       --accent: #74a8ff;
       --shadow: 0 18px 45px rgba(0,0,0,0.35);
       --radius: 22px;
-      --radius-sm: 16px;
     }
 
     * { box-sizing: border-box; }
@@ -60,9 +58,8 @@
       grid-template-columns: 1.05fr 0.95fr;
       gap: 18px;
       padding: 26px;
-      overflow: hidden;
       min-height: 360px;
-      isolation: isolate;
+      overflow: hidden;
     }
 
     .hero::before {
@@ -73,7 +70,6 @@
         radial-gradient(circle at 20% 10%, rgba(255,255,255,0.08), transparent 26%),
         linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
       pointer-events: none;
-      z-index: -1;
     }
 
     .eyebrow {
@@ -341,11 +337,6 @@
       box-shadow: 0 0 0 4px rgba(116,168,255,0.12);
     }
 
-    select:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-
     .actions {
       display: flex;
       flex-wrap: wrap;
@@ -360,11 +351,10 @@
       font: inherit;
       font-weight: 800;
       cursor: pointer;
-      transition: transform 0.16s ease, opacity 0.16s ease, border-color 0.16s ease;
+      transition: transform 0.16s ease;
     }
 
     button:hover { transform: translateY(-1px); }
-    button:active { transform: translateY(0); }
 
     .btnPrimary {
       background: linear-gradient(180deg, #f1c55d, #d7a63c);
@@ -445,53 +435,46 @@
       font-weight: 700;
     }
 
-    .portraitStage {
-      position: relative;
-      min-height: 370px;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      background:
-        radial-gradient(circle at 50% 18%, rgba(255,255,255,0.14), transparent 20%),
-        linear-gradient(180deg, #233e89 0%, #1e6274 58%, #1c6a34 58%, #165524 100%);
-      display: grid;
-      place-items: end center;
-      padding: 0 16px;
+    /* IMPORTANT: portrait box now shrinks to image size */
+    .portraitStageWrap {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
     }
 
-    .portraitStage::before {
-      content: "";
-      position: absolute;
-      inset: 14px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.06);
-      pointer-events: none;
+    .portraitStage {
+      position: relative;
+      display: inline-block;
+      width: fit-content;
+      height: fit-content;
+      background: #000;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 2px;
+      overflow: hidden;
     }
 
     .portraitImage {
-      position: relative;
-      z-index: 2;
-      max-height: 350px;
-      max-width: 100%;
+      display: block;
       width: auto;
+      max-width: min(100%, 360px);
       height: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 14px 24px rgba(0,0,0,0.28));
-      image-rendering: auto;
+      max-height: 520px;
+      background: #000;
     }
 
     .portraitPlaceholder {
-      position: absolute;
-      inset: 0;
       display: none;
       place-items: center;
       text-align: center;
+      min-width: 280px;
+      min-height: 360px;
       padding: 24px;
-      z-index: 3;
-      background: rgba(7, 10, 18, 0.76);
       color: var(--muted);
       font-weight: 700;
       line-height: 1.6;
+      background: #000;
     }
 
     .portraitMeta {
@@ -527,13 +510,7 @@
       gap: 12px;
     }
 
-    .miniStatGrid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
+    .miniStatGrid,
     .gridStats {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -562,8 +539,6 @@
 
     .gold { color: var(--gold); }
     .good { color: var(--good); }
-    .warn { color: var(--warn); }
-    .bad { color: var(--bad); }
 
     .villageList {
       display: grid;
@@ -683,9 +658,8 @@
         grid-template-columns: 1fr;
       }
 
-      .heroVisual, .portraitStage { min-height: 260px; }
       body { padding: 14px; }
-      .portraitImage { max-height: 290px; }
+      .portraitImage { max-width: min(100%, 320px); }
     }
   </style>
 </head>
@@ -696,9 +670,8 @@
         <div class="eyebrow">⚔ Budget Discipline Simulator</div>
         <h1 class="title">Budget Quest</h1>
         <p class="subtitle">
-          Build your kingdom by spending below your own limit. Set your daily budget, report what you actually spent,
-          choose your currency, earn controlled gold at a balanced rate, unlock villagers and structures, and climb from peon to emperor.
-          The ruler portrait system is now fully asset-ready for male, female, multiple hairstyles, beard variants, and hair colors.
+          Build your kingdom by spending below your own limit. Your ruler portrait system is now fully rank-ready.
+          Every character file can scale by gender, haircut, color, and rank without rewriting the code later.
         </p>
       </div>
 
@@ -771,10 +744,10 @@
         </div>
 
         <div class="resultBox" id="resultBox">Set your ruler, commit to a budget, and close the day.
-Your savings now convert to gold at a reduced balanced rate, with extra passive income from unlocked villagers and buildings.</div>
+Your savings convert to gold, and your portraits are now ready for future rank art upgrades.</div>
 
         <div class="footerNote">
-          Gold is the reward currency no matter which real-world currency you track in.
+          Character asset format: gender_haircut_color_rank.png
         </div>
       </div>
 
@@ -787,21 +760,23 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
         <div class="portraitCard">
           <div class="portraitTop">
             <div class="portraitTag">👑 Ruler Portrait</div>
-            <div class="portraitTag" id="portraitAssetLabel">male_1_brown_clean</div>
+            <div class="portraitTag" id="portraitAssetLabel">male_1_brown_peon</div>
           </div>
 
-          <div class="portraitStage">
-            <img id="portraitImage" class="portraitImage" src="assets/rulers/male/male_1_brown_clean.png" alt="Ruler portrait" />
-            <div class="portraitPlaceholder" id="portraitPlaceholder">
-              This asset is not found yet.<br />
-              Add the matching file to your assets folder and it will work automatically.
+          <div class="portraitStageWrap">
+            <div class="portraitStage" id="portraitStage">
+              <img id="portraitImage" class="portraitImage" src="assets/rulers/male/male_1_brown_peon.png" alt="Ruler portrait" />
+              <div class="portraitPlaceholder" id="portraitPlaceholder">
+                This asset is not found yet.<br />
+                Add the matching file and it will work automatically.
+              </div>
             </div>
           </div>
 
           <div class="portraitMeta">
             <div class="portraitName" id="displayName">Unnamed</div>
-            <div class="portraitDesc" id="avatarDesc">A broke but determined soul at the beginning of the road. The portrait system is now fully asset-driven.</div>
-            <div class="assetHint" id="portraitAssetPath">Expected file: assets/rulers/male/male_1_brown_clean.png</div>
+            <div class="portraitDesc" id="avatarDesc">Your portrait slot is now shrink-fit to the image itself, ready for rank-based armor progression.</div>
+            <div class="assetHint" id="portraitAssetPath">Expected file: assets/rulers/male/male_1_brown_peon.png</div>
           </div>
 
           <div class="portraitControls">
@@ -810,22 +785,22 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
               <select id="genderSelect"></select>
             </div>
             <div class="field">
-              <label for="haircutSelect">Hairstyle</label>
+              <label for="haircutSelect">Haircut</label>
               <select id="haircutSelect"></select>
-            </div>
-            <div class="field">
-              <label for="beardSelect">Facial Hair</label>
-              <select id="beardSelect"></select>
             </div>
             <div class="field">
               <label for="colorSelect">Hair Color</label>
               <select id="colorSelect"></select>
             </div>
+            <div class="field">
+              <label for="rankSelect">Portrait Rank</label>
+              <select id="rankSelect"></select>
+            </div>
           </div>
 
           <div class="miniStatGrid">
             <div class="stat">
-              <div class="label">Rank</div>
+              <div class="label">Gameplay Rank</div>
               <div class="value gold" id="displayRank">Peon</div>
             </div>
             <div class="stat">
@@ -875,141 +850,98 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
       <div class="panel section">
         <h2>Rules of the Realm</h2>
         <div class="subtle">
-          Saved money no longer converts 1:1 into gold. That was way too generous and frankly irresponsible.<br/><br/>
-          New formula: roughly 1 gold per 5 units saved, with a minimum of 1 gold when you finish under budget.<br/><br/>
-          Unlocks are now much more expensive, and some of them generate passive gold every successful day.<br/><br/>
-          Exact budget counts as survival, not glory. Overspending breaks the streak and earns nothing.<br/><br/>
-          Portrait assets follow this naming rule:<br/><br/>
-          <strong>assets/rulers/GENDER/GENDER_HAIRCUT_COLOR_BEARD.png</strong><br/><br/>
-          Example:<br/>
-          <strong>assets/rulers/male/male_2_black_beard.png</strong><br/><br/>
-          Female portraits also use the same format, so for now they will be:<br/>
-          <strong>assets/rulers/female/female_1_blonde_clean.png</strong><br/><br/>
-          This file is now ready for all planned asset combinations.
+          Portrait filenames are now future-proofed around rank art progression.<br /><br />
+          Example:<br />
+          <strong>assets/rulers/male/male_2_black_warden.png</strong><br /><br />
+          Or:<br />
+          <strong>assets/rulers/female/female_3_gray_emperor.png</strong><br /><br />
+          This means you can keep the same identity and only upgrade armor and effects as the ruler ranks up.
         </div>
       </div>
     </section>
   </div>
 
   <script>
-    const STORAGE_KEY = 'budgetQuest_v4';
+    const STORAGE_KEY = 'budgetQuest_v5';
 
-    const BASE_COLORS = ['brown', 'black', 'blonde', 'ginger', 'gray'];
+    const COLORS = ['blonde', 'brown', 'ginger', 'black', 'gray'];
 
     const COLOR_LABELS = {
-      brown: 'Brown',
-      black: 'Black',
       blonde: 'Blonde',
+      brown: 'Brown',
       ginger: 'Ginger',
+      black: 'Black',
       gray: 'Gray'
     };
 
-    function makeColorSet() {
-      return [...BASE_COLORS];
-    }
+    const RANK_FILE_KEYS = [
+      'peon',
+      'villager',
+      'steward',
+      'warden',
+      'knight',
+      'baron',
+      'champion',
+      'highlord',
+      'royal',
+      'emperor'
+    ];
 
-    const ASSET_CATALOG = {
+    const RANK_LABELS = {
+      peon: 'Peon',
+      villager: 'Villager',
+      steward: 'Steward',
+      warden: 'Warden',
+      knight: 'Knight',
+      baron: 'Baron',
+      champion: 'Champion',
+      highlord: 'High Lord',
+      royal: 'Royal',
+      emperor: 'Emperor'
+    };
+
+    const HAIRCUT_LABELS = {
       male: {
-        label: 'Male',
-        haircuts: {
-          '1': {
-            label: 'Haircut 1',
-            beards: {
-              clean: {
-                label: 'Clean',
-                colors: makeColorSet()
-              },
-              beard: {
-                label: 'Beard',
-                colors: makeColorSet()
-              }
-            }
-          },
-          '2': {
-            label: 'Haircut 2',
-            beards: {
-              clean: {
-                label: 'Clean',
-                colors: makeColorSet()
-              },
-              beard: {
-                label: 'Beard',
-                colors: makeColorSet()
-              }
-            }
-          },
-          '3': {
-            label: 'Haircut 3',
-            beards: {
-              clean: {
-                label: 'Clean',
-                colors: makeColorSet()
-              },
-              beard: {
-                label: 'Beard',
-                colors: makeColorSet()
-              }
-            }
-          }
-        }
+        '1': 'Haircut 1',
+        '2': 'Haircut 2',
+        '3': 'Haircut 3'
       },
       female: {
-        label: 'Female',
-        haircuts: {
-          '1': {
-            label: 'Haircut 1',
-            beards: {
-              clean: {
-                label: 'Clean',
-                colors: makeColorSet()
-              }
-            }
-          },
-          '2': {
-            label: 'Haircut 2',
-            beards: {
-              clean: {
-                label: 'Clean',
-                colors: makeColorSet()
-              }
-            }
-          },
-          '3': {
-            label: 'Haircut 3',
-            beards: {
-              clean: {
-                label: 'Clean',
-                colors: makeColorSet()
-              }
-            }
-          }
-        }
+        '1': 'Haircut 1',
+        '2': 'Haircut 2',
+        '3': 'Haircut 3'
       }
     };
 
+    const PORTRAIT_CATALOG = {
+      male: { label: 'Male', haircuts: ['1', '2', '3'], colors: COLORS, ranks: RANK_FILE_KEYS },
+      female: { label: 'Female', haircuts: ['1', '2', '3'], colors: COLORS, ranks: RANK_FILE_KEYS }
+    };
+
     const ranks = [
-      { min: 0, title: 'Peon', desc: 'A broke but determined soul beginning with basic dignity and limited economic intelligence.' },
-      { min: 40, title: 'Villager', desc: 'A functioning citizen with cleaner sleeves and slightly fewer catastrophic spending decisions.' },
-      { min: 120, title: 'Steward', desc: 'You now look like someone trusted with keys, ledgers, and maybe a room with a door.' },
-      { min: 260, title: 'Lord', desc: 'The clothes improve, the posture improves, and the kingdom begins pretending you know what you are doing.' },
-      { min: 500, title: 'Baron', desc: 'Layered fabrics, better armor, and the first signs of dangerous confidence.' },
-      { min: 850, title: 'Warden', desc: 'A hardened authority figure. Discipline is no longer a mood. It is infrastructure.' },
-      { min: 1300, title: 'King', desc: 'Royal trim, heavier cloak, visible status. The peasants now discuss your budgeting in low voices.' },
-      { min: 1900, title: 'High King', desc: 'Gold details, noble silhouette, and the terrifying calm of someone who has mastered restraint.' },
-      { min: 2800, title: 'Emperor', desc: 'Full imperial authority. At this stage, overspending feels like a crime against history.' }
+      { min: 0, title: 'Peon', desc: 'Bare minimum survival. Leather, dust, and ambition.' },
+      { min: 40, title: 'Villager', desc: 'A functioning resident with a little more stability.' },
+      { min: 120, title: 'Steward', desc: 'Trusted with more than a spoon and a wish.' },
+      { min: 260, title: 'Warden', desc: 'Authority starts to show. Discipline gets teeth.' },
+      { min: 500, title: 'Knight', desc: 'Better gear, stronger silhouette, real status.' },
+      { min: 850, title: 'Baron', desc: 'Money and control start to look visible.' },
+      { min: 1300, title: 'Champion', desc: 'Elite presence. This is no longer beginner territory.' },
+      { min: 1900, title: 'High Lord', desc: 'Expensive details. Command aura. Serious power.' },
+      { min: 2800, title: 'Royal', desc: 'Nobility and force finally meet.' },
+      { min: 4000, title: 'Emperor', desc: 'The final form. Full visual authority.' }
     ];
 
     const unlocks = [
       { gold: 30, icon: '🧑‍🌾', title: 'Peasant', desc: 'A first worker enters the realm.', passive: 1 },
       { gold: 75, icon: '🧑‍🌾', title: 'Peasant II', desc: 'More hands. Less excuse-making.', passive: 1 },
-      { gold: 140, icon: '🏠', title: 'Cottage', desc: 'Your people no longer sleep in philosophical poverty.', passive: 0 },
+      { gold: 140, icon: '🏠', title: 'Cottage', desc: 'Your people stop sleeping in theoretical comfort.', passive: 0 },
       { gold: 240, icon: '🌾', title: 'Farm', desc: 'Food supply improves. So does morale.', passive: 2 },
-      { gold: 380, icon: '🪵', title: 'Lumber Mill', desc: 'Production begins. Splinters may occur.', passive: 2 },
-      { gold: 560, icon: '🛠️', title: 'Workshop', desc: 'The village starts creating useful things.', passive: 3 },
-      { gold: 800, icon: '🛡️', title: 'Barracks', desc: 'Discipline develops a spine.', passive: 3 },
-      { gold: 1120, icon: '🏰', title: 'Stone Walls', desc: 'The settlement is now real enough to defend.', passive: 4 },
-      { gold: 1480, icon: '🐎', title: 'Knight Order', desc: 'Mounted prestige. Expensive but convincing.', passive: 5 },
-      { gold: 1950, icon: '⛪', title: 'Grand Hall', desc: 'A proper center of command.', passive: 6 },
+      { gold: 380, icon: '🪵', title: 'Lumber Mill', desc: 'Production begins.', passive: 2 },
+      { gold: 560, icon: '🛠️', title: 'Workshop', desc: 'The village starts producing useful things.', passive: 3 },
+      { gold: 800, icon: '🛡️', title: 'Barracks', desc: 'Discipline gets a backbone.', passive: 3 },
+      { gold: 1120, icon: '🏰', title: 'Stone Walls', desc: 'The settlement becomes defensible.', passive: 4 },
+      { gold: 1480, icon: '🐎', title: 'Knight Order', desc: 'Prestige with horses.', passive: 5 },
+      { gold: 1950, icon: '⛪', title: 'Grand Hall', desc: 'A real seat of command.', passive: 6 },
       { gold: 2550, icon: '🏛️', title: 'Royal District', desc: 'Urban growth with attitude.', passive: 8 },
       { gold: 3300, icon: '👑', title: 'Imperial Capital', desc: 'The kingdom becomes an empire.', passive: 10 }
     ];
@@ -1040,8 +972,8 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
       avatarDesc: document.getElementById('avatarDesc'),
       genderSelect: document.getElementById('genderSelect'),
       haircutSelect: document.getElementById('haircutSelect'),
-      beardSelect: document.getElementById('beardSelect'),
       colorSelect: document.getElementById('colorSelect'),
+      rankSelect: document.getElementById('rankSelect'),
       portraitImage: document.getElementById('portraitImage'),
       portraitPlaceholder: document.getElementById('portraitPlaceholder'),
       portraitAssetLabel: document.getElementById('portraitAssetLabel'),
@@ -1060,8 +992,8 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
       character: {
         gender: 'male',
         haircut: '1',
-        beard: 'clean',
-        color: 'brown'
+        color: 'brown',
+        portraitRank: 'peon'
       }
     };
 
@@ -1121,6 +1053,12 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
       return current;
     }
 
+    function goldRankToFileKey(totalGold) {
+      const title = getRank(totalGold).title.toLowerCase().replace(/\s+/g, '');
+      if (title === 'highlord') return 'highlord';
+      return RANK_FILE_KEYS.includes(title) ? title : 'peon';
+    }
+
     function getPassiveGold() {
       return unlocks.reduce((sum, item) => sum + (state.totalGold >= item.gold ? item.passive : 0), 0);
     }
@@ -1139,97 +1077,59 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
         .replaceAll("'", '&#39;');
     }
 
-    function getCurrentGenderData() {
-      return ASSET_CATALOG[state.character.gender] || ASSET_CATALOG.male;
-    }
-
-    function getCurrentHaircutData() {
-      const genderData = getCurrentGenderData();
-      return genderData.haircuts[state.character.haircut] || Object.values(genderData.haircuts)[0];
-    }
-
-    function getCurrentBeardData() {
-      const haircutData = getCurrentHaircutData();
-      return haircutData.beards[state.character.beard] || Object.values(haircutData.beards)[0];
-    }
-
-    function prettyColor(color) {
-      return COLOR_LABELS[color] || color;
-    }
-
     function sanitizeCharacterSelection() {
-      const genderKeys = Object.keys(ASSET_CATALOG);
-      if (!genderKeys.includes(state.character.gender)) {
-        state.character.gender = genderKeys[0];
+      const genders = Object.keys(PORTRAIT_CATALOG);
+      if (!genders.includes(state.character.gender)) state.character.gender = 'male';
+
+      const currentGender = PORTRAIT_CATALOG[state.character.gender];
+
+      if (!currentGender.haircuts.includes(state.character.haircut)) {
+        state.character.haircut = currentGender.haircuts[0];
       }
 
-      const genderData = getCurrentGenderData();
-      const haircutKeys = Object.keys(genderData.haircuts);
-      if (!haircutKeys.includes(state.character.haircut)) {
-        state.character.haircut = haircutKeys[0];
+      if (!currentGender.colors.includes(state.character.color)) {
+        state.character.color = currentGender.colors[0];
       }
 
-      const haircutData = getCurrentHaircutData();
-      const beardKeys = Object.keys(haircutData.beards);
-      if (!beardKeys.includes(state.character.beard)) {
-        state.character.beard = beardKeys[0];
-      }
-
-      const beardData = getCurrentBeardData();
-      const colors = beardData.colors || [];
-      if (!colors.length) {
-        state.character.color = '';
-      } else if (!colors.includes(state.character.color)) {
-        state.character.color = colors[0];
+      if (!currentGender.ranks.includes(state.character.portraitRank)) {
+        state.character.portraitRank = 'peon';
       }
     }
 
     function buildAssetFilename() {
-      const { gender, haircut, color, beard } = state.character;
-      if (!color) return '';
-      return `${gender}_${haircut}_${color}_${beard}`;
+      const { gender, haircut, color, portraitRank } = state.character;
+      return `${gender}_${haircut}_${color}_${portraitRank}`;
     }
 
     function buildAssetPath() {
       const { gender } = state.character;
-      const filename = buildAssetFilename();
-      if (!filename) return '';
-      return `assets/rulers/${gender}/${filename}.png`;
+      return `assets/rulers/${gender}/${buildAssetFilename()}.png`;
     }
 
     function populateCharacterControls() {
       sanitizeCharacterSelection();
 
-      els.genderSelect.innerHTML = Object.entries(ASSET_CATALOG)
+      els.genderSelect.innerHTML = Object.entries(PORTRAIT_CATALOG)
         .map(([key, value]) => `<option value="${key}">${value.label}</option>`)
         .join('');
       els.genderSelect.value = state.character.gender;
 
-      const genderData = getCurrentGenderData();
-      els.haircutSelect.innerHTML = Object.entries(genderData.haircuts)
-        .map(([key, value]) => `<option value="${key}">${value.label}</option>`)
+      const genderData = PORTRAIT_CATALOG[state.character.gender];
+
+      els.haircutSelect.innerHTML = genderData.haircuts
+        .map(id => `<option value="${id}">${HAIRCUT_LABELS[state.character.gender][id]}</option>`)
         .join('');
       els.haircutSelect.value = state.character.haircut;
 
-      const haircutData = getCurrentHaircutData();
-      els.beardSelect.innerHTML = Object.entries(haircutData.beards)
-        .map(([key, value]) => `<option value="${key}">${value.label}</option>`)
+      els.colorSelect.innerHTML = genderData.colors
+        .map(color => `<option value="${color}">${COLOR_LABELS[color]}</option>`)
         .join('');
-      els.beardSelect.value = state.character.beard;
-      els.beardSelect.disabled = Object.keys(haircutData.beards).length <= 1;
+      els.colorSelect.value = state.character.color;
 
-      const beardData = getCurrentBeardData();
-      if (beardData.colors.length) {
-        els.colorSelect.disabled = false;
-        els.colorSelect.innerHTML = beardData.colors
-          .map(color => `<option value="${color}">${prettyColor(color)}</option>`)
-          .join('');
-        els.colorSelect.value = state.character.color;
-      } else {
-        els.colorSelect.disabled = true;
-        els.colorSelect.innerHTML = '<option value="">No assets yet</option>';
-        els.colorSelect.value = '';
-      }
+      els.rankSelect.innerHTML = genderData.ranks
+        .map(rank => `<option value="${rank}">${RANK_LABELS[rank]}</option>`)
+        .join('');
+      els.rankSelect.value = state.character.portraitRank;
     }
 
     function renderPortrait() {
@@ -1239,15 +1139,11 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
       const assetName = buildAssetFilename();
       const assetPath = buildAssetPath();
 
-      els.portraitAssetLabel.textContent = assetName || 'missing_asset';
-      els.portraitAssetPath.textContent = assetPath
-        ? `Expected file: ${assetPath}`
-        : 'No file expected yet for this selection.';
+      els.portraitAssetLabel.textContent = assetName;
+      els.portraitAssetPath.textContent = `Expected file: ${assetPath}`;
 
-      els.portraitImage.style.display = assetPath ? 'block' : 'none';
-      els.portraitPlaceholder.style.display = assetPath ? 'none' : 'grid';
-
-      if (!assetPath) return;
+      els.portraitImage.style.display = 'block';
+      els.portraitPlaceholder.style.display = 'none';
 
       els.portraitImage.onerror = () => {
         els.portraitImage.style.display = 'none';
@@ -1262,8 +1158,6 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
 
       if (els.portraitImage.getAttribute('src') !== assetPath) {
         els.portraitImage.setAttribute('src', assetPath);
-      } else if (els.portraitImage.complete && els.portraitImage.naturalWidth > 0) {
-        els.portraitImage.onload?.();
       }
     }
 
@@ -1370,23 +1264,20 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
         lines.push(`Saved: ${fmtMoney(diff, currency)} from a ${fmtMoney(budget, currency)} limit.`);
         lines.push(`Conversion: ${fmtMoney(diff, currency)} → ${baseGold} gold. Passive income added ${passiveGold} more.`);
         if (streak > 1) lines.push(`Current streak: ${streak}. The treasury is getting arrogant.`);
-        if (rankAfter.title !== rankBefore.title) lines.push(`Rank up: ${rankBefore.title} → ${rankAfter.title}. Try not to waste the promotion.`);
-        if (diff >= budget * 0.5) lines.push('Brutal efficiency. That was a genuinely elite save.');
-        else if (diff >= budget * 0.2) lines.push('Solid work. Not flashy, but highly competent.');
-        else lines.push('Clean save. Respectable. Controlled. Adult behavior, somehow.');
+        if (rankAfter.title !== rankBefore.title) lines.push(`Gameplay rank up: ${rankBefore.title} → ${rankAfter.title}.`);
         return { text: lines.join('\n'), tone: 'gold' };
       }
 
       if (diff === 0) {
         return {
-          text: `Exact budget hit. No base gold earned.\nSpent exactly ${fmtMoney(spent, currency)}.\nYou survived the day, which is technically a form of success.`,
+          text: `Exact budget hit. No base gold earned.\nSpent exactly ${fmtMoney(spent, currency)}.\nYou survived the day, which is technically success.`,
           tone: 'warn'
         };
       }
 
       const over = Math.abs(diff);
       return {
-        text: `Overspend. The streak is broken.\nYou went over by ${fmtMoney(over, currency)} on a ${fmtMoney(budget, currency)} budget.\nThe kingdom remains intact, but its confidence in you has narrowed.`,
+        text: `Overspend. The streak is broken.\nYou went over by ${fmtMoney(over, currency)} on a ${fmtMoney(budget, currency)} budget.`,
         tone: 'bad'
       };
     }
@@ -1400,7 +1291,7 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
       const note = els.note.value.trim();
 
       if (!playerName) {
-        setResult('Name your ruler first. Even a budget kingdom deserves leadership.', 'warn');
+        setResult('Name your ruler first.', 'warn');
         return;
       }
       if (!Number.isFinite(budget) || budget < 0) {
@@ -1414,7 +1305,7 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
 
       const existingIndex = state.history.findIndex(entry => entry.date === date);
       if (existingIndex !== -1) {
-        setResult('That date already exists in your campaign log. Use another date or reset later.', 'warn');
+        setResult('That date already exists in your campaign log.', 'warn');
         return;
       }
 
@@ -1452,7 +1343,15 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
 
       saveData();
       const rankAfter = getRank(state.totalGold);
-      const result = buildResultMessage({ diff, baseGold, passiveGold, totalGoldEarned, budget, spent, currency, streak: state.streak, rankBefore, rankAfter });
+
+      if (!state.character.portraitRank || state.character.portraitRank === 'peon') {
+        state.character.portraitRank = goldRankToFileKey(state.totalGold);
+      }
+
+      const result = buildResultMessage({
+        diff, baseGold, passiveGold, totalGoldEarned, budget, spent, currency, streak: state.streak, rankBefore, rankAfter
+      });
+
       setResult(result.text, result.tone);
       renderAll();
 
@@ -1466,7 +1365,7 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
         ...clone(defaultData),
         playerName: 'King Coinward',
         currency: 'MXN',
-        totalGold: 642,
+        totalGold: 920,
         streak: 5,
         bestStreak: 5,
         bestDayGold: 28,
@@ -1474,21 +1373,20 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
         character: {
           gender: 'male',
           haircut: '1',
-          beard: 'clean',
-          color: 'black'
+          color: 'blonde',
+          portraitRank: 'warden'
         },
         history: [
           { date: '2026-03-11', budget: 100, spent: 72, currency: 'MXN', gold: 5, passiveGold: 0, note: 'First decent save.' },
           { date: '2026-03-12', budget: 100, spent: 40, currency: 'MXN', gold: 13, passiveGold: 1, note: 'Good discipline.' },
-          { date: '2026-03-13', budget: 100, spent: 26, currency: 'MXN', gold: 16, passiveGold: 2, note: 'Legendary restraint. Beer budget remained on leash.' },
+          { date: '2026-03-13', budget: 100, spent: 26, currency: 'MXN', gold: 16, passiveGold: 2, note: 'Legendary restraint.' },
           { date: '2026-03-14', budget: 100, spent: 88, currency: 'MXN', gold: 5, passiveGold: 3, note: 'Small save, still a win.' },
           { date: '2026-03-15', budget: 100, spent: 0, currency: 'MXN', gold: 24, passiveGold: 4, note: 'Treasury went feral.' },
-          { date: '2026-03-16', budget: 100, spent: 61, currency: 'MXN', gold: 15, passiveGold: 5, note: 'Clean close. Good control.' },
-          { date: '2026-03-17', budget: 100, spent: 130, currency: 'MXN', gold: 0, passiveGold: 0, note: 'Moment of weakness. The realm disapproved.' }
+          { date: '2026-03-16', budget: 100, spent: 61, currency: 'MXN', gold: 15, passiveGold: 5, note: 'Clean close.' }
         ]
       };
       saveData();
-      setResult('Demo kingdom loaded. The full asset-ready portrait system is live.', 'gold');
+      setResult('Demo kingdom loaded. Rank-based portraits are fully ready.', 'gold');
       renderAll();
     }
 
@@ -1501,7 +1399,7 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
       els.spent.value = '';
       els.note.value = '';
       els.date.value = todayString();
-      setResult('Kingdom reset. Back to peasantry. Character-building, really.', 'warn');
+      setResult('Kingdom reset.', 'warn');
       renderAll();
     }
 
@@ -1515,20 +1413,18 @@ Your savings now convert to gold at a reduced balanced rate, with extra passive 
 
       els.haircutSelect.addEventListener('change', () => {
         state.character.haircut = els.haircutSelect.value;
-        sanitizeCharacterSelection();
-        saveData();
-        renderAll();
-      });
-
-      els.beardSelect.addEventListener('change', () => {
-        state.character.beard = els.beardSelect.value;
-        sanitizeCharacterSelection();
         saveData();
         renderAll();
       });
 
       els.colorSelect.addEventListener('change', () => {
         state.character.color = els.colorSelect.value;
+        saveData();
+        renderAll();
+      });
+
+      els.rankSelect.addEventListener('change', () => {
+        state.character.portraitRank = els.rankSelect.value;
         saveData();
         renderAll();
       });
